@@ -1,8 +1,16 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
-function App () {
+import PageList from './PageList';
+
+const App = () => {
+  
   return (
-    <>Let&apos;s go!</>
+    <>
+      <Router>
+        <PageList />
+      </Router>
+    </>
   );
 }
 
