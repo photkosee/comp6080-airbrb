@@ -15,6 +15,6 @@ function Dashboard (props) {
       Dashboard!
     </>
   )
-};
+}
 
 export default Dashboard;

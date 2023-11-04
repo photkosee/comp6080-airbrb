@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -12,8 +12,8 @@ import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 
 const LandingPage = () => {
-  //const navigate = useNavigate();
-  //navigate('/login');
+  // const navigate = useNavigate();
+  // navigate('/login');
   return <>Hi</>
 }
 
@@ -58,7 +58,7 @@ const PageList = () => {
           showLabels
           value={''}
           onChange={(event, newValue) => {
-            if (pages[newValue] == 'Logout') {
+            if (pages[newValue] === 'Logout') {
               logout();
             } else {
               navigate(`/${pages[newValue].toLowerCase()}`);
@@ -67,13 +67,12 @@ const PageList = () => {
         >
           {pages.map((page, idx) => {
             return (
-              <BottomNavigationAction label={page} icon={<RestoreIcon />} />
+              <BottomNavigationAction key={idx} label={page} icon={<RestoreIcon />} />
             )
           })}
         </BottomNavigation>
       </Box>
       <hr />
-      
 
       <Footer />
 
@@ -82,13 +81,3 @@ const PageList = () => {
 }
 
 export default PageList;
-
-/*
- âœ… useState -- easy
- âœ… useEffect
- âœ… multiple files, components
- âœ… props
- âœ… routing & spas
- âœ… css framewrosk
- âœ… (refersher) fetch
-*/
