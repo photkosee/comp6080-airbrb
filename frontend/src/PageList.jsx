@@ -6,7 +6,6 @@ import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import RestoreIcon from '@mui/icons-material/Restore';
 
-import Footer from './components/Footer';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
@@ -72,10 +71,6 @@ const PageList = () => {
           })}
         </BottomNavigation>
       </Box>
-      <hr />
-
-      <Footer />
-
     </>
   );
 }

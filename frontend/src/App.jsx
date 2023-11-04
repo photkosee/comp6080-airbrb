@@ -1,4 +1,5 @@
 import React from 'react';
+import './globals.css';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import PageList from './PageList';
