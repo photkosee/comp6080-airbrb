@@ -1,6 +1,4 @@
 import React from 'react';
-// import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
@@ -18,14 +16,9 @@ const ListingEdit = (props) => {
   const [propertyBedrooms, setPropertyBedrooms] = React.useState('');
   const [bedNumber, setBedNumber] = React.useState('');
   const [propertyAmenities, setpropertyAmenities] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  }
 
   const handleClose = () => {
-    setOpen(false);
+    props.setOpen(false);
   }
 
   const style = {
@@ -72,24 +65,22 @@ const ListingEdit = (props) => {
     const data = await response.json();
     if (data.error) {
       alert(data.error);
-    } else if (data.listingId) {
+    } else {
       props.getList();
     }
-    e.target.reset();
   };
 
   return (
     <>
-      <Button onClick={handleOpen}>Edit Your Listing Now!</Button>
       <Modal
-        open={open}
+        open={props.open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <div className='text-lg font-bold mb-2'>
-            Create a new list
+            Edit a list
           </div>
           <form className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
@@ -277,7 +268,7 @@ const ListingEdit = (props) => {
                 handleClose();
               }}
             >
-              Create
+              Edit
             </button>
           </form>
         </Box>
