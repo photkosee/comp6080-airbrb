@@ -1,15 +1,10 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import React from 'react';
+// import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
-export default function HostCard (props) {
-  const [published, setPublished] = React.useState(props.item.published);
+const ListingEdit = (props) => {
   const [title, setTitle] = React.useState('');
   const [street, setStreet] = React.useState('');
   const [city, setCity] = React.useState('');
@@ -63,7 +58,7 @@ export default function HostCard (props) {
     }
 
     e.preventDefault();
-    const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
+    const response = await fetch(`http://localhost:5005/listings/${props.listingId}`, {
       method: 'PUT',
       body: JSON.stringify({
         title, address, price, thumbnail, metadata
@@ -77,111 +72,24 @@ export default function HostCard (props) {
     const data = await response.json();
     if (data.error) {
       alert(data.error);
-    } else {
+    } else if (data.listingId) {
       props.getList();
     }
     e.target.reset();
   };
 
-  const deleteList = async () => {
-    const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else {
-      props.getList();
-    }
-  }
-
-  const publish = async () => {
-    const response = await fetch(`http://localhost:5005/listings/publish/${props.item.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else if (data.ok) {
-      setPublished(true);
-    }
-  }
-
-  const unpublish = async () => {
-    const response = await fetch(`http://localhost:5005/listings/unpublish/${props.item.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else if (data.ok) {
-      setPublished(false);
-    }
-  }
-
   return (
-    <><Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="140"
-        image={props.thumbnail} />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {props.item.title}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Property Type: {props.item.metadata.propertyType}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Bed Number: {props.item.metadata.bedNumber}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Bathroom Number: {props.item.metadata.bathroomNumber}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {'no svg'}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Review Number: {props.item.reviews.length}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Price: {props.item.price}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small" onClick={handleOpen}>Edit</Button>
-        <Button size="small" onClick={deleteList}>Delete</Button>
-        {published
-          ? <Button size="small" onClick={unpublish}>Unpublish</Button>
-          : <Button size="small" onClick={publish}>Publish</Button>}
-      </CardActions>
-    </Card>
-
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <>
+      <Button onClick={handleOpen}>Edit Your Listing Now!</Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={style}>
           <div className='text-lg font-bold mb-2'>
-            Edit a list
+            Create a new list
           </div>
           <form className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
@@ -194,7 +102,8 @@ export default function HostCard (props) {
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 value={title}
-                onChange={e => setTitle(e.target.value)} />
+                onChange={e => setTitle(e.target.value)}
+              />
             </div>
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
@@ -207,7 +116,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={street}
-                  onChange={e => setStreet(e.target.value)} />
+                  onChange={e => setStreet(e.target.value)}
+                />
               </div>
               <div className='flex items-center gap-2'>
                 <label htmlFor="city" className="block text-sm font-medium text-gray-900 dark:text-white">City</label>
@@ -219,7 +129,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={city}
-                  onChange={e => setCity(e.target.value)} />
+                  onChange={e => setCity(e.target.value)}
+                />
               </div>
             </div>
             <div className='flex justify-between gap-2'>
@@ -233,7 +144,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={state}
-                  onChange={e => setState(e.target.value)} />
+                  onChange={e => setState(e.target.value)}
+                />
               </div>
               <div className='flex items-center gap-2'>
                 <label htmlFor="postcode" className="block text-sm font-medium text-gray-900 dark:text-white">Postcode</label>
@@ -245,7 +157,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={postcode}
-                  onChange={e => setPostcode(e.target.value)} />
+                  onChange={e => setPostcode(e.target.value)}
+                />
               </div>
             </div>
             <div className='flex items-center gap-2'>
@@ -258,7 +171,8 @@ export default function HostCard (props) {
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 value={country}
-                onChange={e => setCountry(e.target.value)} />
+                onChange={e => setCountry(e.target.value)}
+              />
             </div>
             <div className='flex items-center gap-2'>
               <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label>
@@ -270,7 +184,8 @@ export default function HostCard (props) {
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 value={thumbnail}
-                onChange={e => setThumbnail(e.target.value)} />
+                onChange={e => setThumbnail(e.target.value)}
+              />
             </div>
             <div className='flex items-center gap-2'>
               <label htmlFor="price" className="block text-sm font-medium text-gray-900 dark:text-white">Price</label>
@@ -282,7 +197,8 @@ export default function HostCard (props) {
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 value={price}
-                onChange={e => setPrice(e.target.value)} />
+                onChange={e => setPrice(e.target.value)}
+              />
             </div>
             <div className='flex items-center gap-2'>
               <label htmlFor="propertyType" className="block text-sm font-medium text-gray-900 dark:text-white">Property Type</label>
@@ -294,7 +210,8 @@ export default function HostCard (props) {
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
                 value={propertyType}
-                onChange={e => setPropertyType(e.target.value)} />
+                onChange={e => setPropertyType(e.target.value)}
+              />
             </div>
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
@@ -307,7 +224,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={propertyBedrooms}
-                  onChange={e => setPropertyBedrooms(e.target.value)} />
+                  onChange={e => setPropertyBedrooms(e.target.value)}
+                />
               </div>
               <div className='flex items-center gap-2'>
                 <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of Bathrooms</label>
@@ -319,7 +237,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={bedNumber}
-                  onChange={e => setBedNumber(e.target.value)} />
+                  onChange={e => setBedNumber(e.target.value)}
+                />
               </div>
             </div>
             <div className='flex justify-between gap-2'>
@@ -333,7 +252,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={bathroomNumber}
-                  onChange={e => setBathroomNumber(e.target.value)} />
+                  onChange={e => setBathroomNumber(e.target.value)}
+                />
               </div>
               <div className='flex items-center gap-2'>
                 <label htmlFor="propertyAmenities" className="block text-sm font-medium text-gray-900 dark:text-white">Property of Amentities</label>
@@ -345,7 +265,8 @@ export default function HostCard (props) {
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required
                   value={propertyAmenities}
-                  onChange={e => setpropertyAmenities(e.target.value)} />
+                  onChange={e => setpropertyAmenities(e.target.value)}
+                />
               </div>
             </div>
             <button
@@ -354,12 +275,15 @@ export default function HostCard (props) {
               onClick={(e) => {
                 edit(e);
                 handleClose();
-              } }
+              }}
             >
-              Edit
+              Create
             </button>
           </form>
         </Box>
-      </Modal></>
-  );
+      </Modal>
+    </>
+  )
 }
+
+export default ListingEdit;
