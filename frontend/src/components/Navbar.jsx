@@ -42,6 +42,32 @@ export const Navbar = (props) => {
 
             <div className="flex items-center lg:order-2">
               {
+                props.token && props.page === '/' &&
+                  <>
+                    <button
+                      type="button"
+                      className="sm:inline-flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-xs px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                      onClick={() => navigate('dashboard')}
+                    >
+                      Switch to hosting
+                    </button>
+                  </>
+              }
+
+{
+                props.token && props.page === '/dashboard' &&
+                  <>
+                    <button
+                      type="button"
+                      className="sm:inline-flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-xs px-3 py-2 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+                      onClick={() => navigate('/')}
+                    >
+                      Switch to traveling
+                    </button>
+                  </>
+              }
+
+              {
                 props.token
                   ? <>
                   <button
