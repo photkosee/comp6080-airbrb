@@ -23,11 +23,12 @@ const Dashboard = (props) => {
       alert(data.error);
     } else if (data.listing) {
       console.log(data.listing);
-      setList([...list, data.listing]);
+      setList((prevList) => [...prevList, data.listing]);
     }
   }
 
   const getList = async () => {
+    setList([]);
     const response = await fetch('http://localhost:5005/listings', {
       method: 'GET',
       headers: {
