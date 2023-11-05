@@ -7,6 +7,59 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 export default function HostCard (props) {
+  const [published, setPublished] = React.useState(props.item.published);
+
+  const deleteList = async () => {
+    const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      props.getList();
+    }
+  }
+
+  const publish = async () => {
+    const response = await fetch(`http://localhost:5005/listings/publish/${props.item.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else if (data.ok) {
+      setPublished(true);
+    }
+  }
+
+  const unpublish = async () => {
+    const response = await fetch(`http://localhost:5005/listings/unpublish/${props.item.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else if (data.ok) {
+      setPublished(false);
+    }
+  }
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -40,8 +93,12 @@ export default function HostCard (props) {
       </CardContent>
       <CardActions>
         <Button size="small">Edit</Button>
-        <Button size="small">Delete</Button>
-        <Button size="small">Publish</Button>
+        <Button size="small" onClick={deleteList}>Delete</Button>
+        {
+          published
+            ? <Button size="small" onClick={unpublish}>Unpublish</Button>
+            : <Button size="small" onClick={publish}>Publish</Button>
+        }
       </CardActions>
     </Card>
   );

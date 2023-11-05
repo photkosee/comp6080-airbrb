@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import ListingCreate from './ListingCreate';
 import { Navbar } from './Navbar';
 import HostCard from './HostCard';
 
 const Dashboard = (props) => {
-  // const [title, setTitle] = React.useState('');
-  // const navigate = useNavigate();
   const [list, setList] = React.useState([]);
 
   const getData = async (id) => {
@@ -22,8 +19,9 @@ const Dashboard = (props) => {
     if (data.error) {
       alert(data.error);
     } else if (data.listing) {
-      console.log(data.listing);
-      setList((prevList) => [...prevList, data.listing]);
+      const newList = data.listing;
+      newList.id = id;
+      setList((prevList) => [...prevList, newList]);
     }
   }
 
@@ -58,7 +56,7 @@ const Dashboard = (props) => {
       <div className='flex flex-wrap gap-2 justify-center'>
         {list.map((item, idx) => {
           return (
-            <HostCard key={idx} item={item} />
+            <HostCard key={idx} item={item} getList={getList} token={props.token} />
           )
         })}
       </div>
