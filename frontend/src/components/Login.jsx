@@ -23,6 +23,7 @@ const Login = (props) => {
       alert(data.error);
     } else if (data.token) {
       localStorage.setItem('token', data.token);
+      localStorage.setItem('email', email);
       props.setToken(data.token);
       navigate('/');
     }
