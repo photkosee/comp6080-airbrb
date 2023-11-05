@@ -6,29 +6,25 @@ const Login = (props) => {
   const [password, setPassword] = React.useState('');
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (props.token) {
-      navigate('/dashboard');
-    }
-  }, [props.token]);
-
   const login = async () => {
     const response = await fetch('http://localhost:5005/user/auth/login', {
       method: 'POST',
       body: JSON.stringify({
-        email, password
+        email,
+        password
       }),
       headers: {
         'Content-type': 'application/json',
       }
     });
     const data = await response.json();
+
     if (data.error) {
       alert(data.error);
     } else if (data.token) {
       localStorage.setItem('token', data.token);
       props.setToken(data.token);
-      navigate('/dashboard');
+      navigate('/');
     }
   };
 
@@ -74,13 +70,16 @@ const Login = (props) => {
                 <button
                   type="submit"
                   className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                  onClick={login}
+                  onClick={e => {
+                    e.preventDefault();
+                    login();
+                  }}
                 >
                   Sign in
                 </button>
 
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                    Dont have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={() => navigate('/register')}>Sign up</a>
+                  Dont have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={() => navigate('/register')}>Sign up</a>
                 </p>
               </form>
             </div>
