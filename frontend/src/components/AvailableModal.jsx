@@ -1,17 +1,26 @@
 import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import DateRangePicker from '@mui/material/DateRangePicker';
+// import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const AvailableModal = (props) => {
   const [range, setRange] = useState([
     { start: '', end: '' }
   ]);
 
-  const handleOnChange = (e, idx) => {
+  const handleOnChangeStart = (e, idx) => {
     const data = [...range];
-    data[idx][e.target.name] = e.target.value;
+    data[idx].start = e.$d;
+    setRange(data);
+  }
+
+  const handleOnChangeEnd = (e, idx) => {
+    const data = [...range];
+    data[idx].end = e.$d;
     setRange(data);
   }
 
@@ -26,9 +35,34 @@ const AvailableModal = (props) => {
     setRange(data);
   }
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    console.log(range);
+    for (const date of range) {
+      const start = new Date(date.start);
+      const end = new Date(date.end);
+      if (end.getTime() < start.getTime()) {
+        alert('invalid time');
+      }
+    }
+    handleClose();
+
+    const response = await fetch(`http://localhost:5005/listings/publish/${props.listingId}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        availability: range
+      }),
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      props.setPublished(true);
+    }
   }
 
   const handleClose = () => {
@@ -64,10 +98,19 @@ const AvailableModal = (props) => {
               range.map((input, idx) => {
                 return (
                   <div key={idx} className='flex'>
-                    <DateRangePicker
-                      localeText={{ start: 'Start date', end: 'End date' }}
-                      onChange={e => handleOnChange(e, idx)}
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DatePicker
+                        onChange={e => {
+                          handleOnChangeStart(e, idx);
+                        }}
+                      />
+                      <DatePicker
+                        onChange={e => {
+                          handleOnChangeEnd(e, idx);
+                        }}
+                      />
+                    </LocalizationProvider>
+
                     <Button onClick={() => deleteRange(idx)}>Delete</Button>
                   </div>
                 )

@@ -1,8 +1,17 @@
+import { Slider, TextField } from '@mui/material';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+// import { Select } from '@mui/base/Select';
+// import { Option } from '@mui/base/Option';
 
 export const Navbar = (props) => {
   const navigate = useNavigate();
+  // const [sort, setSort] = useEffect('');
+  // const handleSort = (e) => {
+  //   setSort(e.target.value);
+  // }
 
   const logout = async () => {
     const response = await fetch('http://localhost:5005/user/auth/logout', {
@@ -39,6 +48,54 @@ export const Navbar = (props) => {
                     </div>
                     <input type="text" name="search" id="topbar-search" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" />
                   </div>
+                  <br />
+                  <div className="relative mt-1 lg:w-60 sm:w-40 flex">
+                    Bedrooms:&nbsp;
+                    <TextField
+                      label="Enter Text"
+                      variant="outlined"
+                      value={''}
+                    />
+                  </div>
+                  <br />
+                  <div className="relative mt-1 lg:w-60 sm:w-40 flex">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      Check In:&nbsp;
+                      <DatePicker
+                        onChange={e => {
+                        }}
+                      />
+                      Check Out:&nbsp;
+                      <DatePicker
+                        onChange={e => {
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                  <br />
+                  <div className="relative mt-1 lg:w-60 sm:w-40 flex">
+                    Min Price:&nbsp;
+                    <TextField
+                      label="Enter Text"
+                      variant="outlined"
+                      value={''}
+                    />
+                    Max Price:&nbsp;
+                    <TextField
+                      label="Enter Text"
+                      variant="outlined"
+                      value={''}
+                    />
+                  </div>
+                  {/* <Select
+                    value={sort}
+                    onChange={handleSort}
+                  >
+                    <Option value={10}>Ten</Option>
+                    <Option value={20}>Twenty</Option>
+                    <Option value={30}>Thirty</Option>
+                  </Select> */}
+                  <Slider defaultValue={5} aria-label="Default" valueLabelDisplay="auto" step={1} marks min={0} max={10}/>
                 </form>
               }
             </div>

@@ -30,22 +30,22 @@ export default function HostCard (props) {
     }
   }
 
-  const publish = async () => {
-    const response = await fetch(`http://localhost:5005/listings/publish/${props.item.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
-      }
-    });
+  // const publish = async () => {
+  //   const response = await fetch(`http://localhost:5005/listings/publish/${props.item.id}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-type': 'application/json',
+  //       Authorization: `Bearer ${props.token}`
+  //     }
+  //   });
 
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else if (data.ok) {
-      setPublished(true);
-    }
-  }
+  //   const data = await response.json();
+  //   if (data.error) {
+  //     alert(data.error);
+  //   } else if (data.ok) {
+  //     setPublished(true);
+  //   }
+  // }
 
   const unpublish = async () => {
     const response = await fetch(`http://localhost:5005/listings/unpublish/${props.item.id}`, {
@@ -59,7 +59,7 @@ export default function HostCard (props) {
     const data = await response.json();
     if (data.error) {
       alert(data.error);
-    } else if (data.ok) {
+    } else {
       setPublished(false);
     }
   }
@@ -105,7 +105,7 @@ export default function HostCard (props) {
       </Card>
 
       <ListingEdit token={props.token} listingId={props.item.id} open={openEdit} setOpen={setOpenEdit} getList={props.getList} />
-      <AvailableModal open={openPublish} setOpen={setOpenPublish} publish={publish} />
+      <AvailableModal listingId={props.item.id} token={props.token} open={openPublish} setOpen={setOpenPublish} publish={openPublish} setPublished={setPublished} />
     </>
   );
 }
