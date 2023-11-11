@@ -159,7 +159,7 @@ export const LandingPage = (props) => {
             if (priceMin) {
               priceBottom = priceMin;
             }
-            if (item.price >= priceBottom && item.price <= priceTop) {
+            if (parseFloat(item.price) >= parseFloat(priceBottom) && parseFloat(item.price) <= parseFloat(priceTop)) {
               return (
                 <GuestCard key={idx} item={item} />
               )
