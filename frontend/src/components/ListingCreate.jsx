@@ -4,6 +4,23 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
+export function fileToDataUrl (file) {
+  const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg']
+  const valid = validFileTypes.find(type => type === file.type);
+  // Bad data, let's walk away.
+  if (!valid) {
+    throw Error('provided file is not a png, jpg or jpeg image.');
+  }
+
+  const reader = new FileReader();
+  const dataUrlPromise = new Promise((resolve, reject) => {
+    reader.onerror = reject;
+    reader.onload = () => resolve(reader.result);
+  });
+  reader.readAsDataURL(file);
+  return dataUrlPromise;
+}
+
 const ListingCreate = (props) => {
   const [title, setTitle] = React.useState('');
   const [street, setStreet] = React.useState('');
@@ -12,7 +29,7 @@ const ListingCreate = (props) => {
   const [postcode, setPostcode] = React.useState('');
   const [country, setCountry] = React.useState('');
   const [price, setPrice] = React.useState('');
-  const [thumbnail, setThumbnail] = React.useState('');
+  const [thumbnail, setThumbnail] = React.useState(null);
   const [propertyType, setPropertyType] = React.useState('');
   const [bathroomNumber, setBathroomNumber] = React.useState('');
   const [propertyBedrooms, setPropertyBedrooms] = React.useState('');
@@ -26,6 +43,13 @@ const ListingCreate = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+  }
+
+  const handleThumbnail = (e) => {
+    console.log(e.target.files[0]);
+    fileToDataUrl(e.target.files[0]).then((data) => {
+      setThumbnail(data);
+    })
   }
 
   const style = {
@@ -75,7 +99,6 @@ const ListingCreate = (props) => {
     } else if (data.listingId) {
       props.getList();
     }
-    e.target.reset();
   };
 
   return (
@@ -177,14 +200,12 @@ const ListingCreate = (props) => {
             <div className='flex items-center gap-2'>
               <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label>
               <input
-                type="img"
+                type="file"
                 name="thumbnail"
                 id="thumbnail"
-                placeholder="thumbnail"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
-                value={thumbnail}
-                onChange={e => setThumbnail(e.target.value)}
+                onChange={e => handleThumbnail(e)}
               />
             </div>
             <div className='flex items-center gap-2'>

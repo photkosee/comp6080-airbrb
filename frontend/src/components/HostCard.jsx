@@ -71,7 +71,7 @@ export default function HostCard (props) {
           component="img"
           alt="green iguana"
           height="140"
-          image={props.thumbnail} />
+          image={props.item.thumbnail} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.item.title}
