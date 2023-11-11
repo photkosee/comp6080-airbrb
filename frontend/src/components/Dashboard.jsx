@@ -47,18 +47,20 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     getList();
-  }, [])
+  }, []);
 
   return (
     <>
       <Navbar token={props.token} setToken={props.setToken} page="/dashboard" />
-      <ListingCreate token={props.token} setToken={props.setToken} getList={getList} />
-      <div className='flex flex-wrap gap-2 justify-center'>
-        {list.map((item, idx) => {
-          return (
-            <HostCard key={idx} item={item} getList={getList} token={props.token} />
-          )
-        })}
+      <div className='flex flex-col gap-4'>
+        <ListingCreate token={props.token} setToken={props.setToken} getList={getList} />
+        <div className='flex flex-wrap gap-2 justify-center'>
+          {list.map((item, idx) => {
+            return (
+              <HostCard key={idx} item={item} getList={getList} token={props.token} />
+            )
+          })}
+        </div>
       </div>
     </>
   )
