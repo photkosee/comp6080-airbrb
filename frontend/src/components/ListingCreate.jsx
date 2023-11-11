@@ -45,10 +45,9 @@ const ListingCreate = (props) => {
   }
 
   const handleThumbnail = (e) => {
-    console.log(e.target.files[0]);
     fileToDataUrl(e.target.files[0]).then((data) => {
       setThumbnail(data);
-    })
+    });
   }
 
   const style = {

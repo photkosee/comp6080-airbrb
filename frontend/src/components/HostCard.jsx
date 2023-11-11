@@ -69,8 +69,8 @@ export default function HostCard (props) {
       <Card sx={{ maxWidth: 345 }}>
         <CardMedia
           component="img"
-          alt="green iguana"
-          height="140"
+          alt="thumbnail"
+          width="220"
           image={props.item.thumbnail} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

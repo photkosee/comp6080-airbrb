@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { fileToDataUrl } from './ListingCreate';
 
 const ListingEdit = (props) => {
   const [title, setTitle] = React.useState('');
@@ -19,6 +20,12 @@ const ListingEdit = (props) => {
 
   const handleClose = () => {
     props.setOpen(false);
+  }
+
+  const handleThumbnail = (e) => {
+    fileToDataUrl(e.target.files[0]).then((data) => {
+      setThumbnail(data);
+    });
   }
 
   const style = {
@@ -168,14 +175,12 @@ const ListingEdit = (props) => {
             <div className='flex items-center gap-2'>
               <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label>
               <input
-                type="img"
+                type="file"
                 name="thumbnail"
                 id="thumbnail"
-                placeholder="thumbnail"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
-                value={thumbnail}
-                onChange={e => setThumbnail(e.target.value)}
+                onChange={e => handleThumbnail(e)}
               />
             </div>
             <div className='flex items-center gap-2'>
