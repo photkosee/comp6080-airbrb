@@ -224,7 +224,7 @@ const ListingEdit = (props) => {
                 />
               </div>
               <div className='flex items-center gap-2'>
-                <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of Bathrooms</label>
+                <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of Bedrooms</label>
                 <input
                   type="number"
                   name="bedNumber"
