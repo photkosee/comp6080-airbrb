@@ -12,11 +12,11 @@ import Modal from '@mui/material/Modal';
 export const LandingPage = (props) => {
   const [list, setList] = React.useState([]);
   const [nameSearch, setNameSearch] = React.useState('');
-  const [priceMax, setPriceMax] = React.useState('');
-  const [priceMin, setPriceMin] = React.useState('');
-  const [dateMax, setDateMax] = React.useState('');
-  const [dateMin, setDateMin] = React.useState('');
-  const [bedroomNumber, setBedroomNumber] = React.useState('');
+  const [priceMax, setPriceMax] = React.useState(null);
+  const [priceMin, setPriceMin] = React.useState(null);
+  const [dateMax, setDateMax] = React.useState(null);
+  const [dateMin, setDateMin] = React.useState(null);
+  const [bedroomNumber, setBedroomNumber] = React.useState(null);
   const [sort, setSort] = React.useState('');
   const [open, setOpen] = React.useState(false);
   const handleSort = (e) => {
@@ -54,6 +54,24 @@ export const LandingPage = (props) => {
     }
   }
 
+  const handleOpen = () => {
+    setNameSearch('');
+    setPriceMax(null);
+    setPriceMin(null);
+    setDateMax(null);
+    setDateMin(null);
+    setBedroomNumber(null);
+    setOpen(true);
+  }
+
+  const textSearch = () => {
+    setPriceMax(null);
+    setPriceMin(null);
+    setDateMax(null);
+    setDateMin(null);
+    setBedroomNumber(null);
+  }
+
   useEffect(() => {
     getList();
   }, []);
@@ -68,9 +86,14 @@ export const LandingPage = (props) => {
           <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
             <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20"> <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/> </svg>
           </div>
-          <input type="text" name="search" id="topbar-search" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" value={nameSearch} onChange={e => setNameSearch(e.target.value)} />
+          <input type="text" name="search" id="topbar-search" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" value={nameSearch}
+            onChange={e => {
+              textSearch();
+              setNameSearch(e.target.value);
+            }}
+          />
         </div>
-        <Button onClick={() => setOpen(true)}>Other filters</Button>
+        <Button onClick={() => handleOpen()}>Other filters</Button>
         <Modal
           open={open}
           onClose={() => setOpen(false)}
