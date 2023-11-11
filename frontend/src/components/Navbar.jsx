@@ -1,17 +1,16 @@
-import { Slider, TextField } from '@mui/material';
+import { InputLabel, NativeSelect, Slider, TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { Select } from '@mui/base/Select';
-// import { Option } from '@mui/base/Option';
 
 export const Navbar = (props) => {
   const navigate = useNavigate();
-  // const [sort, setSort] = useEffect('');
-  // const handleSort = (e) => {
-  //   setSort(e.target.value);
-  // }
+  const [sort, setSort] = React.useState('');
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    console.log(e.target.value);
+  }
 
   const logout = async () => {
     const response = await fetch('http://localhost:5005/user/auth/logout', {
@@ -87,14 +86,19 @@ export const Navbar = (props) => {
                       value={''}
                     />
                   </div>
-                  {/* <Select
-                    value={sort}
+                  <InputLabel id="demo-simple-select-label">Sort</InputLabel>
+                  <NativeSelect
                     onChange={handleSort}
+                    value={sort}
+                    inputProps={{
+                      name: 'age',
+                      id: 'uncontrolled-native',
+                    }}
                   >
-                    <Option value={10}>Ten</Option>
-                    <Option value={20}>Twenty</Option>
-                    <Option value={30}>Thirty</Option>
-                  </Select> */}
+                    <option value={0}>&nbsp;None</option>
+                    <option value={10}>&nbsp;Highest - Lowest</option>
+                    <option value={20}>&nbsp;Lowest - Highest</option>
+                  </NativeSelect>
                   <Slider defaultValue={5} aria-label="Default" valueLabelDisplay="auto" step={1} marks min={0} max={10}/>
                 </form>
               }
