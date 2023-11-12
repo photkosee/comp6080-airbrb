@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import { LandingPage } from './components/LandingPage';
 import Dashboard from './components/Dashboard';
+import ListingView from './components/ListingView';
 
 const PageList = () => {
   const [token, setToken] = React.useState(null);
@@ -23,6 +24,7 @@ const PageList = () => {
         <Route path="/register" element={<Register token={token} setToken={setToken} />} />
         <Route path="/login" element={<Login token={token} setToken={setToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token} setToken={setToken} />} />
+        <Route path="/listing/:id" element={<ListingView token={token} setToken={setToken} />} />
       </Routes>
     </>
   );

@@ -54,8 +54,6 @@ export const LandingPage = (props) => {
     borderRadius: 'lg'
   };
 
-  console.log(dateMin + dateMax)
-
   const getList = async () => {
     setList([]);
     const response = await fetch('http://localhost:5005/listings', {
@@ -82,9 +80,12 @@ export const LandingPage = (props) => {
     setDateMax('');
     setDateMin('');
     setBedroomNumber('');
+    localStorage.removeItem('dateMin');
+    localStorage.removeItem('dateMax');
   }
 
   useEffect(() => {
+    clearFilter();
     getList();
   }, []);
 
@@ -127,12 +128,14 @@ export const LandingPage = (props) => {
                   <DatePicker
                     onChange={e => {
                       setDateMin(e.$d);
+                      localStorage.setItem('dateMin', e.$d);
                     }}
                   />
                   Check Out:&nbsp;
                   <DatePicker
                     onChange={e => {
                       setDateMax(e.$d);
+                      localStorage.setItem('dateMax', e.$d);
                     }}
                   />
                 </LocalizationProvider>
@@ -173,7 +176,6 @@ export const LandingPage = (props) => {
 
       <div className='flex flex-wrap gap-2 justify-center'>
         {list.map((item, idx) => {
-          console.log(item.availability)
           let checkNameSearch = true;
           let checkPrice = true;
           let checkBedNumber = true;
@@ -197,17 +199,6 @@ export const LandingPage = (props) => {
           if (bedroomNumber) {
             checkBedNumber = parseInt(item.metadata.bedNumber) === parseInt(bedroomNumber);
           }
-
-          // if (dateMin && dateMax) {
-          //   const dateTop = new Date(dateMax);
-          //   const dateBottom = new Date(dateMin);
-          //   const pickedMinDate = new Date(item.)
-          //   checkDate =
-          // } else if (dateMin) {
-          //   checkDate =
-          // } else if (dateMax) {
-          //   checkDate =
-          // }
 
           if (dateMin && dateMax) {
             const listInterval = [];

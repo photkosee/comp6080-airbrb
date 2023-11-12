@@ -1,3 +1,4 @@
+import { Button } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,6 +35,12 @@ export const Navbar = (props) => {
                 <form>
                   <label htmlFor="topbar-search" className="sr-only">Search</label>
                 </form>
+              }
+              {
+                props.page.includes('/listing/') &&
+                <Button onClick={() => navigate('/')}>
+                  Back
+                </Button>
               }
             </div>
 
