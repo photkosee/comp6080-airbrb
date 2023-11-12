@@ -56,9 +56,13 @@ const Dashboard = (props) => {
         <ListingCreate token={props.token} setToken={props.setToken} getList={getList} />
         <div className='flex flex-wrap gap-2 justify-center'>
           {list.map((item, idx) => {
-            return (
-              <HostCard key={idx} item={item} getList={getList} token={props.token} />
-            )
+            if (item.owner !== localStorage.getItem('email')) {
+              return null;
+            } else {
+              return (
+                <HostCard key={idx} item={item} getList={getList} token={props.token} />
+              )
+            }
           })}
         </div>
       </div>

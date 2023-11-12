@@ -14,9 +14,9 @@ export default function HostCard (props) {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openPublish, setOpenPublish] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-  const [list, setList] = React.useState([]);
+  const [listBooking, setListBooking] = React.useState([]);
 
-  setList([]);
+  // setList([]);
   const deleteList = async () => {
     const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
       method: 'DELETE',
@@ -51,22 +51,57 @@ export default function HostCard (props) {
     }
   };
 
-  // const showBookings = async () => {
-  //   const response = await fetch('http://localhost:5005/bookings', {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-type': 'application/json',
-  //       Authorization: `Bearer ${props.token}`
-  //     }
-  //   });
+  const acceptBooking = async (id) => {
+    const response = await fetch(`http://localhost:5005/bookings/accept/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    });
 
-  //   const data = await response.json();
-  //   if (data.error) {
-  //     alert(data.error);
-  //   } else {
-  //     setList(data.bookings);
-  //   }
-  // };
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      showBookings();
+    }
+  };
+
+  const declineBooking = async (id) => {
+    const response = await fetch(`http://localhost:5005/bookings/decline/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      showBookings();
+    }
+  };
+
+  const showBookings = async () => {
+    const response = await fetch('http://localhost:5005/bookings', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      const tmp = data.bookings;
+      setListBooking(tmp);
+    }
+  };
 
   const style = {
     position: 'absolute',
@@ -121,7 +156,10 @@ export default function HostCard (props) {
                 : <Button size="small" onClick={() => setOpenPublish(true)}>Publish</Button>}
             </div>
             <div className='flex justify-center'>
-              <Button size="small" onClick={() => {}}>
+              <Button size="small" onClick={() => {
+                setOpen(true);
+                showBookings();
+              }}>
                 Manage Bookings
               </Button>
             </div>
@@ -131,25 +169,45 @@ export default function HostCard (props) {
 
       <Modal
         open={open}
-        onClose={setOpen(false)}
+        onClose={() => setOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {
-            open &&
-            list.map((e, idx) => {
-              if (e.listingId === props.item.id) {
-                return null;
-              } else {
-                return (
-                  <div key={idx} className='flex flex-wrap gap-1'>
-                    {e.owner}
-                  </div>
-                );
-              }
-            })
-          }
+          <div className='flex flex-col gap-3'>
+            <div>
+              Requests:
+            </div>
+            {
+              listBooking.map((e, idx) => {
+                if (parseInt(e.listingId) === parseInt(props.item.id) && e.status === 'pending') {
+                  return (
+                    <div key={idx} className='flex flex-col gap-1'>
+                      <div>
+                        Uesr: {e.owner}
+                      </div>
+                      <div>
+                        From: {e.dateRange.start}
+                      </div>
+                      <div>
+                        To: {e.dateRange.end}
+                      </div>
+                      <div className='flex flex-wrap gap-2'>
+                        <Button onClick={() => acceptBooking(e.id)}>
+                          Accept
+                        </Button>
+                        <Button onClick={() => declineBooking(e.id)}>
+                          Decline
+                        </Button>
+                      </div>
+                    </div>
+                  )
+                } else {
+                  return null;
+                }
+              })
+            }
+          </div>
         </Box>
       </Modal>
       <ListingEdit token={props.token} listingId={props.item.id} open={openEdit} setOpen={setOpenEdit} getList={props.getList} />

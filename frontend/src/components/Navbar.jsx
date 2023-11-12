@@ -18,7 +18,10 @@ export const Navbar = (props) => {
     if (data.error) {
       alert(data.error);
     } else {
-      localStorage.setItem('token', '');
+      localStorage.removeItem('email');
+      localStorage.removeItem('token');
+      localStorage.removeItem('dateMin');
+      localStorage.removeItem('dateMax');
       props.setToken('');
       navigate('/');
     }
