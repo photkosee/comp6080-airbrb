@@ -16,7 +16,6 @@ export default function HostCard (props) {
   const [open, setOpen] = React.useState(false);
   const [listBooking, setListBooking] = React.useState([]);
 
-  // setList([]);
   const deleteList = async () => {
     const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
       method: 'DELETE',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { useParams } from 'react-router-dom';
 import { Box, Button, Card, CardContent, CardMedia, Modal, Typography } from '@mui/material';
@@ -10,27 +10,47 @@ const ListingView = (props) => {
   const [open, setOpen] = React.useState(false);
   const [dateMax, setDateMax] = React.useState('');
   const [dateMin, setDateMin] = React.useState('');
+  const [list, setList] = React.useState([]);
   const { id } = useParams();
 
-  console.log(dateMax + dateMin);
-  React.useEffect(() => {
-    const getData = async () => {
-      const response = await fetch(`http://localhost:5005/listings/${id}`, {
-        method: 'GET',
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${props.token}`
-        }
-      });
-
-      const data = await response.json();
-      if (data.error) {
-        alert(data.error);
-      } else if (data.listing) {
-        setData(data);
+  const getData = async () => {
+    const response = await fetch(`http://localhost:5005/listings/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${props.token}`
       }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else if (data.listing) {
+      setData(data);
     }
+  }
+
+  const showBookings = async () => {
+    const response = await fetch('http://localhost:5005/bookings', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else if (data.bookings) {
+      const tmp = data.bookings;
+      setList(tmp);
+    }
+  };
+
+  useEffect(() => {
     getData();
+    showBookings();
   }, []);
 
   const confirmBook = async () => {
@@ -132,6 +152,11 @@ const ListingView = (props) => {
               {props.token &&
                 <div className='flex justify-center'>
                   <Button onClick={() => handleOpen()}>Book</Button>
+                </div>
+              }
+              {list.some(e => e.owner === localStorage.getItem('email') && parseInt(e.listingId) === parseInt(id)) &&
+                <div className='flex justify-center'>
+                  <Button onClick={() => handleOpen()}>Review</Button>
                 </div>
               }
             </CardContent>
