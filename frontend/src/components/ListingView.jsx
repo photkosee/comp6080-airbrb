@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Card, CardContent, CardMedia, Modal, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Input, Modal, Rating, Typography } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
@@ -11,7 +11,17 @@ const ListingView = (props) => {
   const [dateMax, setDateMax] = React.useState('');
   const [dateMin, setDateMin] = React.useState('');
   const [list, setList] = React.useState([]);
+  const [openReview, setOpenReview] = React.useState(false);
+  const [rate, setRate] = React.useState(0);
+  const [text, setText] = React.useState('');
+  const [bookingId, setBookingId] = React.useState('');
   const { id } = useParams();
+
+  const handleOpenReview = () => {
+    setRate(0);
+    setText('');
+    setOpenReview(true);
+  }
 
   const getData = async () => {
     const response = await fetch(`http://localhost:5005/listings/${id}`, {
@@ -48,10 +58,47 @@ const ListingView = (props) => {
     }
   };
 
+  const uploadReview = async () => {
+    const obj = {
+      review: {
+        comment: text,
+        rating: rate,
+      }
+    };
+    const jsonObj = JSON.stringify(obj);
+    console.log(jsonObj);
+    const response = await fetch(`http://localhost:5005/listings/${id}/review/${bookingId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      body: jsonObj,
+    });
+
+    console.log('1');
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      alert('Feedback sent');
+      setOpenReview(false);
+    }
+  };
+
   useEffect(() => {
     getData();
     showBookings();
   }, []);
+
+  useEffect(() => {
+    list.forEach(e => {
+      if (e.owner === localStorage.getItem('email') && parseInt(e.listingId) === parseInt(id)) {
+        setBookingId(e.id);
+      }
+    })
+  }, [list]);
 
   const confirmBook = async () => {
     if (dateMin && dateMax) {
@@ -149,6 +196,9 @@ const ListingView = (props) => {
                     : <>Price per night: {data.listing.price}</>
                 }
               </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {/* Rating: { data.listing.reviews.reduce((prev, e) => { return parseInt(prev.rating) + parseInt(e.rating); }, 0) / data.listing.reviews.length } */}
+              </Typography>
               {props.token &&
                 <div className='flex justify-center'>
                   <Button onClick={() => handleOpen()}>Book</Button>
@@ -156,7 +206,7 @@ const ListingView = (props) => {
               }
               {list.some(e => e.owner === localStorage.getItem('email') && parseInt(e.listingId) === parseInt(id)) &&
                 <div className='flex justify-center'>
-                  <Button onClick={() => handleOpen()}>Review</Button>
+                  <Button onClick={() => handleOpenReview()}>Review</Button>
                 </div>
               }
             </CardContent>
@@ -190,6 +240,23 @@ const ListingView = (props) => {
                     Confirm
                   </Button>
                 </div>
+              </div>
+            </Box>
+          </Modal>
+
+          <Modal
+            open={(openReview)}
+            onClose={() => setOpenReview(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <div className='flex flex-col flex-wrap gap-2 w-full'>
+                <Rating name="half-rating" value={parseFloat(rate)} onChange={e => setRate(parseFloat(e.target.value))} precision={0.1} />
+                <Input type='text' value={text} onChange={e => setText(e.target.value)} />
+                <Button onClick={() => { uploadReview() }}>
+                  Send
+                </Button>
               </div>
             </Box>
           </Modal>
