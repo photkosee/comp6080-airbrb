@@ -41,26 +41,29 @@ const ListingView = (props) => {
   }
 
   const showBookings = async () => {
-    const response = await fetch('http://localhost:5005/bookings', {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    if (localStorage.getItem('token')) {
+      const response = await fetch('http://localhost:5005/bookings', {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else if (data.bookings) {
-      const tmp = data.bookings;
-      setList(tmp);
+      const data = await response.json();
+      if (data.error) {
+        alert(data.error);
+      } else if (data.bookings) {
+        const tmp = data.bookings;
+        setList(tmp);
+      }
     }
   };
 
   const uploadReview = async () => {
     const obj = {
       review: {
+        owner: localStorage.getItem('email'),
         comment: text,
         rating: rate,
       }
@@ -82,6 +85,7 @@ const ListingView = (props) => {
     if (data.error) {
       alert(data.error);
     } else {
+      getData();
       alert('Feedback sent');
       setOpenReview(false);
     }
@@ -136,6 +140,17 @@ const ListingView = (props) => {
     return data.listing.price * (new Date(dateMax) - new Date(dateMin)) / 86400000;
   }
 
+  const calculateRating = () => {
+    let sum = 0;
+    for (const review of data.listing.reviews) {
+      sum += parseFloat(review.rating);
+    }
+    if (data.listing.reviews.length === 0) {
+      return 0;
+    }
+    return sum / data.listing.reviews.length;
+  }
+
   const handleOpen = () => {
     setDateMin('');
     setDateMax('');
@@ -184,12 +199,6 @@ const ListingView = (props) => {
                 Bathroom Number: {data.listing.metadata.bathroomNumber}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {'no svg'}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Review Number: {data.listing.reviews.length}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
                 {
                   (localStorage.getItem('dateMin') && localStorage.getItem('dateMax'))
                     ? <>Price: {calculatePrice(localStorage.getItem('dateMin'), localStorage.getItem('dateMax'))}</>
@@ -197,7 +206,28 @@ const ListingView = (props) => {
                 }
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {/* Rating: { data.listing.reviews.reduce((prev, e) => { return parseInt(prev.rating) + parseInt(e.rating); }, 0) / data.listing.reviews.length } */}
+                Number of reviews: {data.listing.reviews.length}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <div className='flex items-center gap-2'>
+                  Rating: <Rating name="read-only" value={calculateRating()} size="small" precision={0.1} readOnly /> {calculateRating()}
+                </div>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <div>
+                  Comments:
+                </div>
+                <div className='flex flex-col gap-1'>
+                  {
+                    data.listing.reviews.map((e, idx) => {
+                      return (
+                        <div key={idx} className='flex flex-wrap'>
+                          &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </Typography>
               {props.token &&
                 <div className='flex justify-center'>
@@ -252,7 +282,7 @@ const ListingView = (props) => {
           >
             <Box sx={style}>
               <div className='flex flex-col flex-wrap gap-2 w-full'>
-                <Rating name="half-rating" value={parseFloat(rate)} onChange={e => setRate(parseFloat(e.target.value))} precision={0.1} />
+                <Rating name="half-rating" value={parseFloat(rate)} onChange={e => setRate(parseFloat(e.target.value))} precision={0.5} />
                 <Input type='text' value={text} onChange={e => setText(e.target.value)} />
                 <Button onClick={() => { uploadReview() }}>
                   Send
