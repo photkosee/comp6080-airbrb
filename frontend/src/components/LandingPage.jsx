@@ -28,7 +28,7 @@ export const LandingPage = (props) => {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -91,7 +91,7 @@ export const LandingPage = (props) => {
 
   return (
     <>
-      <Navbar token={props.token} setToken={props.setToken} page='/' />
+      <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page='/' />
 
       <div className='flex justify-center items-center flex-wrap gap-2 mb-5'>
         <label htmlFor="topbar-search" className="sr-only">Search</label>
