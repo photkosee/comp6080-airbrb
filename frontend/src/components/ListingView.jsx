@@ -193,7 +193,20 @@ const ListingView = (props) => {
                 Property Type: {data.listing.metadata.propertyType}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Bed Number: {data.listing.metadata.bedNumber}
+                <div>
+                  Bedrooms:
+                </div>
+                <div className='flex flex-col flex-wrap gap-1'>
+                  {
+                    data.listing.metadata.bedrooms.map((e, idx) => {
+                      return (
+                        <div key={idx}>
+                          Type: {e.type} Number of beds: {e.number}
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Bathroom Number: {data.listing.metadata.bathroomNumber}

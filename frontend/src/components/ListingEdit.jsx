@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { fileToDataUrl } from './ListingCreate';
@@ -19,23 +19,6 @@ const ListingEdit = (props) => {
     { type: '', number: 0 }
   ]);
   const [propertyAmenities, setpropertyAmenities] = React.useState('');
-
-  useEffect(() => {
-    setTitle('');
-    setStreet('');
-    setCity('');
-    setState('');
-    setPostcode('');
-    setCountry('');
-    setPrice('');
-    setThumbnail(null);
-    setPropertyType('');
-    setBed([
-      { type: '', number: 0 }
-    ]);
-    setBathroomNumber(0);
-    setpropertyAmenities('');
-  }, []);
 
   const handleClose = () => {
     props.setOpen(false);
