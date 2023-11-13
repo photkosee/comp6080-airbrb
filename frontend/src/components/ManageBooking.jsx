@@ -5,8 +5,7 @@ import { Button } from '@mui/material';
 
 const ManageBooking = (props) => {
   const [listBooking, setListBooking] = React.useState([]);
-  const []
-
+  const [sumBooking, setSumBooking] = React.useState(0);
   const { id } = useParams();
 
   const acceptBooking = async (id) => {
@@ -40,9 +39,9 @@ const ManageBooking = (props) => {
       alert(data.error);
     } else {
       showBookings();
-      listBooking.forEach((e, idx) => {
+      listBooking.forEach(e => {
         if (parseInt(e.listingId) === parseInt(id) && e.status === 'accepted') {
-
+          setSumBooking(prev => prev + (parseInt((new Date(e.dateRange.end) - new Date(e.dateRange.start)) / 86400000)));
         }
       })
     }
@@ -74,8 +73,20 @@ const ManageBooking = (props) => {
     <>
       <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page={`/dashboard/${props.id}`} />
       <div className='flex flex-col gap-3 items-center'>
+          {
+            localStorage.getItem('online')
+              ? <div>
+                  Up online: {parseInt((new Date() - new Date(localStorage.getItem('online'))) / 86400000)}
+                </div>
+              : <div>
+                  Currently not publishing
+                </div>
+          }
           <div>
-            Up online: {localStorage.getItem('online')}
+            Total booked time: {sumBooking} Days
+          </div>
+          <div>
+            Total profits: {sumBooking} Days
           </div>
           <div>
             Requests:
