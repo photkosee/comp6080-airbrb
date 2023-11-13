@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 
 const ManageBooking = (props) => {
   const [listBooking, setListBooking] = React.useState([]);
+  const []
 
   const { id } = useParams();
 
@@ -39,6 +40,11 @@ const ManageBooking = (props) => {
       alert(data.error);
     } else {
       showBookings();
+      listBooking.forEach((e, idx) => {
+        if (parseInt(e.listingId) === parseInt(id) && e.status === 'accepted') {
+
+        }
+      })
     }
   };
 
