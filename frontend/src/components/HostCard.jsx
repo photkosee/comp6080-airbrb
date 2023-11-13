@@ -13,8 +13,6 @@ export default function HostCard (props) {
   const [published, setPublished] = React.useState(props.item.published);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openPublish, setOpenPublish] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [listBooking, setListBooking] = React.useState([]);
   const navigate = useNavigate();
 
   const deleteList = async () => {
@@ -48,58 +46,6 @@ export default function HostCard (props) {
       alert(data.error);
     } else {
       setPublished(false);
-    }
-  };
-
-  const acceptBooking = async (id) => {
-    const response = await fetch(`http://localhost:5005/bookings/accept/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else {
-      showBookings();
-    }
-  };
-
-  const declineBooking = async (id) => {
-    const response = await fetch(`http://localhost:5005/bookings/decline/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else {
-      showBookings();
-    }
-  };
-
-  const showBookings = async () => {
-    const response = await fetch('http://localhost:5005/bookings', {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else {
-      const tmp = data.bookings;
-      setListBooking(tmp);
     }
   };
 
@@ -155,9 +101,7 @@ export default function HostCard (props) {
             </div>
             <div className='flex justify-center'>
               <Button size="small" onClick={() => {
-                navigate(`/dashboard/${}`)
-                setOpen(true);
-                showBookings();
+                navigate(`/dashboard/${props.item.id}`)
               }}>
                 Manage Bookings
               </Button>

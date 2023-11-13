@@ -6,6 +6,7 @@ import Register from './components/Register';
 import { LandingPage } from './components/LandingPage';
 import Dashboard from './components/Dashboard';
 import ListingView from './components/ListingView';
+import ManageBooking from './components/ManageBooking';
 
 const PageList = () => {
   const [token, setToken] = React.useState(null);

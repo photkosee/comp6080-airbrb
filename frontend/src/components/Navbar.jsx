@@ -45,6 +45,12 @@ export const Navbar = (props) => {
                   Back
                 </Button>
               }
+              {
+                props.page.includes('/dashboard/') &&
+                <Button onClick={() => navigate('/dashboard')}>
+                  Back
+                </Button>
+              }
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
