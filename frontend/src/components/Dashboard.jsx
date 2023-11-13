@@ -11,7 +11,7 @@ const Dashboard = (props) => {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -31,7 +31,7 @@ const Dashboard = (props) => {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       }
     });
     const data = await response.json();
@@ -51,16 +51,16 @@ const Dashboard = (props) => {
 
   return (
     <>
-      <Navbar token={props.token} setToken={props.setToken} page="/dashboard" />
+      <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page="/dashboard" />
       <div className='flex flex-col gap-4'>
-        <ListingCreate token={props.token} setToken={props.setToken} getList={getList} />
+        <ListingCreate token={localStorage.getItem('token')} setToken={props.setToken} getList={getList} />
         <div className='flex flex-wrap gap-2 justify-center'>
           {list.map((item, idx) => {
             if (item.owner !== localStorage.getItem('email')) {
               return null;
             } else {
               return (
-                <HostCard key={idx} item={item} getList={getList} token={props.token} />
+                <HostCard key={idx} item={item} getList={getList} token={localStorage.getItem('token')} />
               )
             }
           })}

@@ -20,7 +20,7 @@ export default function HostCard (props) {
       method: 'DELETE',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -37,10 +37,9 @@ export default function HostCard (props) {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
-
     const data = await response.json();
     if (data.error) {
       alert(data.error);
@@ -101,7 +100,7 @@ export default function HostCard (props) {
             </div>
             <div className='flex justify-center'>
               <Button size="small" onClick={() => {
-                localStorage.setItem('online', (new Date() - new Date(props.postedOn)) / 86400000)
+                localStorage.setItem('online', parseInt((new Date() - new Date(props.item.postedOn)) / 86400000))
                 navigate(`/dashboard/${props.item.id}`);
               }}>
                 Manage Bookings
@@ -111,8 +110,8 @@ export default function HostCard (props) {
         </CardActions>
       </Card>
 
-      <ListingEdit token={props.token} listingId={props.item.id} open={openEdit} setOpen={setOpenEdit} getList={props.getList} />
-      <AvailableModal listingId={props.item.id} token={props.token} open={openPublish} setOpen={setOpenPublish} publish={openPublish} setPublished={setPublished} />
+      <ListingEdit token={localStorage.getItem('token')} listingId={props.item.id} open={openEdit} setOpen={setOpenEdit} getList={props.getList} />
+      <AvailableModal listingId={props.item.id} token={localStorage.getItem('token')} open={openPublish} setOpen={setOpenPublish} publish={openPublish} setPublished={setPublished} />
     </>
   );
 }

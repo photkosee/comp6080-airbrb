@@ -13,7 +13,7 @@ const ManageBooking = (props) => {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -30,7 +30,7 @@ const ManageBooking = (props) => {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -47,7 +47,7 @@ const ManageBooking = (props) => {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -66,7 +66,7 @@ const ManageBooking = (props) => {
 
   return (
     <>
-      <Navbar token={props.token} setToken={props.setToken} page={`/dashboard/${props.id}`} />
+      <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page={`/dashboard/${props.id}`} />
       <div className='flex flex-col gap-3 items-center'>
           <div>
             Up online: {localStorage.getItem('online')}

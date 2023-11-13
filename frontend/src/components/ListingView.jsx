@@ -28,7 +28,7 @@ const ListingView = (props) => {
       method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
@@ -118,7 +118,7 @@ const ListingView = (props) => {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
-          Authorization: `Bearer ${props.token}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         },
         body: jsonObj,
       });
@@ -175,7 +175,7 @@ const ListingView = (props) => {
   } else {
     return (
       <>
-        <Navbar token={props.token} setToken={props.setToken} page={`/listing/${props.id}`} />
+        <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page={`/listing/${props.id}`} />
         <div className='flex justify-center mt-3'>
           <Card sx={{ maxWidth: 300 }}>
             <CardMedia
@@ -243,7 +243,7 @@ const ListingView = (props) => {
                   }
                 </div>
               </Typography>
-              {props.token &&
+              {localStorage.getItem('token') &&
                 <div className='flex w-full justify-center'>
                   <Button onClick={() => handleOpen()}>Book</Button>
                 </div>

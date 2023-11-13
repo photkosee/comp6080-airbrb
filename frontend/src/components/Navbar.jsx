@@ -10,7 +10,7 @@ export const Navbar = (props) => {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       }
     });
     const data = await response.json();
@@ -55,7 +55,7 @@ export const Navbar = (props) => {
 
             <div className="flex flex-wrap items-center gap-2">
               {
-                props.token && props.page === '/' &&
+                localStorage.getItem('token') && props.page === '/' &&
                   <>
                     <Button
                       onClick={() => navigate('dashboard')}
@@ -66,7 +66,7 @@ export const Navbar = (props) => {
               }
 
               {
-                props.token && props.page === '/dashboard' &&
+                localStorage.getItem('token') && props.page === '/dashboard' &&
                   <>
                     <Button
                       onClick={() => navigate('/')}
@@ -77,7 +77,7 @@ export const Navbar = (props) => {
               }
 
               {
-                props.token
+                localStorage.getItem('token')
                   ? <>
                   <Button
                     onClick={logout}
