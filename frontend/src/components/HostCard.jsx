@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import ListingEdit from './ListingEdit';
 import AvailableModal from './AvailableModal';
-import { Box, Modal } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function HostCard (props) {
   const [published, setPublished] = React.useState(props.item.published);
@@ -15,6 +15,7 @@ export default function HostCard (props) {
   const [openPublish, setOpenPublish] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [listBooking, setListBooking] = React.useState([]);
+  const navigate = useNavigate();
 
   const deleteList = async () => {
     const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
@@ -102,21 +103,9 @@ export default function HostCard (props) {
     }
   };
 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 'lg'
-  };
-
   return (
     <>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 300 }}>
         <CardMedia
           component="img"
           alt="thumbnail"
@@ -169,6 +158,7 @@ export default function HostCard (props) {
             </div>
             <div className='flex justify-center'>
               <Button size="small" onClick={() => {
+                navigate(`/dashboard/${}`)
                 setOpen(true);
                 showBookings();
               }}>
@@ -179,49 +169,6 @@ export default function HostCard (props) {
         </CardActions>
       </Card>
 
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <div className='flex flex-col gap-3'>
-            <div>
-              Requests:
-            </div>
-            {
-              listBooking.map((e, idx) => {
-                if (parseInt(e.listingId) === parseInt(props.item.id) && e.status === 'pending') {
-                  return (
-                    <div key={idx} className='flex flex-col gap-1'>
-                      <div>
-                        Uesr: {e.owner}
-                      </div>
-                      <div>
-                        From: {e.dateRange.start}
-                      </div>
-                      <div>
-                        To: {e.dateRange.end}
-                      </div>
-                      <div className='flex flex-wrap gap-2'>
-                        <Button onClick={() => acceptBooking(e.id)}>
-                          Accept
-                        </Button>
-                        <Button onClick={() => declineBooking(e.id)}>
-                          Decline
-                        </Button>
-                      </div>
-                    </div>
-                  )
-                } else {
-                  return null;
-                }
-              })
-            }
-          </div>
-        </Box>
-      </Modal>
       <ListingEdit token={props.token} listingId={props.item.id} open={openEdit} setOpen={setOpenEdit} getList={props.getList} />
       <AvailableModal listingId={props.item.id} token={props.token} open={openPublish} setOpen={setOpenPublish} publish={openPublish} setPublished={setPublished} />
     </>

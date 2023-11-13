@@ -86,8 +86,8 @@ const ListingView = (props) => {
       alert(data.error);
     } else {
       getData();
-      alert('Feedback sent');
       setOpenReview(false);
+      alert('Feedback sent');
     }
   };
 
@@ -128,6 +128,7 @@ const ListingView = (props) => {
         alert(data.error);
         setOpen(false);
       } else {
+        getData();
         setOpen(false);
         alert('Booking success');
       }

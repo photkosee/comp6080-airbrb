@@ -24,6 +24,7 @@ const PageList = () => {
         <Route path="/register" element={<Register token={token} setToken={setToken} />} />
         <Route path="/login" element={<Login token={token} setToken={setToken} />} />
         <Route path="/dashboard" element={<Dashboard token={token} setToken={setToken} />} />
+        <Route path="/dashboard/:id" element={<ManageBooking token={token} setToken={setToken} />} />
         <Route path="/listing/:id" element={<ListingView token={token} setToken={setToken} />} />
       </Routes>
     </>
