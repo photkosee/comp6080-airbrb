@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { fileToDataUrl } from './ListingCreate';
+import { Button } from '@mui/material';
 
 const ListingEdit = (props) => {
   const [title, setTitle] = React.useState('');
@@ -14,12 +15,53 @@ const ListingEdit = (props) => {
   const [thumbnail, setThumbnail] = React.useState('');
   const [propertyType, setPropertyType] = React.useState('');
   const [bathroomNumber, setBathroomNumber] = React.useState('');
-  const [propertyBedrooms, setPropertyBedrooms] = React.useState('');
-  const [bedNumber, setBedNumber] = React.useState('');
+  const [bed, setBed] = React.useState([
+    { type: '', number: 0 }
+  ]);
   const [propertyAmenities, setpropertyAmenities] = React.useState('');
+
+  useEffect(() => {
+    setTitle('');
+    setStreet('');
+    setCity('');
+    setState('');
+    setPostcode('');
+    setCountry('');
+    setPrice('');
+    setThumbnail(null);
+    setPropertyType('');
+    setBed([
+      { type: '', number: 0 }
+    ]);
+    setBathroomNumber(0);
+    setpropertyAmenities('');
+  }, []);
 
   const handleClose = () => {
     props.setOpen(false);
+  }
+
+  const moreBedRoom = () => {
+    const newBed = { type: '', number: 0 };
+    setBed([...bed, newBed]);
+  }
+
+  const handleOnChangeNumBed = (e, idx) => {
+    const data = [...bed];
+    data[idx].number = e.target.value;
+    setBed(data);
+  }
+
+  const handleOnChangeTypeBed = (e, idx) => {
+    const data = [...bed];
+    data[idx].type = e.target.value;
+    setBed(data);
+  }
+
+  const deleteBed = (idx) => {
+    const data = [...bed];
+    data.splice(idx, 1);
+    setBed(data);
   }
 
   const handleThumbnail = (e) => {
@@ -37,15 +79,16 @@ const ListingEdit = (props) => {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    borderRadius: 'lg'
+    borderRadius: 'lg',
+    maxHeight: '100vh',
+    overflowY: 'auto'
   };
 
   const edit = async (e) => {
     const metadata = {
       propertyType,
       bathroomNumber,
-      propertyBedrooms,
-      bedNumber,
+      bedrooms: bed,
       propertyAmenities
     }
 
@@ -209,33 +252,45 @@ const ListingEdit = (props) => {
                 onChange={e => setPropertyType(e.target.value)}
               />
             </div>
-            <div className='flex justify-between gap-2'>
-              <div className='flex items-center gap-2'>
-                <label htmlFor="propertyBedrooms" className="block text-sm font-medium text-gray-900 dark:text-white">Property of Bedrooms</label>
-                <input
-                  type="text"
-                  name="propertyBedrooms"
-                  id="propertyBedrooms"
-                  placeholder=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={propertyBedrooms}
-                  onChange={e => setPropertyBedrooms(e.target.value)}
-                />
-              </div>
-              <div className='flex items-center gap-2'>
-                <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of Bedrooms</label>
-                <input
-                  type="number"
-                  name="bedNumber"
-                  id="bedNumber"
-                  placeholder=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={bedNumber}
-                  onChange={e => setBedNumber(e.target.value)}
-                />
-              </div>
+            <div className='flex flex-col gap-2'>
+              <div>Bedrooms:</div>
+              {
+                bed.map((input, idx) => {
+                  return (
+                    <div key={idx} className='flex gap-2'>
+                      <div className='flex items-center gap-1'>
+                        <label htmlFor="propertyBedrooms" className="block text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                        <input
+                          type="text"
+                          name="propertyBedrooms"
+                          id="propertyBedrooms"
+                          placeholder=""
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          required
+                          value={bed[idx].type}
+                          onChange={e => handleOnChangeTypeBed(e, idx)}
+                        />
+                      </div>
+                      <div className='flex items-center gap-1'>
+                        <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of beds</label>
+                        <input
+                          type="number"
+                          name="bedNumber"
+                          id="bedNumber"
+                          placeholder=""
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          required
+                          value={bed[idx].number}
+                          onChange={e => handleOnChangeNumBed(e, idx)}
+                        />
+                      </div>
+
+                      <Button onClick={() => deleteBed(idx)}>Delete</Button>
+                    </div>
+                  )
+                })
+              }
+              <Button onClick={() => moreBedRoom()}>More bedrooms</Button>
             </div>
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>

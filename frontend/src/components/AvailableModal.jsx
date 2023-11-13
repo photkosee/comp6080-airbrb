@@ -115,7 +115,7 @@ const AvailableModal = (props) => {
                 )
               })
             }
-            <Button onClick={add}>Add more</Button>
+            <Button onClick={() => add()}>Add more</Button>
             <Button onClick={e => submit(e)}>Submit</Button>
           </form>
         </Box>
