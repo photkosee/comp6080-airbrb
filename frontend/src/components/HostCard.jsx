@@ -130,7 +130,20 @@ export default function HostCard (props) {
             Property Type: {props.item.metadata.propertyType}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Bed Number: {props.item.metadata.bedNumber}
+            <div>
+              Bedrooms:
+            </div>
+            <div className='flex flex-col flex-wrap gap-1'>
+              {
+                props.item.metadata.bedrooms.map((e, idx) => {
+                  return (
+                    <div key={idx}>
+                      Type: {e.type} Number of beds: {e.number}
+                    </div>
+                  )
+                })
+              }
+            </div>
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Bathroom Number: {props.item.metadata.bathroomNumber}

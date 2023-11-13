@@ -126,7 +126,7 @@ const ListingCreate = (props) => {
       }),
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${props.token}`
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
 
