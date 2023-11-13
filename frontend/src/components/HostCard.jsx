@@ -101,7 +101,8 @@ export default function HostCard (props) {
             </div>
             <div className='flex justify-center'>
               <Button size="small" onClick={() => {
-                navigate(`/dashboard/${props.item.id}`)
+                localStorage.setItem('online', (new Date() - new Date(props.postedOn)) / 86400000)
+                navigate(`/dashboard/${props.item.id}`);
               }}>
                 Manage Bookings
               </Button>

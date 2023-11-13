@@ -69,6 +69,9 @@ const ManageBooking = (props) => {
       <Navbar token={props.token} setToken={props.setToken} page={`/dashboard/${props.id}`} />
       <div className='flex flex-col gap-3 items-center'>
           <div>
+            Up online: {localStorage.getItem('online')}
+          </div>
+          <div>
             Requests:
           </div>
           {
@@ -96,7 +99,22 @@ const ManageBooking = (props) => {
                   </div>
                 )
               } else {
-                return null;
+                return (
+                  <div key={idx} className='flex flex-col gap-1'>
+                    <div>
+                      Uesr: {e.owner}
+                    </div>
+                    <div>
+                      From: {e.dateRange.start}
+                    </div>
+                    <div>
+                      To: {e.dateRange.end}
+                    </div>
+                    <div className='flex flex-wrap gap-2'>
+                      {e.status}
+                    </div>
+                  </div>
+                )
               }
             })
           }
