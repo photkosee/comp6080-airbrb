@@ -116,7 +116,7 @@ export default function HostCard (props) {
 
   return (
     <>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 300 }}>
         <CardMedia
           component="img"
           alt="thumbnail"
@@ -125,6 +125,9 @@ export default function HostCard (props) {
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.item.title}
+          </Typography>
+          <Typography gutterBottom variant="body1" component="div">
+            Address: {props.item.address.street}, {props.item.address.city}, {props.item.address.state}, {props.item.address.postcode}, {props.item.address.country}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Property Type: {props.item.metadata.propertyType}
@@ -138,7 +141,7 @@ export default function HostCard (props) {
                 props.item.metadata.bedrooms.map((e, idx) => {
                   return (
                     <div key={idx}>
-                      Type: {e.type} Number of beds: {e.number}
+                      &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type} Number of beds: {e.number}
                     </div>
                   )
                 })
@@ -149,17 +152,11 @@ export default function HostCard (props) {
             Bathroom Number: {props.item.metadata.bathroomNumber}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {'no svg'}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Review Number: {props.item.reviews.length}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Price: {props.item.price}
+            Price per night: {props.item.price}
           </Typography>
         </CardContent>
         <CardActions>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2 w-full justify-center items-center'>
             <div className='flex gap-1'>
               <Button size="small" onClick={() => setOpenEdit(true)}>Edit</Button>
               <Button size="small" onClick={deleteList}>Delete</Button>

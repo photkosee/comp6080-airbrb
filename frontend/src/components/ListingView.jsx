@@ -176,7 +176,7 @@ const ListingView = (props) => {
       <>
         <Navbar token={props.token} setToken={props.setToken} page={`/listing/${props.id}`} />
         <div className='flex justify-center mt-3'>
-          <Card sx={{ maxWidth: 345 }}>
+          <Card sx={{ maxWidth: 300 }}>
             <CardMedia
               component="img"
               alt="thumbnail"
@@ -186,7 +186,7 @@ const ListingView = (props) => {
               <Typography gutterBottom variant="h5" component="div">
                 {data.listing.title}
               </Typography>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography gutterBottom variant="body1" component="div">
                 Address: {data.listing.address.street}, {data.listing.address.city}, {data.listing.address.state}, {data.listing.address.postcode}, {data.listing.address.country}
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -201,7 +201,7 @@ const ListingView = (props) => {
                     data.listing.metadata.bedrooms.map((e, idx) => {
                       return (
                         <div key={idx}>
-                          Type: {e.type} Number of beds: {e.number}
+                          &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type} Number of beds: {e.number}
                         </div>
                       )
                     })
@@ -214,7 +214,7 @@ const ListingView = (props) => {
               <Typography variant="body2" color="text.secondary">
                 {
                   (localStorage.getItem('dateMin') && localStorage.getItem('dateMax'))
-                    ? <>Price: {calculatePrice(localStorage.getItem('dateMin'), localStorage.getItem('dateMax'))}</>
+                    ? <>Total price: {calculatePrice(localStorage.getItem('dateMin'), localStorage.getItem('dateMax'))}</>
                     : <>Price per night: {data.listing.price}</>
                 }
               </Typography>
@@ -243,12 +243,12 @@ const ListingView = (props) => {
                 </div>
               </Typography>
               {props.token &&
-                <div className='flex justify-center'>
+                <div className='flex w-full justify-center'>
                   <Button onClick={() => handleOpen()}>Book</Button>
                 </div>
               }
               {list.some(e => e.owner === localStorage.getItem('email') && parseInt(e.listingId) === parseInt(id)) &&
-                <div className='flex justify-center'>
+                <div className='flex w-full justify-center'>
                   <Button onClick={() => handleOpenReview()}>Review</Button>
                 </div>
               }
