@@ -15,6 +15,9 @@ const ListingView = (props) => {
   const [rate, setRate] = React.useState(0);
   const [text, setText] = React.useState('');
   const [bookingId, setBookingId] = React.useState('');
+  const [openTooltip, setOpenTooltip] = React.useState(false);
+  const [openRateTooltip, setOpenRateTooltip] = React.useState(false);
+  const [tooltipRate, setTooptipRate] = React.useState(0);
   const { id } = useParams();
 
   const handleOpenReview = () => {
@@ -149,7 +152,7 @@ const ListingView = (props) => {
     if (data.listing.reviews.length === 0) {
       return 0;
     }
-    return sum / data.listing.reviews.length;
+    return (sum / data.listing.reviews.length).toFixed(2);
   }
 
   const handleOpen = () => {
@@ -167,7 +170,9 @@ const ListingView = (props) => {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    borderRadius: 'lg'
+    borderRadius: 'lg',
+    maxHeight: '100vh',
+    overflowY: 'auto'
   };
 
   if (!data || data === null) {
@@ -232,7 +237,7 @@ const ListingView = (props) => {
                 Number of reviews: {data.listing.reviews.length}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                <div className='flex items-center gap-2'>
+                <div className='flex items-center gap-2' onMouseEnter={() => setOpenTooltip(true)}>
                   Rating: <Rating name="read-only" value={calculateRating()} size="small" precision={0.1} readOnly /> {calculateRating()}
                 </div>
               </Typography>
@@ -305,11 +310,71 @@ const ListingView = (props) => {
           >
             <Box sx={style}>
               <div className='flex flex-col flex-wrap gap-2 w-full'>
-                <Rating name="half-rating" value={parseFloat(rate)} onChange={e => setRate(parseFloat(e.target.value))} precision={0.5} />
+                <Rating name="half-rating" value={parseFloat(rate)} onChange={e => setRate(parseFloat(e.target.value))} precision={1} />
                 <Input type='text' value={text} onChange={e => setText(e.target.value)} />
                 <Button onClick={() => { uploadReview() }}>
                   Send
                 </Button>
+              </div>
+            </Box>
+          </Modal>
+
+          <Modal
+            open={(openTooltip)}
+            onClose={() => setOpenTooltip(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <div className='flex flex-col flex-wrap gap-3 w-full'>
+                <div className='flex flex-col items-start'>
+                  {
+                    [0, 1, 2, 3, 4, 5].map((num, idx) => {
+                      return (
+                        <div className='flex flex-wrap gap-5 items-center' key={idx}>
+                          <Button onClick={() => {
+                            setTooptipRate(num);
+                            setOpenRateTooltip(true);
+                          }}>{num}</Button>
+                          <div>{data.listing.reviews.filter(e => parseInt(e.rating) === num).length} Rated</div>
+                          <div>{data.listing.reviews.length === 0 ? 0 : ((data.listing.reviews.filter(e => parseInt(e.rating) === num).length / data.listing.reviews.length) * 100).toFixed(2)} %</div>
+                        </div>
+                      )
+                    })
+                  }
+                </div>
+              </div>
+            </Box>
+          </Modal>
+
+          <Modal
+            open={(openRateTooltip)}
+            onClose={() => setOpenRateTooltip(false)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <div className='flex flex-col flex-wrap gap-3 w-full'>
+                {
+                  data.listing.reviews.filter(e => parseInt(e.rating) === tooltipRate).length > 0
+                    ? <div>
+                        <div>
+                          Comments:
+                        </div>
+                        <div className='flex flex-col gap-1'>
+                          {
+                            data.listing.reviews.filter(e => parseInt(e.rating) === tooltipRate).map((e, idx) => {
+                              return (
+                                <div key={idx} className='flex flex-wrap'>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
+                                </div>
+                              )
+                            })
+                          }
+                        </div>
+                      </div>
+                    : <div>No comments</div>
+                }
               </div>
             </Box>
           </Modal>
