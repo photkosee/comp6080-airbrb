@@ -2,18 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { useParams } from 'react-router-dom';
 import {
-  Box,
   Button,
   Card,
   CardContent,
   CardMedia,
-  Input,
-  Modal,
   Rating,
   Typography
 } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import BookingModal from './BookingModal';
+import ReviewModal from './ReviewModal';
+import TooltipModal from './TooltipModal';
+import RatingCommentModal from './RatingCommnetModal';
 
 const ListingView = (props) => {
   const [data, setData] = useState(null);
@@ -27,7 +26,7 @@ const ListingView = (props) => {
   const [bookingId, setBookingId] = useState('');
   const [openTooltip, setOpenTooltip] = useState(false);
   const [openRateTooltip, setOpenRateTooltip] = useState(false);
-  const [tooltipRate, setTooptipRate] = useState(0);
+  const [tooltipRate, setTooltipRate] = useState(0);
   const { id } = useParams();
 
   // starting with fetching a list of all bookings and a list of listings
@@ -106,14 +105,16 @@ const ListingView = (props) => {
 
     const jsonObj = JSON.stringify(obj);
 
-    const response = await fetch(`http://localhost:5005/listings/${id}/review/${bookingId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      },
-      body: jsonObj,
-    });
+    const response = await fetch(
+      `http://localhost:5005/listings/${id}/review/${bookingId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: jsonObj,
+      });
 
     const data = await response.json();
     if (data.error) {
@@ -185,21 +186,6 @@ const ListingView = (props) => {
     setDateMax('');
     setOpen(true);
   }
-
-  // style for MUI box
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 'lg',
-    maxHeight: '100vh',
-    overflowY: 'auto'
-  };
 
   if (!data || data === null) {
     return <>loading</>;
@@ -310,7 +296,8 @@ const ListingView = (props) => {
                 </div>
               </div>
 
-              {localStorage.getItem('token') &&
+              {
+                localStorage.getItem('token') &&
                 <div className='flex w-full justify-center'>
                   <Button onClick={() => handleOpen()}>Book</Button>
                 </div>
@@ -327,136 +314,37 @@ const ListingView = (props) => {
             </CardContent>
           </Card>
 
-          <Modal
+          <BookingModal
             open={open}
-            onClose={() => setOpen(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <div className='flex flex-col flex-wrap gap-2 w-full'>
-                <div className="relative flex flex-col items-center gap-2">
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    Check In:&nbsp;
-                    <DatePicker
-                      onChange={e => {
-                        setDateMin(e.$d);
-                        localStorage.setItem('dateMin', e.$d);
-                      }}
-                    />
-                    Check Out:&nbsp;
-                    <DatePicker
-                      onChange={e => {
-                        setDateMax(e.$d);
-                        localStorage.setItem('dateMax', e.$d);
-                      }}
-                    />
-                  </LocalizationProvider>
-                  <Button onClick={() => { confirmBook() }}>
-                    Confirm
-                  </Button>
-                </div>
-              </div>
-            </Box>
-          </Modal>
+            setOpen={setOpen}
+            setDateMin={setDateMin}
+            setDateMax={setDateMax}
+            confirmBook={confirmBook}
+          />
 
-          <Modal
-            open={(openReview)}
-            onClose={() => setOpenReview(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <div className='flex flex-col flex-wrap gap-2 w-full'>
-                <Rating
-                  name="half-rating"
-                  value={parseFloat(rate)}
-                  onChange={e => setRate(parseFloat(e.target.value))}
-                  precision={1}
-                />
-                <Input type='text' value={text} onChange={e => setText(e.target.value)} />
-                <Button onClick={() => { uploadReview() }}>
-                  Send
-                </Button>
-              </div>
-            </Box>
-          </Modal>
+          <ReviewModal
+            openReview={openReview}
+            setOpenReview={setOpenReview}
+            rate={rate}
+            setRate={setRate}
+            text={text}
+            setText={setText}
+            uploadReview={uploadReview}
+          />
 
-          <Modal
-            open={(openTooltip)}
-            onClose={() => setOpenTooltip(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <div className='flex flex-col flex-wrap gap-3 w-full'>
-                <div className='flex flex-col items-start'>
-                  {
-                    [0, 1, 2, 3, 4, 5].map((num, idx) => {
-                      return (
-                        <div className='flex flex-wrap gap-5 items-center' key={idx}>
-                          <Button onClick={() => {
-                            setTooptipRate(num);
-                            setOpenRateTooltip(true);
-                          }}>
-                            {num}
-                          </Button>
+          <TooltipModal
+            openTooltip={openTooltip}
+            setOpenTooltip={setOpenTooltip}
+            setTooltipRate={setTooltipRate}
+            setOpenRateTooltip={setOpenRateTooltip}
+            reviews={data.listing.reviews}
+          />
 
-                          <div>
-                            {data.listing.reviews.filter(e => parseInt(e.rating) === num).length}
-                            &nbsp;Rated
-                          </div>
-
-                          <div>
-                            {data.listing.reviews.length === 0
-                              ? 0
-                              : ((data.listing.reviews
-                                  .filter(e =>
-                                    parseInt(e.rating) === num).length / data.listing.reviews.length) * 100)
-                                  .toFixed(2)
-                            } %
-                          </div>
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
-            </Box>
-          </Modal>
-
-          <Modal
-            open={(openRateTooltip)}
-            onClose={() => setOpenRateTooltip(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <div className='flex flex-col flex-wrap gap-3 w-full'>
-                {
-                  data.listing.reviews.filter(e => parseInt(e.rating) === tooltipRate).length > 0
-                    ? <div>
-                        <div>
-                          Comments:
-                        </div>
-                        <div className='flex flex-col gap-1'>
-                          {
-                            data.listing.reviews.filter(e => parseInt(e.rating) === tooltipRate)
-                              .map((e, idx) => {
-                                return (
-                                  <div key={idx} className='flex flex-wrap'>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
-                                  </div>
-                                )
-                              })
-                          }
-                        </div>
-                      </div>
-                    : <div>No comments</div>
-                }
-              </div>
-            </Box>
-          </Modal>
+          <RatingCommentModal
+            openRateTooltip={openRateTooltip}
+            reviews={data.listing.reviews}
+            tooltipRate={tooltipRate}
+          />
         </div>
       </>
     )
