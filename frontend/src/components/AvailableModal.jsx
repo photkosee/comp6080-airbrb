@@ -53,16 +53,18 @@ const AvailableModal = (props) => {
     }
 
     handleClose();
-    const response = await fetch(`http://localhost:5005/listings/publish/${props.listingId}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        availability: range
-      }),
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5005/listings/publish/${props.listingId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          availability: range
+        }),
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     const data = await response.json();
     if (data.error) {
