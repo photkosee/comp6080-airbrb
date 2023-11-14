@@ -42,7 +42,7 @@ export const LandingPage = (props) => {
     return sum / reviews.length;
   }
 
-  const getData = async (id) => {
+  const getData = async (id, bookings) => {
     const response = await fetch(`http://localhost:5005/listings/${id}`, {
       method: 'GET',
       headers: {
@@ -59,7 +59,33 @@ export const LandingPage = (props) => {
       const newListing = data.listing;
       newListing.id = id;
       newListing.rating = rating;
-      setList((prevList) => [...prevList, newListing]);
+      let check = false;
+      for (const booking of bookings) {
+        if (localStorage.getItem('email') === booking.owner && parseInt(booking.listingId) === parseInt(newListing.id) && (booking.status === 'pending' || booking.status === 'accepted')) {
+          check = true;
+        }
+      }
+      newListing.book = check;
+      setList((prevList) => {
+        const left = [];
+        const right = [];
+        for (const listing of prevList) {
+          if (listing.book === false) {
+            right.push(listing);
+          } else {
+            left.push(listing);
+          }
+        }
+        if (newListing.book) {
+          left.push(newListing);
+        } else {
+          right.push(newListing);
+        }
+        left.sort((a, b) => a.title.localeCompare(b.title));
+        right.sort((a, b) => a.title.localeCompare(b.title));
+        console.log([...left, ...right]);
+        return [...left, ...right];
+      })
     }
   }
 
@@ -88,30 +114,8 @@ export const LandingPage = (props) => {
     if (data.error) {
       alert(data.error);
     } else if (data.listings) {
-      data.listings.sort((a, b) => a.title.localeCompare(b.title)).forEach((list) => {
-        let check = false;
-        for (const booking of bookings) {
-          if (localStorage.getItem('email') === booking.owner && parseInt(booking.listingId) === parseInt(list.id) && (booking.status === 'pending' || booking.status === 'accepted')) {
-            check = true;
-          }
-        }
-        if (check) {
-          getData(list.id);
-          console.log('1')
-        }
-      });
-
-      data.listings.sort((a, b) => a.title.localeCompare(b.title)).forEach((list) => {
-        let check = false;
-        for (const booking of bookings) {
-          if (localStorage.getItem('email') === booking.owner && parseInt(booking.listingId) === parseInt(list.id) && (booking.status === 'pending' || booking.status === 'accepted')) {
-            check = true;
-          }
-        }
-        if (!check) {
-          getData(list.id);
-          console.log(list.title)
-        }
+      data.listings.forEach((list) => {
+        getData(list.id, bookings);
       });
     }
   }
