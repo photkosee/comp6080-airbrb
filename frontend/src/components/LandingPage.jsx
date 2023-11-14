@@ -23,7 +23,10 @@ export const LandingPage = (props) => {
   // start with clearing all filtering and getting a list of all bookings (for ordering)
   useEffect(() => {
     clearFilter();
-    getBookings();
+
+    if (localStorage.getItem('token')) {
+      getBookings();
+    }
   }, []);
 
   // sort by rating
