@@ -60,7 +60,7 @@ const Dashboard = (props) => {
         page="/dashboard"
       />
 
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 mb-5'>
         <ListingCreate
           token={localStorage.getItem('token')}
           setToken={props.setToken}

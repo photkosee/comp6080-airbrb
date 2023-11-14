@@ -214,19 +214,20 @@ const ListingView = (props) => {
 
         <div className='flex justify-center mt-3 pb-5'>
           <Card sx={{ maxWidth: 300 }}>
-            {/^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(data.listing.thumbnail)
-              ? <CardMedia
-                  component="img"
-                  alt="thumbnail"
-                  style={{ height: '200px', width: '100%' }}
-                  image={data.listing.thumbnail} />
-              : <iframe
-                  style={{ height: '200px', width: '100%' }}
-                  src={data.listing.thumbnail}
-                  title="YouTube video player"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+            {
+              /^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(data.listing.thumbnail)
+                ? <CardMedia
+                    component="img"
+                    alt="thumbnail"
+                    style={{ height: '200px', width: '100%' }}
+                    image={data.listing.thumbnail} />
+                : <iframe
+                    style={{ height: '200px', width: '100%' }}
+                    src={data.listing.thumbnail}
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
             }
 
             <CardContent>
@@ -234,17 +235,37 @@ const ListingView = (props) => {
                 {data.listing.title}
               </Typography>
               <Typography gutterBottom variant="body1" component="div">
-                Address: {data.listing.address.street}, {data.listing.address.city}, {data.listing.address.state}, {data.listing.address.postcode}, {data.listing.address.country}
+                Address: {data.listing.address.street},
+                  &nbsp;{data.listing.address.city},
+                  &nbsp;{data.listing.address.state},
+                  &nbsp;{data.listing.address.postcode},
+                  &nbsp;{data.listing.address.country}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Property Type: {data.listing.metadata.propertyType}
               </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Bathroom Number: {data.listing.metadata.bathroomNumber}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {
+                  (localStorage.getItem('dateMin') && localStorage.getItem('dateMax'))
+                    ? <>
+                        Total price:&nbsp;
+                        {calculatePrice(localStorage.getItem('dateMin'), localStorage.getItem('dateMax'))}
+                      </>
+                    : <>Price per night: {data.listing.price}</>
+                }
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Number of reviews: {data.listing.reviews.length}
+              </Typography>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col text-sm'>
                 <div>
                   Bedrooms:
                 </div>
-                <div className='flex flex-col flex-wrap gap-1'>
+                <div className='flex flex-col flex-wrap'>
                   {
                     data.listing.metadata.bedrooms.map((e, idx) => {
                       return (
@@ -257,29 +278,26 @@ const ListingView = (props) => {
                 </div>
               </div>
 
-              <Typography variant="body2" color="text.secondary">
-                Bathroom Number: {data.listing.metadata.bathroomNumber}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {
-                  (localStorage.getItem('dateMin') && localStorage.getItem('dateMax'))
-                    ? <>Total price: {calculatePrice(localStorage.getItem('dateMin'), localStorage.getItem('dateMax'))}</>
-                    : <>Price per night: {data.listing.price}</>
-                }
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Number of reviews: {data.listing.reviews.length}
-              </Typography>
-
-              <div className='flex items-center justify-center gap-2' onMouseEnter={() => setOpenTooltip(true)}>
-                Rating: <Rating name="read-only" value={parseInt(calculateRating())} size="small" precision={0.1} readOnly /> {calculateRating()}
+              <div
+                className='flex items-center justify-center gap-2 text-sm my-2'
+                onMouseEnter={() => setOpenTooltip(true)}
+              >
+                Rating:&nbsp;
+                <Rating
+                  name="read-rating"
+                  value={parseInt(calculateRating())}
+                  size="small"
+                  precision={0.1}
+                  readOnly
+                />
+                &nbsp;{calculateRating()}
               </div>
 
-              <div className='flex flex-col gap-1'>
+              <div className='flex flex-col text-sm'>
                 <div>
                   Comments:
                 </div>
-                <div className='flex flex-col gap-1'>
+                <div className='flex flex-col'>
                   {
                     data.listing.reviews.map((e, idx) => {
                       return (
@@ -298,7 +316,10 @@ const ListingView = (props) => {
                 </div>
               }
 
-              {list.some(e => e.owner === localStorage.getItem('email') && parseInt(e.listingId) === parseInt(id)) &&
+              {
+                list.some(e => e.owner === localStorage.getItem('email') &&
+                  parseInt(e.listingId) === parseInt(id)
+                ) &&
                 <div className='flex w-full justify-center'>
                   <Button onClick={() => handleOpenReview()}>Review</Button>
                 </div>
@@ -377,15 +398,22 @@ const ListingView = (props) => {
                           <Button onClick={() => {
                             setTooptipRate(num);
                             setOpenRateTooltip(true);
-                          }}>{num}</Button>
+                          }}>
+                            {num}
+                          </Button>
 
                           <div>
-                            {data.listing.reviews.filter(e => parseInt(e.rating) === num).length} Rated
+                            {data.listing.reviews.filter(e => parseInt(e.rating) === num).length}
+                            &nbsp;Rated
                           </div>
+
                           <div>
                             {data.listing.reviews.length === 0
                               ? 0
-                              : ((data.listing.reviews.filter(e => parseInt(e.rating) === num).length / data.listing.reviews.length) * 100).toFixed(2)
+                              : ((data.listing.reviews
+                                  .filter(e =>
+                                    parseInt(e.rating) === num).length / data.listing.reviews.length) * 100)
+                                  .toFixed(2)
                             } %
                           </div>
                         </div>
@@ -413,13 +441,14 @@ const ListingView = (props) => {
                         </div>
                         <div className='flex flex-col gap-1'>
                           {
-                            data.listing.reviews.filter(e => parseInt(e.rating) === tooltipRate).map((e, idx) => {
-                              return (
-                                <div key={idx} className='flex flex-wrap'>
-                                  &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
-                                </div>
-                              )
-                            })
+                            data.listing.reviews.filter(e => parseInt(e.rating) === tooltipRate)
+                              .map((e, idx) => {
+                                return (
+                                  <div key={idx} className='flex flex-wrap'>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
+                                  </div>
+                                )
+                              })
                           }
                         </div>
                       </div>

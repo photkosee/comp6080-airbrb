@@ -2,12 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { Navbar } from './Navbar';
 import GuestCard from './GuestCard';
-import { InputLabel, NativeSelect, TextField } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import FilterModal from './FilterModal';
 
 export const LandingPage = (props) => {
   const [list, setList] = useState([]);
@@ -111,19 +107,6 @@ export const LandingPage = (props) => {
     }
   }
 
-  // style for MUI box
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 'lg'
-  };
-
   // fetch all listings
   const getList = async (bookings) => {
     setList([]);
@@ -170,6 +153,7 @@ export const LandingPage = (props) => {
     setDateMax('');
     setDateMin('');
     setBedroomNumber('');
+    setSort(0);
     localStorage.removeItem('dateMin');
     localStorage.removeItem('dateMax');
   }
@@ -199,7 +183,7 @@ export const LandingPage = (props) => {
             name="search"
             id="topbar-search"
             className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-            placeholder="Search"
+            placeholder="Search for titles or cities"
             value={nameSearch}
             onChange={e => setNameSearch(e.target.value)}
           />
@@ -208,78 +192,20 @@ export const LandingPage = (props) => {
         <Button onClick={() => setOpen(true)}>Other filters</Button>
         <Button onClick={() => clearFilter()}>Clear filters</Button>
 
-        <Modal
+        <FilterModal
           open={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <div className='flex flex-col flex-wrap gap-2 w-full'>
-              <div className="relative flex items-center gap-1">
-                Bedrooms:&nbsp;
-                <TextField
-                  label="Enter Text"
-                  variant="outlined"
-                  value={bedroomNumber}
-                  onChange={e => setBedroomNumber(e.target.value)}
-                />
-              </div>
-
-              <div className="relative flex items-center gap-1">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  Check In:&nbsp;
-                  <DatePicker
-                    onChange={e => {
-                      setDateMin(e.$d);
-                      localStorage.setItem('dateMin', e.$d);
-                    }}
-                  />
-
-                  Check Out:&nbsp;
-                  <DatePicker
-                    onChange={e => {
-                      setDateMax(e.$d);
-                      localStorage.setItem('dateMax', e.$d);
-                    }}
-                  />
-                </LocalizationProvider>
-              </div>
-
-              <div className="relative flex items-center gap-1">
-                Min Price:&nbsp;
-                <TextField
-                  label="Enter Text"
-                  variant="outlined"
-                  value={priceMin}
-                  onChange={e => setPriceMin(e.target.value)}
-                />
-
-                Max Price:&nbsp;
-                <TextField
-                  label="Enter Text"
-                  variant="outlined"
-                  value={priceMax}
-                  onChange={e => setPriceMax(e.target.value)}
-                />
-              </div>
-
-              <InputLabel id="demo-simple-select-label">Sort by ratings</InputLabel>
-              <NativeSelect
-                onChange={handleSort}
-                value={sort}
-                inputProps={{
-                  name: 'age',
-                  id: 'uncontrolled-native',
-                }}
-              >
-                <option value={0}>&nbsp;None</option>
-                <option value={10}>&nbsp;Highest - Lowest</option>
-                <option value={20}>&nbsp;Lowest - Highest</option>
-              </NativeSelect>
-            </div>
-          </Box>
-        </Modal>
+          setOpen={setOpen}
+          bedroomNumber={bedroomNumber}
+          setBedroomNumber={setBedroomNumber}
+          setDateMin={setDateMin}
+          setDateMax={setDateMax}
+          priceMin={priceMin}
+          priceMax={priceMax}
+          setPriceMin={setDateMin}
+          setPriceMax={setPriceMax}
+          sort={sort}
+          handleSort={handleSort}
+        />
       </div>
 
       <div className='flex flex-wrap gap-2 justify-center'>

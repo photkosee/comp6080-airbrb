@@ -75,13 +75,24 @@ export default function HostCard (props) {
             {props.item.title}
           </Typography>
           <Typography gutterBottom variant="body1" component="div">
-            Address: {props.item.address.street}, {props.item.address.city}, {props.item.address.state}, {props.item.address.postcode}, {props.item.address.country}
+            Address: {props.item.address.street},
+              &nbsp;{props.item.address.city},
+              &nbsp;{props.item.address.state},
+              &nbsp;{props.item.address.postcode},
+              &nbsp;{props.item.address.country}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Property Type: {props.item.metadata.propertyType}
           </Typography>
 
-          <div className='flex flex-col gap-1'>
+          <Typography variant="body2" color="text.secondary">
+            Bathroom Number: {props.item.metadata.bathroomNumber}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Price per night: {props.item.price}
+          </Typography>
+
+          <div className='flex flex-col gap-1 text-sm'>
             <div>
               Bedrooms:
             </div>
@@ -90,20 +101,13 @@ export default function HostCard (props) {
                 props.item.metadata.bedrooms.map((e, idx) => {
                   return (
                     <div key={idx}>
-                      &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type} Number of beds: {e.number}
+                      &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type}, Number of beds: {e.number}
                     </div>
                   )
                 })
               }
             </div>
           </div>
-
-          <Typography variant="body2" color="text.secondary">
-            Bathroom Number: {props.item.metadata.bathroomNumber}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Price per night: {props.item.price}
-          </Typography>
         </CardContent>
 
         <CardActions>

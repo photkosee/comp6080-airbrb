@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { fileToDataUrl } from './ListingCreate';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 
 const ListingEdit = (props) => {
   const [title, setTitle] = useState('');
@@ -125,105 +125,57 @@ const ListingEdit = (props) => {
           </div>
 
           <form className='flex flex-col gap-2'>
-            <div className='flex items-center gap-2'>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-900 dark:text-white">
-                Title
-              </label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                placeholder="title"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            <TextField
+              label="Title"
+              variant="outlined"
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              required
+            />
+
+            <div className='flex justify-between gap-2'>
+              <TextField
+                label="Street"
+                variant="outlined"
+                value={street}
+                onChange={e => setStreet(e.target.value)}
                 required
-                value={title}
-                onChange={e => setTitle(e.target.value)}
+              />
+
+              <TextField
+                label="City"
+                variant="outlined"
+                value={city}
+                onChange={e => setCity(e.target.value)}
+                required
               />
             </div>
 
             <div className='flex justify-between gap-2'>
-              <div className='flex items-center gap-2'>
-                <label htmlFor="street" className="block text-sm font-medium text-gray-900 dark:text-white">
-                  Street
-                </label>
-                <input
-                  type="text"
-                  name="street"
-                  id="street"
-                  placeholder="street"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={street}
-                  onChange={e => setStreet(e.target.value)}
-                />
-              </div>
-
-              <div className='flex items-center gap-2'>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-900 dark:text-white">
-                  City
-                </label>
-                <input
-                  type="text"
-                  name="city"
-                  id="city"
-                  placeholder="city"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={city}
-                  onChange={e => setCity(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className='flex justify-between gap-2'>
-              <div className='flex items-center gap-2'>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-900 dark:text-white">
-                  State
-                </label>
-                <input
-                  type="text"
-                  name="state"
-                  id="state"
-                  placeholder="state"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={state}
-                  onChange={e => setState(e.target.value)}
-                />
-              </div>
-
-              <div className='flex items-center gap-2'>
-                <label htmlFor="postcode" className="block text-sm font-medium text-gray-900 dark:text-white">
-                  Postcode
-                </label>
-                <input
-                  type="number"
-                  name="postcode"
-                  id="postcode"
-                  placeholder="postcode"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={postcode}
-                  onChange={e => setPostcode(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className='flex items-center gap-2'>
-              <label htmlFor="country" className="block text-sm font-medium text-gray-900 dark:text-white">
-                Country
-              </label>
-              <input
-                type="text"
-                name="country"
-                id="country"
-                placeholder="country"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              <TextField
+                label="State"
+                variant="outlined"
+                value={state}
+                onChange={e => setState(e.target.value)}
                 required
-                value={country}
-                onChange={e => setCountry(e.target.value)}
+              />
+
+              <TextField
+                label="Postcode"
+                variant="outlined"
+                value={postcode}
+                onChange={e => setPostcode(e.target.value)}
+                required
               />
             </div>
+
+            <TextField
+              label="Country"
+              variant="outlined"
+              value={country}
+              onChange={e => setCountry(e.target.value)}
+              required
+            />
 
             <div className='flex items-center gap-2'>
               <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">
@@ -234,80 +186,52 @@ const ListingEdit = (props) => {
                 name="thumbnail"
                 id="thumbnail"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
                 onChange={e => handleThumbnail(e)}
               />
             </div>
 
             <div className='flex items-center gap-2'>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-900 dark:text-white">
-                Price
-              </label>
-              <input
-                type="number"
-                name="price"
-                id="price"
-                placeholder="price"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
+              <TextField
+                label="Price per night"
+                variant="outlined"
                 value={price}
                 onChange={e => setPrice(e.target.value)}
-              />
-            </div>
-
-            <div className='flex items-center gap-2'>
-              <label htmlFor="propertyType" className="block text-sm font-medium text-gray-900 dark:text-white">
-                Property Type
-              </label>
-              <input
-                type="text"
-                name="propertyType"
-                id="propertyType"
-                placeholder="property type"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 required
-                value={propertyType}
+                type='number'
+              />
+
+              <TextField
+                label="Property type"
+                variant="outlined"
+                value={country}
                 onChange={e => setPropertyType(e.target.value)}
+                required
               />
             </div>
 
             <div className='flex flex-col gap-2'>
               <div>Bedrooms:</div>
+
               {
                 bed.map((input, idx) => {
                   return (
                     <div key={idx} className='flex gap-2'>
-                      <div className='flex items-center gap-1'>
-                        <label htmlFor="propertyBedrooms" className="block text-sm font-medium text-gray-900 dark:text-white">
-                          Type
-                        </label>
-                        <input
-                          type="text"
-                          name="propertyBedrooms"
-                          id="propertyBedrooms"
-                          placeholder=""
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          required
-                          value={bed[idx].type}
-                          onChange={e => handleOnChangeTypeBed(e, idx)}
-                        />
-                      </div>
+                      <TextField
+                        label="Type of bed"
+                        variant="outlined"
+                        value={bed[idx].type}
+                        onChange={e => handleOnChangeTypeBed(e, idx)}
+                        required
+                      />
 
-                      <div className='flex items-center gap-1'>
-                        <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">
-                          Number of beds
-                        </label>
-                        <input
-                          type="number"
-                          name="bedNumber"
-                          id="bedNumber"
-                          placeholder=""
-                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          required
-                          value={bed[idx].number}
-                          onChange={e => handleOnChangeNumBed(e, idx)}
-                        />
-                      </div>
+                      <TextField
+                        label="Number of beds"
+                        variant="outlined"
+                        value={bed[idx].number}
+                        onChange={e => handleOnChangeNumBed(e, idx)}
+                        required
+                        type='number'
+                      />
 
                       <Button onClick={() => deleteBed(idx)}>Delete</Button>
                     </div>
@@ -315,50 +239,30 @@ const ListingEdit = (props) => {
                 })
               }
 
-              <Button onClick={() => moreBedRoom()}>More bedrooms</Button>
+              <Button onClick={() => moreBedRoom()}>Add more beds</Button>
             </div>
 
             <div className='flex justify-between gap-2'>
-              <div className='flex items-center gap-2'>
-                <label htmlFor="bathroomNumber" className="block text-sm font-medium text-gray-900 dark:text-white">
-                  Number of Bathrooms
-                </label>
-                <input
-                  type="number"
-                  name="bathroomNumber"
-                  id="bathroomNumber"
-                  placeholder=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={bathroomNumber}
-                  onChange={e => setBathroomNumber(e.target.value)}
-                />
-              </div>
+              <TextField
+                label="Number of bathrooms"
+                variant="outlined"
+                value={bathroomNumber}
+                onChange={e => setBathroomNumber(e.target.value)}
+                required
+                type='number'
+              />
 
-              <div className='flex items-center gap-2'>
-                <label htmlFor="propertyAmenities" className="block text-sm font-medium text-gray-900 dark:text-white">
-                  Property of Amentities
-                </label>
-                <input
-                  type="text"
-                  name="propertyAmenities"
-                  id="propertyAmenities"
-                  placeholder=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                  value={propertyAmenities}
-                  onChange={e => setpropertyAmenities(e.target.value)}
-                />
-              </div>
+              <TextField
+                label="Property of Amentities"
+                variant="outlined"
+                value={propertyAmenities}
+                onChange={e => setpropertyAmenities(e.target.value)}
+                required
+              />
             </div>
 
-            <Button
-              onClick={(e) => {
-                edit(e);
-                handleClose();
-              }}
-            >
-              Edit
+            <Button onClick={(e) => edit(e)}>
+              Create
             </Button>
           </form>
         </Box>
