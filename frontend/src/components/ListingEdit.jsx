@@ -1,58 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { fileToDataUrl } from './ListingCreate';
 import { Button } from '@mui/material';
 
 const ListingEdit = (props) => {
-  const [title, setTitle] = React.useState('');
-  const [street, setStreet] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [state, setState] = React.useState('');
-  const [postcode, setPostcode] = React.useState('');
-  const [country, setCountry] = React.useState('');
-  const [price, setPrice] = React.useState('');
-  const [thumbnail, setThumbnail] = React.useState('');
-  const [propertyType, setPropertyType] = React.useState('');
-  const [bathroomNumber, setBathroomNumber] = React.useState('');
-  const [bed, setBed] = React.useState([
+  const [title, setTitle] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [postcode, setPostcode] = useState('');
+  const [country, setCountry] = useState('');
+  const [price, setPrice] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
+  const [propertyType, setPropertyType] = useState('');
+  const [bathroomNumber, setBathroomNumber] = useState('');
+  const [propertyAmenities, setpropertyAmenities] = useState('');
+  const [bed, setBed] = useState([
     { type: '', number: 0 }
   ]);
-  const [propertyAmenities, setpropertyAmenities] = React.useState('');
 
+  // close the editing modal
   const handleClose = () => {
     props.setOpen(false);
   }
 
+  // add more input boxes for more bedrooms
   const moreBedRoom = () => {
     const newBed = { type: '', number: 0 };
     setBed([...bed, newBed]);
   }
 
+  // change number of bed accordingly
   const handleOnChangeNumBed = (e, idx) => {
     const data = [...bed];
     data[idx].number = e.target.value;
     setBed(data);
   }
 
+  // change type of bed accordingly
   const handleOnChangeTypeBed = (e, idx) => {
     const data = [...bed];
     data[idx].type = e.target.value;
     setBed(data);
   }
 
+  // delete an input boxes for beds
   const deleteBed = (idx) => {
     const data = [...bed];
     data.splice(idx, 1);
     setBed(data);
   }
 
+  // dowloading an image
   const handleThumbnail = (e) => {
     fileToDataUrl(e.target.files[0]).then((data) => {
       setThumbnail(data);
     });
   }
 
+  // style for MUI box
   const style = {
     position: 'absolute',
     top: '50%',
@@ -67,6 +74,7 @@ const ListingEdit = (props) => {
     overflowY: 'auto'
   };
 
+  // editing event
   const edit = async (e) => {
     const metadata = {
       propertyType,
@@ -115,9 +123,12 @@ const ListingEdit = (props) => {
           <div className='text-lg font-bold mb-2'>
             Edit a list
           </div>
+
           <form className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-900 dark:text-white">Title</label>
+              <label htmlFor="title" className="block text-sm font-medium text-gray-900 dark:text-white">
+                Title
+              </label>
               <input
                 type="text"
                 name="title"
@@ -129,9 +140,12 @@ const ListingEdit = (props) => {
                 onChange={e => setTitle(e.target.value)}
               />
             </div>
+
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
-                <label htmlFor="street" className="block text-sm font-medium text-gray-900 dark:text-white">Street</label>
+                <label htmlFor="street" className="block text-sm font-medium text-gray-900 dark:text-white">
+                  Street
+                </label>
                 <input
                   type="text"
                   name="street"
@@ -143,8 +157,11 @@ const ListingEdit = (props) => {
                   onChange={e => setStreet(e.target.value)}
                 />
               </div>
+
               <div className='flex items-center gap-2'>
-                <label htmlFor="city" className="block text-sm font-medium text-gray-900 dark:text-white">City</label>
+                <label htmlFor="city" className="block text-sm font-medium text-gray-900 dark:text-white">
+                  City
+                </label>
                 <input
                   type="text"
                   name="city"
@@ -157,9 +174,12 @@ const ListingEdit = (props) => {
                 />
               </div>
             </div>
+
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
-                <label htmlFor="state" className="block text-sm font-medium text-gray-900 dark:text-white">State</label>
+                <label htmlFor="state" className="block text-sm font-medium text-gray-900 dark:text-white">
+                  State
+                </label>
                 <input
                   type="text"
                   name="state"
@@ -171,8 +191,11 @@ const ListingEdit = (props) => {
                   onChange={e => setState(e.target.value)}
                 />
               </div>
+
               <div className='flex items-center gap-2'>
-                <label htmlFor="postcode" className="block text-sm font-medium text-gray-900 dark:text-white">Postcode</label>
+                <label htmlFor="postcode" className="block text-sm font-medium text-gray-900 dark:text-white">
+                  Postcode
+                </label>
                 <input
                   type="number"
                   name="postcode"
@@ -185,8 +208,11 @@ const ListingEdit = (props) => {
                 />
               </div>
             </div>
+
             <div className='flex items-center gap-2'>
-              <label htmlFor="country" className="block text-sm font-medium text-gray-900 dark:text-white">Country</label>
+              <label htmlFor="country" className="block text-sm font-medium text-gray-900 dark:text-white">
+                Country
+              </label>
               <input
                 type="text"
                 name="country"
@@ -198,8 +224,11 @@ const ListingEdit = (props) => {
                 onChange={e => setCountry(e.target.value)}
               />
             </div>
+
             <div className='flex items-center gap-2'>
-              <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label>
+              <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">
+                Thumbnail
+              </label>
               <input
                 type="file"
                 name="thumbnail"
@@ -209,8 +238,11 @@ const ListingEdit = (props) => {
                 onChange={e => handleThumbnail(e)}
               />
             </div>
+
             <div className='flex items-center gap-2'>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-900 dark:text-white">Price</label>
+              <label htmlFor="price" className="block text-sm font-medium text-gray-900 dark:text-white">
+                Price
+              </label>
               <input
                 type="number"
                 name="price"
@@ -222,8 +254,11 @@ const ListingEdit = (props) => {
                 onChange={e => setPrice(e.target.value)}
               />
             </div>
+
             <div className='flex items-center gap-2'>
-              <label htmlFor="propertyType" className="block text-sm font-medium text-gray-900 dark:text-white">Property Type</label>
+              <label htmlFor="propertyType" className="block text-sm font-medium text-gray-900 dark:text-white">
+                Property Type
+              </label>
               <input
                 type="text"
                 name="propertyType"
@@ -235,6 +270,7 @@ const ListingEdit = (props) => {
                 onChange={e => setPropertyType(e.target.value)}
               />
             </div>
+
             <div className='flex flex-col gap-2'>
               <div>Bedrooms:</div>
               {
@@ -242,7 +278,9 @@ const ListingEdit = (props) => {
                   return (
                     <div key={idx} className='flex gap-2'>
                       <div className='flex items-center gap-1'>
-                        <label htmlFor="propertyBedrooms" className="block text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                        <label htmlFor="propertyBedrooms" className="block text-sm font-medium text-gray-900 dark:text-white">
+                          Type
+                        </label>
                         <input
                           type="text"
                           name="propertyBedrooms"
@@ -254,8 +292,11 @@ const ListingEdit = (props) => {
                           onChange={e => handleOnChangeTypeBed(e, idx)}
                         />
                       </div>
+
                       <div className='flex items-center gap-1'>
-                        <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of beds</label>
+                        <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">
+                          Number of beds
+                        </label>
                         <input
                           type="number"
                           name="bedNumber"
@@ -273,11 +314,15 @@ const ListingEdit = (props) => {
                   )
                 })
               }
+
               <Button onClick={() => moreBedRoom()}>More bedrooms</Button>
             </div>
+
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
-                <label htmlFor="bathroomNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of Bathrooms</label>
+                <label htmlFor="bathroomNumber" className="block text-sm font-medium text-gray-900 dark:text-white">
+                  Number of Bathrooms
+                </label>
                 <input
                   type="number"
                   name="bathroomNumber"
@@ -289,8 +334,11 @@ const ListingEdit = (props) => {
                   onChange={e => setBathroomNumber(e.target.value)}
                 />
               </div>
+
               <div className='flex items-center gap-2'>
-                <label htmlFor="propertyAmenities" className="block text-sm font-medium text-gray-900 dark:text-white">Property of Amentities</label>
+                <label htmlFor="propertyAmenities" className="block text-sm font-medium text-gray-900 dark:text-white">
+                  Property of Amentities
+                </label>
                 <input
                   type="text"
                   name="propertyAmenities"
@@ -303,16 +351,15 @@ const ListingEdit = (props) => {
                 />
               </div>
             </div>
-            <button
-              type="button"
-              className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+
+            <Button
               onClick={(e) => {
                 edit(e);
                 handleClose();
               }}
             >
               Edit
-            </button>
+            </Button>
           </form>
         </Box>
       </Modal>

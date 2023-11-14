@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 export const Navbar = (props) => {
   const navigate = useNavigate();
 
+  // logging out event, clear all localStorage
   const logout = async () => {
     const response = await fetch('http://localhost:5005/user/auth/logout', {
       method: 'POST',
@@ -36,15 +37,19 @@ export const Navbar = (props) => {
               {
                 props.page === '/' &&
                 <form>
-                  <label htmlFor="topbar-search" className="sr-only">Search</label>
+                  <label htmlFor="topbar-search" className="sr-only">
+                    Search
+                  </label>
                 </form>
               }
+
               {
                 props.page.includes('/listing/') &&
                 <Button onClick={() => navigate('/')}>
                   Back
                 </Button>
               }
+
               {
                 props.page.includes('/dashboard/') &&
                 <Button onClick={() => navigate('/dashboard')}>
@@ -57,9 +62,7 @@ export const Navbar = (props) => {
               {
                 localStorage.getItem('token') && props.page === '/' &&
                   <>
-                    <Button
-                      onClick={() => navigate('dashboard')}
-                    >
+                    <Button onClick={() => navigate('dashboard')}>
                       Switch to hosting
                     </Button>
                   </>
@@ -68,9 +71,7 @@ export const Navbar = (props) => {
               {
                 localStorage.getItem('token') && props.page === '/dashboard' &&
                   <>
-                    <Button
-                      onClick={() => navigate('/')}
-                    >
+                    <Button onClick={() => navigate('/')}>
                       Switch to traveling
                     </Button>
                   </>
@@ -79,19 +80,15 @@ export const Navbar = (props) => {
               {
                 localStorage.getItem('token')
                   ? <>
-                  <Button
-                    onClick={logout}
-                  >
-                    Log out
-                  </Button>
-                </>
+                      <Button onClick={logout}>
+                        Log out
+                      </Button>
+                    </>
                   : <>
-                  <Button
-                    onClick={() => navigate('/login')}
-                  >
-                    Log in
-                  </Button>
-                </>
+                      <Button onClick={() => navigate('/login')}>
+                        Log in
+                      </Button>
+                    </>
               }
             </div>
           </div>

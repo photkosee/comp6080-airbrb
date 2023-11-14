@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = (props) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // logging in event
   const login = async () => {
     const response = await fetch('http://localhost:5005/user/auth/login', {
       method: 'POST',
@@ -41,7 +42,9 @@ const Login = (props) => {
 
               <form className="space-y-4 md:space-y-6" action="#">
                 <div>
-                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                  <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Your email
+                  </label>
                   <input
                     type="email"
                     name="email"
@@ -55,7 +58,9 @@ const Login = (props) => {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                  <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Password
+                  </label>
                   <input
                     type="password"
                     name="password"
@@ -80,7 +85,12 @@ const Login = (props) => {
                 </button>
 
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Dont have an account yet? <a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={() => navigate('/register')}>Sign up</a>
+                  Dont have an account yet?
+                  <a
+                    href="#"
+                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                    onClick={() => navigate('/register')}
+                  >Sign up</a>
                 </p>
               </form>
             </div>

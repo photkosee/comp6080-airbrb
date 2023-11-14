@@ -11,40 +11,47 @@ const AvailableModal = (props) => {
     { start: '', end: '' }
   ]);
 
+  // set the start date accordingly
   const handleOnChangeStart = (e, idx) => {
     const data = [...range];
     data[idx].start = e.$d;
     setRange(data);
   }
 
+  // set the end date accordingly
   const handleOnChangeEnd = (e, idx) => {
     const data = [...range];
     data[idx].end = e.$d;
     setRange(data);
   }
 
+  // add new input boxes for new available dates
   const add = () => {
     const newRange = { start: '', end: '' };
     setRange([...range, newRange]);
   }
 
+  // delete the input boxes
   const deleteRange = (idx) => {
     const data = [...range];
     data.splice(idx, 1);
     setRange(data);
   }
 
+  // publishing the list
   const submit = async (e) => {
     e.preventDefault();
+
     for (const date of range) {
       const start = new Date(date.start);
       const end = new Date(date.end);
+
       if (end.getTime() < start.getTime()) {
         alert('invalid time');
       }
     }
-    handleClose();
 
+    handleClose();
     const response = await fetch(`http://localhost:5005/listings/publish/${props.listingId}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -64,10 +71,12 @@ const AvailableModal = (props) => {
     }
   }
 
+  // close this modal
   const handleClose = () => {
     props.setOpen(false);
   }
 
+  // style for MUI box
   const style = {
     position: 'absolute',
     top: '50%',
@@ -92,6 +101,7 @@ const AvailableModal = (props) => {
           <div className='text-lg font-bold mb-2'>
             Pick availabiity date range(s)
           </div>
+
           <form className='flex flex-col gap-2'>
             {
               range.map((input, idx) => {
@@ -103,6 +113,7 @@ const AvailableModal = (props) => {
                           handleOnChangeStart(e, idx);
                         }}
                       />
+
                       <DatePicker
                         onChange={e => {
                           handleOnChangeEnd(e, idx);
@@ -115,6 +126,7 @@ const AvailableModal = (props) => {
                 )
               })
             }
+
             <Button onClick={() => add()}>Add more</Button>
             <Button onClick={e => submit(e)}>Submit</Button>
           </form>

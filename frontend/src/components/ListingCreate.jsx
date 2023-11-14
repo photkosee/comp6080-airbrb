@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
+// converting an image file into date url
 export function fileToDataUrl (file) {
   const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg']
   const valid = validFileTypes.find(type => type === file.type);
-  // Bad data, let's walk away.
+
   if (!valid) {
     throw Error('provided file is not a png, jpg or jpeg image.');
   }
@@ -16,51 +17,58 @@ export function fileToDataUrl (file) {
     reader.onerror = reject;
     reader.onload = () => resolve(reader.result);
   });
+
   reader.readAsDataURL(file);
+
   return dataUrlPromise;
 }
 
 const ListingCreate = (props) => {
-  const [title, setTitle] = React.useState('');
-  const [street, setStreet] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [state, setState] = React.useState('');
-  const [postcode, setPostcode] = React.useState('');
-  const [country, setCountry] = React.useState('');
-  const [price, setPrice] = React.useState('');
-  const [thumbnail, setThumbnail] = React.useState(null);
-  const [video, setVideo] = React.useState('');
-  const [propertyType, setPropertyType] = React.useState('');
-  const [bed, setBed] = React.useState([
+  const [title, setTitle] = useState('');
+  const [street, setStreet] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [postcode, setPostcode] = useState('');
+  const [country, setCountry] = useState('');
+  const [price, setPrice] = useState('');
+  const [thumbnail, setThumbnail] = useState(null);
+  const [video, setVideo] = useState('');
+  const [propertyType, setPropertyType] = useState('');
+  const [bathroomNumber, setBathroomNumber] = useState('');
+  const [propertyAmenities, setpropertyAmenities] = useState('');
+  const [open, setOpen] = useState(false);
+  const [bed, setBed] = useState([
     { type: '', number: 0 }
   ]);
-  const [bathroomNumber, setBathroomNumber] = React.useState('');
-  const [propertyAmenities, setpropertyAmenities] = React.useState('');
-  const [open, setOpen] = React.useState(false);
 
+  // add more input boxes for more bedrooms
   const moreBedRoom = () => {
     const newBed = { type: '', number: 0 };
     setBed([...bed, newBed]);
   }
 
+  // change number of bed accordingly
   const handleOnChangeNumBed = (e, idx) => {
     const data = [...bed];
     data[idx].number = e.target.value;
     setBed(data);
   }
 
+  // change type of bed accordingly
   const handleOnChangeTypeBed = (e, idx) => {
     const data = [...bed];
     data[idx].type = e.target.value;
     setBed(data);
   }
 
+  // delete an input boxes for beds
   const deleteBed = (idx) => {
     const data = [...bed];
     data.splice(idx, 1);
     setBed(data);
   }
 
+  // open the creating list modal and clear all previous datas
   const handleOpen = () => {
     setTitle('');
     setStreet('');
@@ -72,24 +80,22 @@ const ListingCreate = (props) => {
     setThumbnail(null);
     setVideo('');
     setPropertyType('');
-    setBed([
-      { type: '', number: 0 }
-    ]);
     setBathroomNumber(0);
     setpropertyAmenities('');
     setOpen(true);
+    setBed([
+      { type: '', number: 0 }
+    ]);
   }
 
-  const handleClose = () => {
-    setOpen(false);
-  }
-
+  // upload image (thumbnail)
   const handleThumbnail = (e) => {
     fileToDataUrl(e.target.files[0]).then((data) => {
       setThumbnail(data);
     });
   }
 
+  // style for MUI box
   const style = {
     position: 'absolute',
     top: '50%',
@@ -104,6 +110,7 @@ const ListingCreate = (props) => {
     overflowY: 'auto'
   };
 
+  // creating the new list
   const create = async (e) => {
     const metadata = {
       propertyType,
@@ -127,8 +134,6 @@ const ListingCreate = (props) => {
       imgVideo = video;
     }
 
-    console.log(thumbnail, video);
-
     e.preventDefault();
     const response = await fetch('http://localhost:5005/listings/new', {
       method: 'POST',
@@ -146,15 +151,17 @@ const ListingCreate = (props) => {
       alert(data.error);
     } else if (data.listingId) {
       props.getList();
+      setOpen(false);
     }
   };
 
   return (
     <>
       <Button onClick={handleOpen}>Create New Listing Now!</Button>
+
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -162,6 +169,7 @@ const ListingCreate = (props) => {
           <div className='text-lg font-bold mb-2'>
             Create a new list
           </div>
+
           <form className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
               <label htmlFor="title" className="block text-sm font-medium text-gray-900 dark:text-white">Title</label>
@@ -176,6 +184,7 @@ const ListingCreate = (props) => {
                 onChange={e => setTitle(e.target.value)}
               />
             </div>
+
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
                 <label htmlFor="street" className="block text-sm font-medium text-gray-900 dark:text-white">Street</label>
@@ -190,6 +199,7 @@ const ListingCreate = (props) => {
                   onChange={e => setStreet(e.target.value)}
                 />
               </div>
+
               <div className='flex items-center gap-2'>
                 <label htmlFor="city" className="block text-sm font-medium text-gray-900 dark:text-white">City</label>
                 <input
@@ -204,6 +214,7 @@ const ListingCreate = (props) => {
                 />
               </div>
             </div>
+
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
                 <label htmlFor="state" className="block text-sm font-medium text-gray-900 dark:text-white">State</label>
@@ -218,6 +229,7 @@ const ListingCreate = (props) => {
                   onChange={e => setState(e.target.value)}
                 />
               </div>
+
               <div className='flex items-center gap-2'>
                 <label htmlFor="postcode" className="block text-sm font-medium text-gray-900 dark:text-white">Postcode</label>
                 <input
@@ -232,6 +244,7 @@ const ListingCreate = (props) => {
                 />
               </div>
             </div>
+
             <div className='flex items-center gap-2'>
               <label htmlFor="country" className="block text-sm font-medium text-gray-900 dark:text-white">Country</label>
               <input
@@ -245,6 +258,7 @@ const ListingCreate = (props) => {
                 onChange={e => setCountry(e.target.value)}
               />
             </div>
+
             <div className='flex items-center gap-2'>
               <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">Thumbnail</label>
               <input
@@ -256,6 +270,7 @@ const ListingCreate = (props) => {
                 onChange={e => handleThumbnail(e)}
               />
             </div>
+
             <div className='flex items-center gap-2'>
               <label htmlFor="video" className="block text-sm font-medium text-gray-900 dark:text-white">Thumbnail Video</label>
               <input
@@ -268,6 +283,7 @@ const ListingCreate = (props) => {
                 onChange={e => setVideo(e.target.value)}
               />
             </div>
+
             <div className='flex items-center gap-2'>
               <label htmlFor="price" className="block text-sm font-medium text-gray-900 dark:text-white">Price</label>
               <input
@@ -281,6 +297,7 @@ const ListingCreate = (props) => {
                 onChange={e => setPrice(e.target.value)}
               />
             </div>
+
             <div className='flex items-center gap-2'>
               <label htmlFor="propertyType" className="block text-sm font-medium text-gray-900 dark:text-white">Property Type</label>
               <input
@@ -294,8 +311,10 @@ const ListingCreate = (props) => {
                 onChange={e => setPropertyType(e.target.value)}
               />
             </div>
+
             <div className='flex flex-col gap-2'>
               <div>Bedrooms:</div>
+
               {
                 bed.map((input, idx) => {
                   return (
@@ -313,6 +332,7 @@ const ListingCreate = (props) => {
                           onChange={e => handleOnChangeTypeBed(e, idx)}
                         />
                       </div>
+
                       <div className='flex items-center gap-1'>
                         <label htmlFor="bedNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of beds</label>
                         <input
@@ -332,8 +352,10 @@ const ListingCreate = (props) => {
                   )
                 })
               }
+
               <Button onClick={() => moreBedRoom()}>More bedrooms</Button>
             </div>
+
             <div className='flex justify-between gap-2'>
               <div className='flex items-center gap-2'>
                 <label htmlFor="bathroomNumber" className="block text-sm font-medium text-gray-900 dark:text-white">Number of Bathrooms</label>
@@ -348,6 +370,7 @@ const ListingCreate = (props) => {
                   onChange={e => setBathroomNumber(e.target.value)}
                 />
               </div>
+
               <div className='flex items-center gap-2'>
                 <label htmlFor="propertyAmenities" className="block text-sm font-medium text-gray-900 dark:text-white">Property of Amentities</label>
                 <input
@@ -362,16 +385,10 @@ const ListingCreate = (props) => {
                 />
               </div>
             </div>
-            <button
-              type="button"
-              className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              onClick={(e) => {
-                create(e);
-                handleClose();
-              }}
-            >
+
+            <Button onClick={(e) => create(e)}>
               Create
-            </button>
+            </Button>
           </form>
         </Box>
       </Modal>

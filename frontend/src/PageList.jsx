@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Login from './components/Login';
@@ -9,9 +9,9 @@ import ListingView from './components/ListingView';
 import ManageBooking from './components/ManageBooking';
 
 const PageList = () => {
-  const [token, setToken] = React.useState(null);
+  const [token, setToken] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const checktoken = localStorage.getItem('token');
     if (checktoken) {
       setToken(checktoken);

@@ -1,11 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListingCreate from './ListingCreate';
 import { Navbar } from './Navbar';
 import HostCard from './HostCard';
 
 const Dashboard = (props) => {
-  const [list, setList] = React.useState([]);
+  const [list, setList] = useState([]);
 
+  // start with fetching all the listings
+  useEffect(() => {
+    getList();
+  }, []);
+
+  // get more details of the listing with the given id
   const getData = async (id) => {
     const response = await fetch(`http://localhost:5005/listings/${id}`, {
       method: 'GET',
@@ -25,6 +31,7 @@ const Dashboard = (props) => {
     }
   }
 
+  // get all the listings
   const getList = async () => {
     setList([]);
     const response = await fetch('http://localhost:5005/listings', {
@@ -45,25 +52,38 @@ const Dashboard = (props) => {
     }
   }
 
-  useEffect(() => {
-    getList();
-  }, []);
-
   return (
     <>
-      <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page="/dashboard" />
+      <Navbar
+        token={localStorage.getItem('token')}
+        setToken={props.setToken}
+        page="/dashboard"
+      />
+
       <div className='flex flex-col gap-4'>
-        <ListingCreate token={localStorage.getItem('token')} setToken={props.setToken} getList={getList} />
+        <ListingCreate
+          token={localStorage.getItem('token')}
+          setToken={props.setToken}
+          getList={getList}
+        />
+
         <div className='flex flex-wrap gap-2 justify-center'>
-          {list.map((item, idx) => {
-            if (item.owner !== localStorage.getItem('email')) {
-              return null;
-            } else {
-              return (
-                <HostCard key={idx} item={item} getList={getList} token={localStorage.getItem('token')} />
-              )
-            }
-          })}
+          {
+            list.map((item, idx) => {
+              if (item.owner !== localStorage.getItem('email')) {
+                return null;
+              } else {
+                return (
+                  <HostCard
+                    key={idx}
+                    item={item}
+                    getList={getList}
+                    token={localStorage.getItem('token')}
+                  />
+                )
+              }
+            })
+          }
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -10,11 +10,12 @@ import AvailableModal from './AvailableModal';
 import { useNavigate } from 'react-router-dom';
 
 export default function HostCard (props) {
-  const [published, setPublished] = React.useState(props.item.published);
-  const [openEdit, setOpenEdit] = React.useState(false);
-  const [openPublish, setOpenPublish] = React.useState(false);
+  const [published, setPublished] = useState(props.item.published);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openPublish, setOpenPublish] = useState(false);
   const navigate = useNavigate();
 
+  // an event deleting this listing
   const deleteList = async () => {
     const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
       method: 'DELETE',
@@ -32,6 +33,7 @@ export default function HostCard (props) {
     }
   };
 
+  // unpublish this listing
   const unpublish = async () => {
     const response = await fetch(`http://localhost:5005/listings/unpublish/${props.item.id}`, {
       method: 'PUT',
@@ -40,6 +42,7 @@ export default function HostCard (props) {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
     });
+
     const data = await response.json();
     if (data.error) {
       alert(data.error);
@@ -51,20 +54,22 @@ export default function HostCard (props) {
   return (
     <>
       <Card sx={{ maxWidth: 300 }}>
-        {/^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(props.item.thumbnail)
-          ? <CardMedia
-              component="img"
-              alt="thumbnail"
-              style={{ height: '200px', width: '100%' }}
-              image={props.item.thumbnail} />
-          : <iframe
-              style={{ height: '200px', width: '100%' }}
-              src={props.item.thumbnail}
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+        {
+          /^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(props.item.thumbnail)
+            ? <CardMedia
+                component="img"
+                alt="thumbnail"
+                style={{ height: '200px', width: '100%' }}
+                image={props.item.thumbnail} />
+            : <iframe
+                style={{ height: '200px', width: '100%' }}
+                src={props.item.thumbnail}
+                title="YouTube video player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
         }
+
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.item.title}
@@ -75,7 +80,8 @@ export default function HostCard (props) {
           <Typography variant="body2" color="text.secondary">
             Property Type: {props.item.metadata.propertyType}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+
+          <div className='flex flex-col gap-1'>
             <div>
               Bedrooms:
             </div>
@@ -90,7 +96,8 @@ export default function HostCard (props) {
                 })
               }
             </div>
-          </Typography>
+          </div>
+
           <Typography variant="body2" color="text.secondary">
             Bathroom Number: {props.item.metadata.bathroomNumber}
           </Typography>
@@ -98,15 +105,20 @@ export default function HostCard (props) {
             Price per night: {props.item.price}
           </Typography>
         </CardContent>
+
         <CardActions>
           <div className='flex flex-col gap-2 w-full justify-center items-center'>
             <div className='flex gap-1'>
               <Button size="small" onClick={() => setOpenEdit(true)}>Edit</Button>
               <Button size="small" onClick={deleteList}>Delete</Button>
-              {published
-                ? <Button size="small" onClick={unpublish}>Unpublish</Button>
-                : <Button size="small" onClick={() => setOpenPublish(true)}>Publish</Button>}
+
+              {
+                published
+                  ? <Button size="small" onClick={unpublish}>Unpublish</Button>
+                  : <Button size="small" onClick={() => setOpenPublish(true)}>Publish</Button>
+              }
             </div>
+
             <div className='flex justify-center'>
               <Button size="small" onClick={() => {
                 localStorage.setItem('postedOn', props.item.postedOn)
@@ -119,8 +131,22 @@ export default function HostCard (props) {
         </CardActions>
       </Card>
 
-      <ListingEdit token={localStorage.getItem('token')} listingId={props.item.id} open={openEdit} setOpen={setOpenEdit} getList={props.getList} />
-      <AvailableModal listingId={props.item.id} token={localStorage.getItem('token')} open={openPublish} setOpen={setOpenPublish} publish={openPublish} setPublished={setPublished} />
+      <ListingEdit
+        token={localStorage.getItem('token')}
+        listingId={props.item.id}
+        open={openEdit}
+        setOpen={setOpenEdit}
+        getList={props.getList}
+      />
+
+      <AvailableModal
+        listingId={props.item.id}
+        token={localStorage.getItem('token')}
+        open={openPublish}
+        setOpen={setOpenPublish}
+        publish={openPublish}
+        setPublished={setPublished}
+      />
     </>
   );
 }

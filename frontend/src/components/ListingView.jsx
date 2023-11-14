@@ -1,31 +1,61 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './Navbar';
 import { useParams } from 'react-router-dom';
-import { Box, Button, Card, CardContent, CardMedia, Input, Modal, Rating, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Input,
+  Modal,
+  Rating,
+  Typography
+} from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 const ListingView = (props) => {
-  const [data, setData] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [dateMax, setDateMax] = React.useState('');
-  const [dateMin, setDateMin] = React.useState('');
-  const [list, setList] = React.useState([]);
-  const [openReview, setOpenReview] = React.useState(false);
-  const [rate, setRate] = React.useState(0);
-  const [text, setText] = React.useState('');
-  const [bookingId, setBookingId] = React.useState('');
-  const [openTooltip, setOpenTooltip] = React.useState(false);
-  const [openRateTooltip, setOpenRateTooltip] = React.useState(false);
-  const [tooltipRate, setTooptipRate] = React.useState(0);
+  const [data, setData] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [dateMax, setDateMax] = useState('');
+  const [dateMin, setDateMin] = useState('');
+  const [list, setList] = useState([]);
+  const [openReview, setOpenReview] = useState(false);
+  const [rate, setRate] = useState(0);
+  const [text, setText] = useState('');
+  const [bookingId, setBookingId] = useState('');
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const [openRateTooltip, setOpenRateTooltip] = useState(false);
+  const [tooltipRate, setTooptipRate] = useState(0);
   const { id } = useParams();
 
+  // starting with fetching a list of all bookings and a list of listings
+  useEffect(() => {
+    getData();
+    showBookings();
+  }, []);
+
+  // filter those listings that the user booked
+  useEffect(() => {
+    list.forEach(e => {
+      if (
+        e.owner === localStorage.getItem('email') &&
+        parseInt(e.listingId) === parseInt(id)
+      ) {
+        setBookingId(e.id);
+      }
+    })
+  }, [list]);
+
+  // event when open a review modal form
   const handleOpenReview = () => {
     setRate(0);
     setText('');
     setOpenReview(true);
   }
 
+  // getting more details of the list with the given id
   const getData = async () => {
     const response = await fetch(`http://localhost:5005/listings/${id}`, {
       method: 'GET',
@@ -43,6 +73,7 @@ const ListingView = (props) => {
     }
   }
 
+  // getting a list of all bookings
   const showBookings = async () => {
     if (localStorage.getItem('token')) {
       const response = await fetch('http://localhost:5005/bookings', {
@@ -63,6 +94,7 @@ const ListingView = (props) => {
     }
   };
 
+  // an event when submit a review form
   const uploadReview = async () => {
     const obj = {
       review: {
@@ -71,8 +103,9 @@ const ListingView = (props) => {
         rating: rate,
       }
     };
+
     const jsonObj = JSON.stringify(obj);
-    console.log(jsonObj);
+
     const response = await fetch(`http://localhost:5005/listings/${id}/review/${bookingId}`, {
       method: 'PUT',
       headers: {
@@ -92,19 +125,7 @@ const ListingView = (props) => {
     }
   };
 
-  useEffect(() => {
-    getData();
-    showBookings();
-  }, []);
-
-  useEffect(() => {
-    list.forEach(e => {
-      if (e.owner === localStorage.getItem('email') && parseInt(e.listingId) === parseInt(id)) {
-        setBookingId(e.id);
-      }
-    })
-  }, [list]);
-
+  // an event submitting user's booking request
   const confirmBook = async () => {
     if (dateMin && dateMax) {
       const obj = {
@@ -114,6 +135,7 @@ const ListingView = (props) => {
         },
         totalPrice: calculatePrice(dateMin, dateMax),
       };
+
       const jsonObj = JSON.stringify(obj);
       const response = await fetch(`http://localhost:5005/bookings/new/${id}`, {
         method: 'POST',
@@ -139,27 +161,32 @@ const ListingView = (props) => {
     }
   }
 
+  // calculating the price from the days staying and price per night
   const calculatePrice = (dateMin, dateMax) => {
     return data.listing.price * (new Date(dateMax) - new Date(dateMin)) / 86400000;
   }
 
+  // calculating the average rating
   const calculateRating = () => {
     let sum = 0;
+
     for (const review of data.listing.reviews) {
       sum += parseFloat(review.rating);
     }
-    if (data.listing.reviews.length === 0) {
-      return 0;
-    }
-    return (sum / data.listing.reviews.length).toFixed(2);
+
+    return (data.listing.reviews.length === 0)
+      ? 0
+      : (sum / data.listing.reviews.length).toFixed(2);
   }
 
+  // an event for opening the booking (pick date) modal
   const handleOpen = () => {
     setDateMin('');
     setDateMax('');
     setOpen(true);
   }
 
+  // style for MUI box
   const style = {
     position: 'absolute',
     top: '50%',
@@ -179,8 +206,13 @@ const ListingView = (props) => {
   } else {
     return (
       <>
-        <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page={`/listing/${props.id}`} />
-        <div className='flex justify-center mt-3'>
+        <Navbar
+          token={localStorage.getItem('token')}
+          setToken={props.setToken}
+          page={`/listing/${props.id}`}
+        />
+
+        <div className='flex justify-center mt-3 pb-5'>
           <Card sx={{ maxWidth: 300 }}>
             {/^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(data.listing.thumbnail)
               ? <CardMedia
@@ -196,6 +228,7 @@ const ListingView = (props) => {
                   allowFullScreen
                 ></iframe>
             }
+
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 {data.listing.title}
@@ -206,7 +239,8 @@ const ListingView = (props) => {
               <Typography variant="body2" color="text.secondary">
                 Property Type: {data.listing.metadata.propertyType}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+
+              <div className='flex flex-col gap-1'>
                 <div>
                   Bedrooms:
                 </div>
@@ -221,7 +255,8 @@ const ListingView = (props) => {
                     })
                   }
                 </div>
-              </Typography>
+              </div>
+
               <Typography variant="body2" color="text.secondary">
                 Bathroom Number: {data.listing.metadata.bathroomNumber}
               </Typography>
@@ -235,12 +270,12 @@ const ListingView = (props) => {
               <Typography variant="body2" color="text.secondary">
                 Number of reviews: {data.listing.reviews.length}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                <div className='flex items-center gap-2' onMouseEnter={() => setOpenTooltip(true)}>
-                  Rating: <Rating name="read-only" value={calculateRating()} size="small" precision={0.1} readOnly /> {calculateRating()}
-                </div>
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
+
+              <div className='flex items-center justify-center gap-2' onMouseEnter={() => setOpenTooltip(true)}>
+                Rating: <Rating name="read-only" value={parseInt(calculateRating())} size="small" precision={0.1} readOnly /> {calculateRating()}
+              </div>
+
+              <div className='flex flex-col gap-1'>
                 <div>
                   Comments:
                 </div>
@@ -255,12 +290,14 @@ const ListingView = (props) => {
                     })
                   }
                 </div>
-              </Typography>
+              </div>
+
               {localStorage.getItem('token') &&
                 <div className='flex w-full justify-center'>
                   <Button onClick={() => handleOpen()}>Book</Button>
                 </div>
               }
+
               {list.some(e => e.owner === localStorage.getItem('email') && parseInt(e.listingId) === parseInt(id)) &&
                 <div className='flex w-full justify-center'>
                   <Button onClick={() => handleOpenReview()}>Review</Button>
@@ -268,6 +305,7 @@ const ListingView = (props) => {
               }
             </CardContent>
           </Card>
+
           <Modal
             open={open}
             onClose={() => setOpen(false)}
@@ -309,7 +347,12 @@ const ListingView = (props) => {
           >
             <Box sx={style}>
               <div className='flex flex-col flex-wrap gap-2 w-full'>
-                <Rating name="half-rating" value={parseFloat(rate)} onChange={e => setRate(parseFloat(e.target.value))} precision={1} />
+                <Rating
+                  name="half-rating"
+                  value={parseFloat(rate)}
+                  onChange={e => setRate(parseFloat(e.target.value))}
+                  precision={1}
+                />
                 <Input type='text' value={text} onChange={e => setText(e.target.value)} />
                 <Button onClick={() => { uploadReview() }}>
                   Send
@@ -335,8 +378,16 @@ const ListingView = (props) => {
                             setTooptipRate(num);
                             setOpenRateTooltip(true);
                           }}>{num}</Button>
-                          <div>{data.listing.reviews.filter(e => parseInt(e.rating) === num).length} Rated</div>
-                          <div>{data.listing.reviews.length === 0 ? 0 : ((data.listing.reviews.filter(e => parseInt(e.rating) === num).length / data.listing.reviews.length) * 100).toFixed(2)} %</div>
+
+                          <div>
+                            {data.listing.reviews.filter(e => parseInt(e.rating) === num).length} Rated
+                          </div>
+                          <div>
+                            {data.listing.reviews.length === 0
+                              ? 0
+                              : ((data.listing.reviews.filter(e => parseInt(e.rating) === num).length / data.listing.reviews.length) * 100).toFixed(2)
+                            } %
+                          </div>
                         </div>
                       )
                     })
