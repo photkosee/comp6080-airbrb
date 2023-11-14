@@ -82,8 +82,6 @@ const ListingView = (props) => {
       body: jsonObj,
     });
 
-    console.log('1');
-
     const data = await response.json();
     if (data.error) {
       alert(data.error);
@@ -133,6 +131,7 @@ const ListingView = (props) => {
       } else {
         getData();
         setOpen(false);
+        showBookings();
         alert('Booking success');
       }
     } else {

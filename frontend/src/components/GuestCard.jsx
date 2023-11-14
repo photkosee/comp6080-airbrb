@@ -33,7 +33,7 @@ export default function GuestCard (props) {
             Number of total reviews: {props.item.reviews.length}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Rating: {props.item.rating}
+            Rating: {(props.item.rating).toFixed(2)}
           </Typography>
         </CardContent>
       </Card>

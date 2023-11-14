@@ -19,6 +19,7 @@ export const LandingPage = (props) => {
   const [bedroomNumber, setBedroomNumber] = React.useState('');
   const [sort, setSort] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+
   const handleSort = (e) => {
     setSort(e.target.value);
     let newList = [...list];
@@ -58,7 +59,7 @@ export const LandingPage = (props) => {
       const newListing = data.listing;
       newListing.id = id;
       newListing.rating = rating;
-      setList((prevList) => [...prevList, newListing].sort((b, a) => a.rating - b.rating));
+      setList((prevList) => [...prevList, newListing]);
     }
   }
 
@@ -74,7 +75,7 @@ export const LandingPage = (props) => {
     borderRadius: 'lg'
   };
 
-  const getList = async () => {
+  const getList = async (bookings) => {
     setList([]);
     const response = await fetch('http://localhost:5005/listings', {
       method: 'GET',
@@ -87,9 +88,48 @@ export const LandingPage = (props) => {
     if (data.error) {
       alert(data.error);
     } else if (data.listings) {
-      data.listings.forEach((list) => {
-        getData(list.id);
+      data.listings.sort((a, b) => a.title.localeCompare(b.title)).forEach((list) => {
+        let check = false;
+        for (const booking of bookings) {
+          if (localStorage.getItem('email') === booking.owner && parseInt(booking.listingId) === parseInt(list.id) && (booking.status === 'pending' || booking.status === 'accepted')) {
+            check = true;
+          }
+        }
+        if (check) {
+          getData(list.id);
+          console.log('1')
+        }
       });
+
+      data.listings.sort((a, b) => a.title.localeCompare(b.title)).forEach((list) => {
+        let check = false;
+        for (const booking of bookings) {
+          if (localStorage.getItem('email') === booking.owner && parseInt(booking.listingId) === parseInt(list.id) && (booking.status === 'pending' || booking.status === 'accepted')) {
+            check = true;
+          }
+        }
+        if (!check) {
+          getData(list.id);
+          console.log(list.title)
+        }
+      });
+    }
+  }
+
+  const getBookings = async () => {
+    const response = await fetch('http://localhost:5005/bookings', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    const data = await response.json();
+
+    if (data.error) {
+      alert(data.error);
+    } else {
+      getList(data.bookings);
     }
   }
 
@@ -106,7 +146,7 @@ export const LandingPage = (props) => {
 
   useEffect(() => {
     clearFilter();
-    getList();
+    getBookings();
   }, []);
 
   return (
