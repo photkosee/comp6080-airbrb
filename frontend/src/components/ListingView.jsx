@@ -342,6 +342,7 @@ const ListingView = (props) => {
 
           <RatingCommentModal
             openRateTooltip={openRateTooltip}
+            setOpenRateTooltip={setOpenRateTooltip}
             reviews={data.listing.reviews}
             tooltipRate={tooltipRate}
           />

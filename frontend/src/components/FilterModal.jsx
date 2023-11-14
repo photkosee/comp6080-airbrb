@@ -18,17 +18,7 @@ const FilterModal = (props) => {
       >
         <Box sx={style}>
           <div className='flex flex-col flex-wrap gap-2 w-full'>
-            <div className="relative flex items-center gap-1">
-              <TextField
-                label="Number of beds"
-                variant="outlined"
-                type='number'
-                value={props.bedroomNumber}
-                onChange={e => props.setBedroomNumber(e.target.value)}
-              />
-            </div>
-
-            <div className="relative flex items-center gap-1">
+            <div className="relative flex flex-col items-center gap-1">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 Check In:&nbsp;
                 <DatePicker
@@ -47,6 +37,14 @@ const FilterModal = (props) => {
                 />
               </LocalizationProvider>
             </div>
+
+            <TextField
+              label="Number of beds"
+              variant="outlined"
+              type='number'
+              value={props.bedroomNumber}
+              onChange={e => props.setBedroomNumber(e.target.value)}
+            />
 
             <div className="relative flex items-center gap-1">
               <TextField
