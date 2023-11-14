@@ -25,13 +25,15 @@ const ManageBooking = (props) => {
 
   // accepting the booking request with the given id
   const acceptBooking = async (id) => {
-    const response = await fetch(`http://localhost:5005/bookings/accept/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5005/bookings/accept/${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     const data = await response.json();
     if (data.error) {
@@ -43,13 +45,15 @@ const ManageBooking = (props) => {
 
   // declining the booking request with the given id
   const declineBooking = async (id) => {
-    const response = await fetch(`http://localhost:5005/bookings/decline/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5005/bookings/decline/${id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     const data = await response.json();
     if (data.error) {
@@ -62,7 +66,9 @@ const ManageBooking = (props) => {
           parseInt(e.listingId) === parseInt(id) &&
           e.status === 'accepted'
         ) {
-          setSumBooking(prev => prev + timeDiff(e.dateRange.end, e.dateRange.start));
+          setSumBooking(prev =>
+            prev + timeDiff(e.dateRange.end, e.dateRange.start)
+          );
         }
       });
     }
@@ -118,7 +124,9 @@ const ManageBooking = (props) => {
 
         {
           listBooking.map((e, idx) => {
-            if (parseInt(e.listingId) === parseInt(id) && e.status === 'pending') {
+            if (
+              parseInt(e.listingId) === parseInt(id) && e.status === 'pending'
+            ) {
               return (
                 <div key={idx} className='flex flex-col gap-1'>
                   <div>

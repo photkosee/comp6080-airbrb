@@ -17,13 +17,15 @@ export default function HostCard (props) {
 
   // an event deleting this listing
   const deleteList = async () => {
-    const response = await fetch(`http://localhost:5005/listings/${props.item.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5005/listings/${props.item.id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     const data = await response.json();
     if (data.error) {
@@ -35,13 +37,15 @@ export default function HostCard (props) {
 
   // unpublish this listing
   const unpublish = async () => {
-    const response = await fetch(`http://localhost:5005/listings/unpublish/${props.item.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5005/listings/unpublish/${props.item.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     const data = await response.json();
     if (data.error) {
@@ -65,7 +69,8 @@ export default function HostCard (props) {
                 style={{ height: '200px', width: '100%' }}
                 src={props.item.thumbnail}
                 title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write;
+                  encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
         }
@@ -101,7 +106,8 @@ export default function HostCard (props) {
                 props.item.metadata.bedrooms.map((e, idx) => {
                   return (
                     <div key={idx}>
-                      &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type}, Number of beds: {e.number}
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      Type: {e.type}, Number of beds: {e.number}
                     </div>
                   )
                 })
@@ -119,7 +125,9 @@ export default function HostCard (props) {
               {
                 published
                   ? <Button size="small" onClick={unpublish}>Unpublish</Button>
-                  : <Button size="small" onClick={() => setOpenPublish(true)}>Publish</Button>
+                  : <Button size="small" onClick={() => setOpenPublish(true)}>
+                      Publish
+                    </Button>
               }
             </div>
 

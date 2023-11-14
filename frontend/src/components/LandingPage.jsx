@@ -16,7 +16,8 @@ export const LandingPage = (props) => {
   const [sort, setSort] = useState(0);
   const [open, setOpen] = useState(false);
 
-  // start with clearing all filtering and getting a list of all bookings (for ordering)
+  // start with clearing all filtering and getting a list of all bookings
+  // for ordering
   useEffect(() => {
     clearFilter();
 
@@ -50,7 +51,8 @@ export const LandingPage = (props) => {
     return (reviews.length === 0) ? 0 : sum / reviews.length;
   }
 
-  // get listing detailed and determing whether the user has booked the list for ordering
+  // get listing detailed and determing whether the user has booked the list
+  // for ordering
   const getData = async (id, bookings) => {
     const response = await fetch(`http://localhost:5005/listings/${id}`, {
       method: 'GET',
@@ -107,7 +109,7 @@ export const LandingPage = (props) => {
     }
   }
 
-  // fetch all listings
+  // fetch all listings, return true if it fits the filter
   const getList = async (bookings) => {
     setList([]);
     const response = await fetch('http://localhost:5005/listings', {
@@ -145,6 +147,94 @@ export const LandingPage = (props) => {
     }
   }
 
+  // filtering listings accordingly
+  const applyFilter = (item) => {
+    let checkNameSearch = true;
+    let checkPrice = true;
+    let checkBedNumber = true;
+    const publish = item.published;
+    let checkDate = true;
+
+    if (nameSearch) {
+      checkNameSearch =
+        item.title.toLowerCase().includes(nameSearch.toLowerCase()) ||
+        item.address.city.toLowerCase().includes(nameSearch.toLowerCase());
+    }
+
+    let priceTop = Infinity;
+    let priceBottom = -Infinity;
+
+    if (priceMax) {
+      priceTop = priceMax;
+    }
+
+    if (priceMin) {
+      priceBottom = priceMin;
+    }
+
+    checkPrice = parseFloat(item.price) >= parseFloat(priceBottom) &&
+      parseFloat(item.price) <= parseFloat(priceTop);
+
+    if (bedroomNumber) {
+      const countBed = item.metadata.bedrooms.reduce((prevValue, curr) => {
+        return prevValue + parseInt(curr.number);
+      }, 0);
+
+      checkBedNumber = countBed === parseInt(bedroomNumber);
+    }
+
+    if (dateMin && dateMax) {
+      const listInterval = [];
+      const dateTop = new Date(dateMin);
+      const dateBottom = new Date(dateMax);
+      const newInterval = {
+        start: dateTop,
+        end: dateBottom,
+      };
+
+      for (const interval of item.availability) {
+        listInterval.push({
+          start: new Date(interval.start),
+          end: new Date(interval.end)
+        });
+      }
+
+      checkDate = listInterval.some(interval =>
+        newInterval.start >= interval.start &&
+        newInterval.end <= interval.end
+      );
+    } else if (dateMin || dateMax) {
+      const listInterval = [];
+      let dateTop = new Date();
+
+      if (dateMin) {
+        dateTop = new Date(dateMin);
+      } else {
+        dateTop = new Date(dateMax);
+      }
+
+      const newInterval = {
+        start: dateTop,
+        end: dateTop,
+      };
+
+      for (const interval of item.availability) {
+        listInterval.push({
+          start: new Date(interval.start),
+          end: new Date(interval.end)
+        });
+      }
+
+      checkDate = listInterval.some(interval =>
+        newInterval.start >= interval.start &&
+        newInterval.end <= interval.end
+      );
+    }
+
+    return checkBedNumber && checkDate &&
+      checkNameSearch && checkPrice && publish;
+  }
+
   // clear all filtered
   const clearFilter = () => {
     setNameSearch('');
@@ -160,12 +250,18 @@ export const LandingPage = (props) => {
 
   return (
     <>
-      <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page='/' />
+      <Navbar
+        token={localStorage.getItem('token')}
+        setToken={props.setToken} page='/'
+      />
 
       <div className='flex justify-center items-center flex-wrap gap-2 mb-5'>
         <label htmlFor="topbar-search" className="sr-only">Search</label>
         <div className="relative mt-1 lg:w-60 sm:w-40">
-          <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+          <div
+            className="flex absolute inset-y-0 left-0 items-center
+              pl-3 pointer-events-none"
+          >
             <svg
               className="w-4 h-4 text-gray-500 dark:text-gray-400"
               aria-hidden="true"
@@ -182,7 +278,11 @@ export const LandingPage = (props) => {
             type="text"
             name="search"
             id="topbar-search"
-            className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900
+              sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500
+              block w-full pl-9 p-2.5 dark:bg-gray-700 dark:border-gray-600
+             dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500
+              dark:focus:border-primary-500"
             placeholder="Search for titles or cities"
             value={nameSearch}
             onChange={e => setNameSearch(e.target.value)}
@@ -201,7 +301,7 @@ export const LandingPage = (props) => {
           setDateMax={setDateMax}
           priceMin={priceMin}
           priceMax={priceMax}
-          setPriceMin={setDateMin}
+          setPriceMin={setPriceMin}
           setPriceMax={setPriceMax}
           sort={sort}
           handleSort={handleSort}
@@ -211,82 +311,7 @@ export const LandingPage = (props) => {
       <div className='flex flex-wrap gap-2 justify-center'>
         {
           list.map((item, idx) => {
-            let checkNameSearch = true;
-            let checkPrice = true;
-            let checkBedNumber = true;
-            const publish = item.published;
-            let checkDate = true;
-
-            if (nameSearch) {
-              checkNameSearch = item.title.toLowerCase().includes(nameSearch.toLowerCase()) ||
-                item.address.city.toLowerCase().includes(nameSearch.toLowerCase());
-            }
-
-            let priceTop = Infinity;
-            let priceBottom = -Infinity;
-
-            if (priceMax) {
-              priceTop = priceMax;
-            }
-
-            if (priceMin) {
-              priceBottom = priceMin;
-            }
-
-            checkPrice = parseFloat(item.price) >= parseFloat(priceBottom) &&
-              parseFloat(item.price) <= parseFloat(priceTop);
-
-            if (bedroomNumber) {
-              checkBedNumber = parseInt(item.metadata.bedNumber) === parseInt(bedroomNumber);
-            }
-
-            if (dateMin && dateMax) {
-              const listInterval = [];
-              const dateTop = new Date(dateMin);
-              const dateBottom = new Date(dateMax);
-              const newInterval = {
-                start: dateTop,
-                end: dateBottom,
-              };
-
-              for (const interval of item.availability) {
-                listInterval.push({
-                  start: new Date(interval.start),
-                  end: new Date(interval.end)
-                });
-              }
-
-              checkDate = listInterval.some(interval =>
-                newInterval.start >= interval.start && newInterval.end <= interval.end
-              );
-            } else if (dateMin || dateMax) {
-              const listInterval = [];
-              let dateTop = new Date();
-
-              if (dateMin) {
-                dateTop = new Date(dateMin);
-              } else {
-                dateTop = new Date(dateMax);
-              }
-
-              const newInterval = {
-                start: dateTop,
-                end: dateTop,
-              };
-
-              for (const interval of item.availability) {
-                listInterval.push({
-                  start: new Date(interval.start),
-                  end: new Date(interval.end)
-                });
-              }
-
-              checkDate = listInterval.some(interval =>
-                newInterval.start >= interval.start && newInterval.end <= interval.end
-              );
-            }
-
-            if (checkBedNumber && checkDate && checkNameSearch && checkPrice && publish) {
+            if (applyFilter(item)) {
               return (
               <GuestCard key={idx} item={item} />
               )

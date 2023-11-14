@@ -22,7 +22,8 @@ export default function GuestCard (props) {
                 style={{ height: '200px', width: '100%' }}
                 src={props.item.thumbnail}
                 title="YouTube video player"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write;
+                  encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
         }

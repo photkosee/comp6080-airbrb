@@ -36,8 +36,8 @@ const TooltipModal = (props) => {
                         {props.reviews.length === 0
                           ? 0
                           : ((props.reviews.filter(e =>
-                              parseInt(e.rating) === num).length / props.reviews.length) * 100)
-                              .toFixed(2)
+                              parseInt(e.rating) === num).length / props.reviews.length) *
+                                100).toFixed(2)
                         } %
                       </div>
                     </div>

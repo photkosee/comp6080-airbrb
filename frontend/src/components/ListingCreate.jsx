@@ -225,27 +225,27 @@ const ListingCreate = (props) => {
             />
 
             <div className='flex items-center gap-2'>
-              <label htmlFor="thumbnail" className="block text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="thumbnail" className="label-tw">
                 Thumbnail
               </label>
               <input
                 type="file"
                 name="thumbnail"
                 id="thumbnail"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="input-tw"
                 onChange={e => handleThumbnail(e)}
               />
             </div>
 
             <div className='flex items-center gap-2'>
-              <label htmlFor="video" className="block text-sm font-medium text-gray-900 dark:text-white">
+              <label htmlFor="video" className="label-tw">
                 Video Thumbnail
               </label>
               <input
                 type="text"
                 name="video"
                 id="video"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="input-tw"
                 placeholder='e.g. https://www.youtube.com/...'
                 onChange={e => setVideo(e.target.value)}
               />

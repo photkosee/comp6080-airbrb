@@ -56,13 +56,15 @@ const ListingView = (props) => {
 
   // getting more details of the list with the given id
   const getData = async () => {
-    const response = await fetch(`http://localhost:5005/listings/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5005/listings/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     const data = await response.json();
     if (data.error) {
@@ -138,14 +140,16 @@ const ListingView = (props) => {
       };
 
       const jsonObj = JSON.stringify(obj);
-      const response = await fetch(`http://localhost:5005/bookings/new/${id}`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        },
-        body: jsonObj,
-      });
+      const response = await fetch(
+        `http://localhost:5005/bookings/new/${id}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          },
+          body: jsonObj,
+        });
 
       const data = await response.json();
       if (data.error) {
@@ -164,7 +168,8 @@ const ListingView = (props) => {
 
   // calculating the price from the days staying and price per night
   const calculatePrice = (dateMin, dateMax) => {
-    return data.listing.price * (new Date(dateMax) - new Date(dateMin)) / 86400000;
+    return data.listing.price *
+      (new Date(dateMax) - new Date(dateMin)) / 86400000;
   }
 
   // calculating the average rating
@@ -211,7 +216,8 @@ const ListingView = (props) => {
                     style={{ height: '200px', width: '100%' }}
                     src={data.listing.thumbnail}
                     title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write;
+                      encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   ></iframe>
             }
@@ -238,7 +244,9 @@ const ListingView = (props) => {
                   (localStorage.getItem('dateMin') && localStorage.getItem('dateMax'))
                     ? <>
                         Total price:&nbsp;
-                        {calculatePrice(localStorage.getItem('dateMin'), localStorage.getItem('dateMax'))}
+                        {calculatePrice(
+                          localStorage.getItem('dateMin'), localStorage.getItem('dateMax')
+                        )}
                       </>
                     : <>Price per night: {data.listing.price}</>
                 }
@@ -256,7 +264,7 @@ const ListingView = (props) => {
                     data.listing.metadata.bedrooms.map((e, idx) => {
                       return (
                         <div key={idx}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type} Number of beds: {e.number}
+                          &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type}, Number of beds: {e.number}
                         </div>
                       )
                     })
