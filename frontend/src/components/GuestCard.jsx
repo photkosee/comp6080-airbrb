@@ -10,18 +10,30 @@ export default function GuestCard (props) {
 
   return (
     <>
-      <Card sx={{ maxWidth: 345 }} onClick={() => navigate(`/listing/${props.item.id}`)}>
-        <CardMedia
-          component="img"
-          alt="thumbnail"
-          width="220"
-          image={props.item.thumbnail} />
+      <Card sx={{ width: 250 }} onClick={() => navigate(`/listing/${props.item.id}`)}>
+        {/^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(props.item.thumbnail)
+          ? <CardMedia
+              component="img"
+              alt="thumbnail"
+              style={{ height: '200px', width: '100%' }}
+              image={props.item.thumbnail} />
+          : <iframe
+              style={{ height: '200px', width: '100%' }}
+              src={props.item.thumbnail}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+        }
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.item.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Number of total reviews: {props.item.reviews.length}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Rating: {props.item.rating}
           </Typography>
         </CardContent>
       </Card>

@@ -56,7 +56,7 @@ const ManageBooking = (props) => {
       alert(data.error);
     } else {
       const tmp = data.bookings;
-      setListBooking(tmp);
+      setListBooking(tmp.filter(e => e.listingId === id));
     }
   };
 

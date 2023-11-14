@@ -51,11 +51,20 @@ export default function HostCard (props) {
   return (
     <>
       <Card sx={{ maxWidth: 300 }}>
-        <CardMedia
-          component="img"
-          alt="thumbnail"
-          width="220"
-          image={props.item.thumbnail} />
+        {/^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(props.item.thumbnail)
+          ? <CardMedia
+              component="img"
+              alt="thumbnail"
+              style={{ height: '200px', width: '100%' }}
+              image={props.item.thumbnail} />
+          : <iframe
+              style={{ height: '200px', width: '100%' }}
+              src={props.item.thumbnail}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+        }
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.item.title}

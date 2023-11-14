@@ -17,10 +17,28 @@ export const LandingPage = (props) => {
   const [dateMax, setDateMax] = React.useState('');
   const [dateMin, setDateMin] = React.useState('');
   const [bedroomNumber, setBedroomNumber] = React.useState('');
-  const [sort, setSort] = React.useState('');
+  const [sort, setSort] = React.useState(0);
   const [open, setOpen] = React.useState(false);
   const handleSort = (e) => {
     setSort(e.target.value);
+    let newList = [...list];
+    if (parseInt(e.target.value) === 10) {
+      newList = [...list].sort((b, a) => a.rating - b.rating);
+    } else if (parseInt(e.target.value) === 20) {
+      newList = [...list].sort((a, b) => a.rating - b.rating);
+    }
+    setList(newList);
+  }
+
+  const calculateRating = (reviews) => {
+    let sum = 0;
+    for (const review of reviews) {
+      sum += parseFloat(review.rating);
+    }
+    if (reviews.length === 0) {
+      return 0;
+    }
+    return sum / reviews.length;
   }
 
   const getData = async (id) => {
@@ -36,9 +54,11 @@ export const LandingPage = (props) => {
     if (data.error) {
       alert(data.error);
     } else if (data.listing) {
-      const newList = data.listing;
-      newList.id = id;
-      setList((prevList) => [...prevList, newList]);
+      const rating = calculateRating(data.listing.reviews);
+      const newListing = data.listing;
+      newListing.id = id;
+      newListing.rating = rating;
+      setList((prevList) => [...prevList, newListing].sort((b, a) => a.rating - b.rating));
     }
   }
 

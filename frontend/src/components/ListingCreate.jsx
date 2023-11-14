@@ -29,6 +29,7 @@ const ListingCreate = (props) => {
   const [country, setCountry] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [thumbnail, setThumbnail] = React.useState(null);
+  const [video, setVideo] = React.useState('');
   const [propertyType, setPropertyType] = React.useState('');
   const [bed, setBed] = React.useState([
     { type: '', number: 0 }
@@ -69,6 +70,7 @@ const ListingCreate = (props) => {
     setCountry('');
     setPrice('');
     setThumbnail(null);
+    setVideo('');
     setPropertyType('');
     setBed([
       { type: '', number: 0 }
@@ -118,11 +120,20 @@ const ListingCreate = (props) => {
       country
     }
 
+    let imgVideo = '';
+    if (thumbnail && thumbnail !== null && thumbnail !== '') {
+      imgVideo = thumbnail;
+    } else {
+      imgVideo = video;
+    }
+
+    console.log(thumbnail, video);
+
     e.preventDefault();
     const response = await fetch('http://localhost:5005/listings/new', {
       method: 'POST',
       body: JSON.stringify({
-        title, address, price, thumbnail, metadata
+        title, address, price, thumbnail: imgVideo, metadata
       }),
       headers: {
         'Content-type': 'application/json',
@@ -241,8 +252,20 @@ const ListingCreate = (props) => {
                 name="thumbnail"
                 id="thumbnail"
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                required
+                // required
                 onChange={e => handleThumbnail(e)}
+              />
+            </div>
+            <div className='flex items-center gap-2'>
+              <label htmlFor="video" className="block text-sm font-medium text-gray-900 dark:text-white">Thumbnail Video</label>
+              <input
+                type="text"
+                name="video"
+                id="video"
+                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                // required
+                placeholder='e.g. https://www.youtube.com/...'
+                onChange={e => setVideo(e.target.value)}
               />
             </div>
             <div className='flex items-center gap-2'>

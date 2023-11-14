@@ -178,11 +178,20 @@ const ListingView = (props) => {
         <Navbar token={localStorage.getItem('token')} setToken={props.setToken} page={`/listing/${props.id}`} />
         <div className='flex justify-center mt-3'>
           <Card sx={{ maxWidth: 300 }}>
-            <CardMedia
-              component="img"
-              alt="thumbnail"
-              width="220"
-              image={data.listing.thumbnail} />
+            {/^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(data.listing.thumbnail)
+              ? <CardMedia
+                  component="img"
+                  alt="thumbnail"
+                  style={{ height: '200px', width: '100%' }}
+                  image={data.listing.thumbnail} />
+              : <iframe
+                  style={{ height: '200px', width: '100%' }}
+                  src={data.listing.thumbnail}
+                  title="YouTube video player"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+            }
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 {data.listing.title}
