@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './Navbar';
+import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
 import {
   Button,
@@ -9,10 +9,10 @@ import {
   Rating,
   Typography
 } from '@mui/material';
-import BookingModal from './BookingModal';
-import ReviewModal from './ReviewModal';
-import TooltipModal from './TooltipModal';
-import RatingCommentModal from './RatingCommnetModal';
+import BookingModal from '../modals/BookingModal';
+import ReviewModal from '../modals/ReviewModal';
+import TooltipModal from '../modals/TooltipModal';
+import RatingCommentModal from '../modals/RatingCommnetModal';
 
 const ListingView = (props) => {
   const [data, setData] = useState(null);
@@ -203,7 +203,7 @@ const ListingView = (props) => {
           page={`/listing/${props.id}`}
         />
 
-        <div className='flex justify-center mt-3 pb-5'>
+        <div className='flex justify-center mt-3 pb-5 pt-5'>
           <Card sx={{ maxWidth: 300 }}>
             {
               /^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(data.listing.thumbnail)

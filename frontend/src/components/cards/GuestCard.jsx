@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-export default function GuestCard (props) {
+const GuestCard = (props) => {
   const navigate = useNavigate();
 
   return (
@@ -43,3 +43,5 @@ export default function GuestCard (props) {
     </>
   );
 }
+
+export default GuestCard;

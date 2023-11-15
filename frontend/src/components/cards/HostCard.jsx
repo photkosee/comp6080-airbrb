@@ -5,11 +5,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import ListingEdit from './ListingEdit';
-import AvailableModal from './AvailableModal';
+import ListingEdit from '../modals/ListingEditModal';
+import AvailableModal from '../modals/AvailableModal';
 import { useNavigate } from 'react-router-dom';
 
-export default function HostCard (props) {
+const HostCard = (props) => {
   const [published, setPublished] = useState(props.item.published);
   const [openEdit, setOpenEdit] = useState(false);
   const [openPublish, setOpenPublish] = useState(false);
@@ -97,23 +97,19 @@ export default function HostCard (props) {
             Price per night: {props.item.price}
           </Typography>
 
-          <div className='flex flex-col gap-1 text-sm'>
-            <div>
-              Bedrooms:
-            </div>
-            <div className='flex flex-col flex-wrap gap-1'>
-              {
-                props.item.metadata.bedrooms.map((e, idx) => {
-                  return (
-                    <div key={idx}>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      Type: {e.type}, Number of beds: {e.number}
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </div>
+          <Typography variant="body2" color="text.secondary">
+            Bedrooms:
+          </Typography>
+          {
+            props.item.metadata.bedrooms.map((e, idx) => {
+              return (
+                <Typography variant="body2" color="text.secondary" key={idx}>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  Type: {e.type}, Number of beds: {e.number}
+                </Typography>
+              )
+            })
+          }
         </CardContent>
 
         <CardActions>
@@ -163,3 +159,5 @@ export default function HostCard (props) {
     </>
   );
 }
+
+export default HostCard;

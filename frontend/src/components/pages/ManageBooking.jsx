@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from './Navbar';
+import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
-import { Button } from '@mui/material';
+import StatusCard from '../cards/StatusCard';
+import BookingCard from '../cards/BookingCard';
 
 const ManageBooking = (props) => {
   const [listBooking, setListBooking] = useState([]);
@@ -79,7 +80,7 @@ const ManageBooking = (props) => {
     } else {
       const tmp = data.bookings;
       setListBooking(tmp.filter(e => e.listingId === id));
-
+      setSumBooking(0);
       tmp.filter(e => e.listingId === id).forEach(e => {
         if (
           parseInt(e.listingId) === parseInt(id) &&
@@ -102,7 +103,7 @@ const ManageBooking = (props) => {
         page={`/dashboard/${props.id}`}
       />
 
-      <div className='flex flex-col gap-3 items-center'>
+      <div className='flex flex-col gap-3 items-center pt-5 mb-5'>
         {
           localStorage.getItem('postedOn') !== 'null'
             ? <div>
@@ -119,57 +120,35 @@ const ManageBooking = (props) => {
         <div>
           Total profits this year: {sumBooking * localStorage.getItem('price')} $
         </div>
-        <div>
-          Requests:
+
+        <div className='h-full w-full flex flex-wrap justify-center gap-3'>
+          {
+            listBooking.map((e, idx) => {
+              if (
+                parseInt(e.listingId) === parseInt(id) && e.status === 'pending'
+              ) {
+                return (
+                  <BookingCard
+                    key={idx}
+                    owner={e.owner}
+                    dateRange={e.dateRange}
+                    acceptBooking={() => acceptBooking(e.id)}
+                    declineBooking={() => declineBooking(e.id)}
+                  />
+                )
+              } else {
+                return (
+                  <StatusCard
+                    key={idx}
+                    owner={e.owner}
+                    dateRange={e.dateRange}
+                    status={e.status}
+                  />
+                )
+              }
+            })
+          }
         </div>
-
-        {
-          listBooking.map((e, idx) => {
-            if (
-              parseInt(e.listingId) === parseInt(id) && e.status === 'pending'
-            ) {
-              return (
-                <div key={idx} className='flex flex-col gap-1'>
-                  <div>
-                    Uesr: {e.owner}
-                  </div>
-                  <div>
-                    From: {e.dateRange.start}
-                  </div>
-                  <div>
-                    To: {e.dateRange.end}
-                  </div>
-
-                  <div className='flex flex-wrap gap-2'>
-                    <Button onClick={() => acceptBooking(e.id)}>
-                      Accept
-                    </Button>
-                    <Button onClick={() => declineBooking(e.id)}>
-                      Decline
-                    </Button>
-                  </div>
-                </div>
-              )
-            } else {
-              return (
-                <div key={idx} className='flex flex-col gap-1'>
-                  <div>
-                    Uesr: {e.owner}
-                  </div>
-                  <div>
-                    From: {e.dateRange.start}
-                  </div>
-                  <div>
-                    To: {e.dateRange.end}
-                  </div>
-                  <div className='flex flex-wrap gap-2'>
-                    {e.status}
-                  </div>
-                </div>
-              )
-            }
-          })
-        }
       </div>
     </>
   )

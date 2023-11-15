@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import ListingCreate from './ListingCreate';
-import { Navbar } from './Navbar';
-import HostCard from './HostCard';
+import ListingCreate from '../modals/ListingCreateModal';
+import { Navbar } from '../navbar/Navbar';
+import HostCard from '../cards/HostCard';
 
 const Dashboard = (props) => {
   const [list, setList] = useState([]);
@@ -60,7 +60,7 @@ const Dashboard = (props) => {
         page="/dashboard"
       />
 
-      <div className='flex flex-col gap-4 mb-5'>
+      <div className='flex flex-col gap-4 mb-5 pt-5 w-full h-full relative'>
         <ListingCreate
           token={localStorage.getItem('token')}
           setToken={props.setToken}

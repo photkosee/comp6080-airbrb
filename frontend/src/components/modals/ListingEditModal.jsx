@@ -1,46 +1,29 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { TextField } from '@mui/material';
+import { fileToDataUrl } from './ListingCreateModal';
+import { Button, TextField } from '@mui/material';
 
-// converting an image file into date url
-export function fileToDataUrl (file) {
-  const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg']
-  const valid = validFileTypes.find(type => type === file.type);
-
-  if (!valid) {
-    throw Error('provided file is not a png, jpg or jpeg image.');
-  }
-
-  const reader = new FileReader();
-  const dataUrlPromise = new Promise((resolve, reject) => {
-    reader.onerror = reject;
-    reader.onload = () => resolve(reader.result);
-  });
-
-  reader.readAsDataURL(file);
-
-  return dataUrlPromise;
-}
-
-const ListingCreate = (props) => {
+const ListingEditModal = (props) => {
   const [title, setTitle] = useState('');
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [postcode, setPostcode] = useState('');
   const [country, setCountry] = useState('');
-  const [price, setPrice] = useState(0);
-  const [thumbnail, setThumbnail] = useState(null);
-  const [video, setVideo] = useState('');
+  const [price, setPrice] = useState('');
+  const [thumbnail, setThumbnail] = useState('');
   const [propertyType, setPropertyType] = useState('');
-  const [bathroomNumber, setBathroomNumber] = useState(0);
+  const [bathroomNumber, setBathroomNumber] = useState('');
   const [propertyAmenities, setpropertyAmenities] = useState('');
-  const [open, setOpen] = useState(false);
   const [bed, setBed] = useState([
     { type: '', number: 0 }
   ]);
+
+  // close the editing modal
+  const handleClose = () => {
+    props.setOpen(false);
+  }
 
   // add more input boxes for more bedrooms
   const moreBedRoom = () => {
@@ -69,27 +52,7 @@ const ListingCreate = (props) => {
     setBed(data);
   }
 
-  // open the creating list modal and clear all previous datas
-  const handleOpen = () => {
-    setTitle('');
-    setStreet('');
-    setCity('');
-    setState('');
-    setPostcode('');
-    setCountry('');
-    setPrice('');
-    setThumbnail(null);
-    setVideo('');
-    setPropertyType('');
-    setBathroomNumber(0);
-    setpropertyAmenities('');
-    setOpen(true);
-    setBed([
-      { type: '', number: 0 }
-    ]);
-  }
-
-  // upload image (thumbnail)
+  // dowloading an image
   const handleThumbnail = (e) => {
     fileToDataUrl(e.target.files[0]).then((data) => {
       setThumbnail(data);
@@ -111,8 +74,8 @@ const ListingCreate = (props) => {
     overflowY: 'auto'
   };
 
-  // creating the new list
-  const create = async (e) => {
+  // editing event
+  const edit = async (e) => {
     const metadata = {
       propertyType,
       bathroomNumber,
@@ -128,47 +91,39 @@ const ListingCreate = (props) => {
       country
     }
 
-    let imgVideo = '';
-    if (thumbnail && thumbnail !== null && thumbnail !== '') {
-      imgVideo = thumbnail;
-    } else {
-      imgVideo = video;
-    }
-
     e.preventDefault();
-    const response = await fetch('http://localhost:5005/listings/new', {
-      method: 'POST',
-      body: JSON.stringify({
-        title, address, price, thumbnail: imgVideo, metadata
-      }),
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+    const response = await fetch(
+      `http://localhost:5005/listings/${props.listingId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          title, address, price, thumbnail, metadata
+        }),
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
     const data = await response.json();
     if (data.error) {
       alert(data.error);
-    } else if (data.listingId) {
+    } else {
       props.getList();
-      setOpen(false);
     }
   };
 
   return (
     <>
-      <Button onClick={handleOpen}>Create New Listing Now!</Button>
-
       <Modal
-        open={open}
-        onClose={() => setOpen(false)}
+        open={props.open}
+        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <div className='text-lg font-bold mb-2'>
-            Create a new list
+            Edit a list
           </div>
 
           <form className='flex flex-col gap-2'>
@@ -234,20 +189,6 @@ const ListingCreate = (props) => {
                 id="thumbnail"
                 className="input-tw"
                 onChange={e => handleThumbnail(e)}
-              />
-            </div>
-
-            <div className='flex items-center gap-2'>
-              <label htmlFor="video" className="label-tw">
-                Video Thumbnail
-              </label>
-              <input
-                type="text"
-                name="video"
-                id="video"
-                className="input-tw"
-                placeholder='e.g. https://www.youtube.com/...'
-                onChange={e => setVideo(e.target.value)}
               />
             </div>
 
@@ -322,7 +263,7 @@ const ListingCreate = (props) => {
               />
             </div>
 
-            <Button onClick={(e) => create(e)}>
+            <Button onClick={(e) => edit(e)}>
               Create
             </Button>
           </form>
@@ -332,4 +273,4 @@ const ListingCreate = (props) => {
   )
 }
 
-export default ListingCreate
+export default ListingEditModal;

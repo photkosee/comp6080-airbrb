@@ -1,13 +1,14 @@
 // This file can be deleted if you'd like
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import AvailableModal from './components/AvailableModal';
 import { Button } from '@mui/material';
-import BookingModal from './components/BookingModal';
-import ReviewModal from './components/ReviewModal';
+import userEvent from '@testing-library/user-event';
+import AvailableModal from './components/modals/AvailableModal';
+import BookingModal from './components/modals/BookingModal';
+import ReviewModal from './components/modals/ReviewModal';
 
-test('renders available modal', async () => {
+// testing the modal for inputting the availability when publishing
+test('Rendering available modal', async () => {
   render(
     <AvailableModal
       listingId={''}
@@ -33,6 +34,7 @@ test('renders available modal', async () => {
   setTimeout(() => {
     expect(deleteButtons.length).toBeGreaterThan(1);
   }, 1000);
+
   userEvent.click(addButton);
   setTimeout(() => {
     expect(deleteButtons.length).toBeGreaterThan(2);
@@ -41,6 +43,7 @@ test('renders available modal', async () => {
   setTimeout(() => {
     const deleteButton = screen.getByText('delete');
     userEvent.click(deleteButton);
+
     setTimeout(() => {
       const deletedButton = screen.queryByText('delete');
       expect(deletedButton).toBeNull();
@@ -48,7 +51,8 @@ test('renders available modal', async () => {
   }, 1000);
 });
 
-test('renders booking modal', async () => {
+// testing the modal for inputting when booking a list
+test('Rendering booking modal', async () => {
   render(
     <BookingModal
       open={true}
@@ -70,13 +74,16 @@ test('renders booking modal', async () => {
   userEvent.type(dateMin, '2023-01-01');
   userEvent.type(dateMax, '2023-01-02');
   userEvent.click(confirm);
+
   setTimeout(() => {
     const text = screen.getByText(/Check In/i);
     expect(text).toBeNull();
   }, 1000);
 });
 
-test('renders review modal', async () => {
+// testing the modal for inputting when leaving a review
+// (both rating and commenting)
+test('Rendering review modal', async () => {
   render(
     <ReviewModal
       openReview={true}
@@ -98,6 +105,7 @@ test('renders review modal', async () => {
   const rating = screen.getByTestId('rating');
   expect(rating).toBeInTheDocument();
   userEvent.click(send);
+
   setTimeout(() => {
     const text = screen.getByText(/Rating:/i);
     expect(text).toBeNull();
