@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-
 import { Navbar } from '../navbar/Navbar';
 import GuestCard from '../cards/GuestCard';
 import Button from '@mui/material/Button';
 import FilterModal from '../modals/FilterModal';
 import { TextField } from '@mui/material';
+import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 export const LandingPage = (props) => {
   const [list, setList] = useState([]);
@@ -290,8 +291,14 @@ export const LandingPage = (props) => {
           type="text"
         />
 
-        <Button onClick={() => setOpen(true)}>Other filters</Button>
-        <Button onClick={() => clearFilter()}>Clear filters</Button>
+        <Button onClick={() => setOpen(true)} className="flex gap-1">
+          Other filters
+          <FilterAltIcon fontSize="small" />
+        </Button>
+        <Button onClick={() => clearFilter()} className="flex gap-1">
+          Clear filters
+          <FilterAltOffIcon fontSize="small" />
+        </Button>
 
         <FilterModal
           open={open}

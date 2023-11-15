@@ -15,6 +15,10 @@ import ReviewModal from '../modals/ReviewModal';
 import TooltipModal from '../modals/TooltipModal';
 import RatingCommentModal from '../modals/RatingCommnetModal';
 import BookingCard from '../cards/BookingCard';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import BookIcon from '@mui/icons-material/Book';
 
 const ListingView = (props) => {
   const [data, setData] = useState(null);
@@ -293,7 +297,10 @@ const ListingView = (props) => {
               {
                 localStorage.getItem('token') &&
                 <div className="flex w-full justify-center mt-5">
-                  <Button className="w-full" onClick={() => handleOpen()}>Book</Button>
+                  <Button className="w-full flex gap-2" onClick={() => handleOpen()}>
+                    Book
+                    <BookIcon fontSize="small" />
+                  </Button>
                 </div>
               }
 
@@ -302,7 +309,10 @@ const ListingView = (props) => {
                   parseInt(e.listingId) === parseInt(id)
                 ) &&
                 <div className="flex w-full justify-center">
-                  <Button className="w-full" onClick={() => handleOpenReview()}>Review</Button>
+                  <Button className="w-full flex gap-2" onClick={() => handleOpenReview()}>
+                    Review
+                    <RateReviewIcon fontSize="small" />
+                  </Button>
                 </div>
               }
             </CardContent>
@@ -423,8 +433,13 @@ const ListingView = (props) => {
 
                           {
                             e.status === 'pending' &&
-                            <Button onClick={() => cancleBooking(e.id)}>
-                              ^ Cancel booking
+                            <Button
+                              className="flex gap-1"
+                              onClick={() => cancleBooking(e.id)}
+                            >
+                              <ArrowDropUpIcon fontSize="small" />
+                              Cancel booking
+                              <HighlightOffIcon fontSize="small" />
                             </Button>
                           }
                         </>

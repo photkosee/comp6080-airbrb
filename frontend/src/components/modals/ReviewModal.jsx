@@ -3,6 +3,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { Button, IconButton, Input, Rating } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import SendIcon from '@mui/icons-material/Send';
 
 // style for MUI box
 export const style = {
@@ -29,17 +30,17 @@ const ReviewModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className='text-lg font-bold mb-5'>
+          <div className="text-lg font-bold mb-5">
             Leave your Feedback
           </div>
 
-          <Box className='absolute top-2 right-2'>
+          <Box className="absolute top-2 right-2">
             <IconButton onClick={() => props.setOpenReview(false)}>
               <CloseIcon />
             </IconButton>
           </Box>
 
-          <div className='flex flex-col flex-wrap gap-2 w-full'>
+          <div className="flex flex-col flex-wrap gap-2 w-full">
             Rating:
             <Rating
               name="half-rating"
@@ -51,13 +52,14 @@ const ReviewModal = (props) => {
 
             Comments:
             <Input
-              type='text'
+              type="text"
               value={props.text}
               onChange={e => props.setText(e.target.value)}
             />
 
-            <Button onClick={() => { props.uploadReview() }}>
+            <Button onClick={() => { props.uploadReview() }} className="flex gap-2">
               Send
+              <SendIcon fontSize="small" />
             </Button>
           </div>
         </Box>

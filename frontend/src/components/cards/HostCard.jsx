@@ -8,6 +8,10 @@ import Typography from '@mui/material/Typography';
 import ListingEdit from '../modals/ListingEditModal';
 import AvailableModal from '../modals/AvailableModal';
 import { useNavigate } from 'react-router-dom';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import PublicOffIcon from '@mui/icons-material/PublicOff';
+import PublicIcon from '@mui/icons-material/Public';
 
 const HostCard = (props) => {
   const [published, setPublished] = useState(props.item.published);
@@ -115,22 +119,28 @@ const HostCard = (props) => {
         <CardActions>
           <div className="flex flex-col gap-2 w-full justify-center items-center">
             <div className="flex justify-between w-full gap-1">
-              <Button size="small" className="flex-1" onClick={() => setOpenEdit(true)}>
+              <Button size="small" className="flex-1 gap-1" onClick={
+                () => setOpenEdit(true)
+              }>
                 Edit
+                <ModeEditIcon fontSize="small" />
               </Button>
-              <Button size="small" className="flex-1" onClick={deleteList}>
+              <Button size="small" className="flex-1 gap-1" onClick={deleteList}>
                 Delete
+                <DeleteForeverIcon fontSize="small" />
               </Button>
 
               {
                 published
-                  ? <Button size="small" className="flex-1" onClick={unpublish}>
+                  ? <Button size="small" className="flex-1 gap-1" onClick={unpublish}>
                       Unpublish
+                      <PublicOffIcon fontSize="small" />
                     </Button>
-                  : <Button size="small" className="flex-1" onClick={
+                  : <Button size="small" className="flex-1 gap-1" onClick={
                       () => setOpenPublish(true)
                     }>
                       Publish
+                      <PublicIcon fontSize="small" />
                     </Button>
               }
             </div>

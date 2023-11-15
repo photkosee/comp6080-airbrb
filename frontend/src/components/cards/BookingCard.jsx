@@ -5,6 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Chip } from '@mui/material';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
 const BookingCard = (props) => {
   return (
@@ -23,11 +25,18 @@ const BookingCard = (props) => {
             props.hasStatus
               ? <Chip label={props.status} variant="outlined" />
               : <>
-                  <Button size="small" className="flex-1" onClick={props.acceptBooking}>
+                  <Button size="small" className="flex-1 gap-1"
+                    onClick={props.acceptBooking}
+                  >
                     Accept
+                    <ThumbUpAltIcon fontSize="small" />
                   </Button>
-                  <Button size="small" className="flex-1" onClick={props.declineBooking}>
+
+                  <Button size="small" className="flex-1 gap-1"
+                    onClick={props.declineBooking}
+                  >
                     Decline
+                    <ThumbDownAltIcon fontSize="small" />
                   </Button>
                 </>
           }

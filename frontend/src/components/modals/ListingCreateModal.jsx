@@ -6,6 +6,7 @@ import { IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
 import ListingCreateJsonModal from './ListingCreateJsonModal';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 // converting an image file into date url
 export function fileToDataUrl (file) {
@@ -147,7 +148,10 @@ const ListingCreateModal = (props) => {
 
   return (
     <>
-      <Button onClick={handleOpen}>Host a new list</Button>
+      <Button onClick={handleOpen} className="flex gap-2">
+        Host a new list
+        <AddCircleOutlineIcon fontSize="small" />
+      </Button>
 
       <Modal
         open={open}
