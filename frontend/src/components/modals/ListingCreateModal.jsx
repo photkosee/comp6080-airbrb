@@ -4,6 +4,8 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { style } from './ReviewModal';
+import ListingCreateJsonModal from './ListingCreateJsonModal';
 
 // converting an image file into date url
 export function fileToDataUrl (file) {
@@ -39,6 +41,7 @@ const ListingCreateModal = (props) => {
   const [bathroomNumber, setBathroomNumber] = useState(0);
   const [propertyAmenities, setpropertyAmenities] = useState('');
   const [open, setOpen] = useState(false);
+  const [openCreateJson, setOpenCreateJson] = useState(false);
   const [bed, setBed] = useState([
     { type: '', number: 0 }
   ]);
@@ -96,21 +99,6 @@ const ListingCreateModal = (props) => {
       setThumbnail(data);
     });
   }
-
-  // style for MUI box
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 'lg',
-    maxHeight: '100vh',
-    overflowY: 'auto'
-  };
 
   // creating the new list
   const create = async (e) => {
@@ -173,7 +161,7 @@ const ListingCreateModal = (props) => {
           </div>
 
           <Box className='absolute top-2 right-2'>
-            <IconButton onClick={() => props.setOpen(false)}>
+            <IconButton onClick={() => setOpen(false)}>
               <CloseIcon />
             </IconButton>
           </Box>
@@ -332,9 +320,19 @@ const ListingCreateModal = (props) => {
             <Button onClick={(e) => create(e)}>
               Create
             </Button>
+            <Button onClick={() => setOpenCreateJson(true)}>
+              Create by JSON file
+            </Button>
           </form>
         </Box>
       </Modal>
+
+      <ListingCreateJsonModal
+        getList={() => props.getList()}
+        open={openCreateJson}
+        setOpen={setOpenCreateJson}
+        setAllOpen={setOpen}
+      />
     </>
   );
 }
