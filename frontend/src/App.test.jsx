@@ -1,24 +1,14 @@
 // This file can be deleted if you'd like
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-// import App from './App';
-// import Login from './components/Login';
-// import PageList from './PageList';
-// import { Router } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 import AvailableModal from './components/AvailableModal';
 import { Button } from '@mui/material';
 
-// test('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/o/i); // random letter
-//   expect(linkElement).toBeInTheDocument();
-// });
-
-test('renders available modal', () => {
+test('renders available modal', async () => {
   render(
     <AvailableModal
       listingId={''}
-      token={localStorage.getItem('token')}
       open={true}
       setOpen={() => {}}
       publish={() => {}}
@@ -32,5 +22,25 @@ test('renders available modal', () => {
   const submit = screen.getByRole('button', { name: /Submit/i });
   expect(submit).toBeInTheDocument();
   render(<Button name="Add more" />);
-  screen.debug();
+  const deleteButtons = screen.getAllByText(/delete/i);
+  expect(text).toBeInTheDocument();
+
+  const addButton = screen.getByText('Add more');
+  userEvent.click(addButton);
+  setTimeout(() => {
+    expect(deleteButtons.length).toBeGreaterThan(1);
+  }, 1000);
+  userEvent.click(addButton);
+  setTimeout(() => {
+    expect(deleteButtons.length).toBeGreaterThan(2);
+  }, 1000);
+
+  setTimeout(() => {
+    const deleteButton = screen.getByText('delete');
+    userEvent.click(deleteButton);
+    setTimeout(() => {
+      const deletedButton = screen.queryByText('delete');
+      expect(deletedButton).toBeNull();
+    }, 1000);
+  }, 1000);
 });
