@@ -60,17 +60,6 @@ const ManageBooking = (props) => {
       alert(data.error);
     } else {
       showBookings();
-
-      listBooking.forEach(e => {
-        if (
-          parseInt(e.listingId) === parseInt(id) &&
-          e.status === 'accepted'
-        ) {
-          setSumBooking(prev =>
-            prev + timeDiff(e.dateRange.end, e.dateRange.start)
-          );
-        }
-      });
     }
   };
 
@@ -90,6 +79,18 @@ const ManageBooking = (props) => {
     } else {
       const tmp = data.bookings;
       setListBooking(tmp.filter(e => e.listingId === id));
+
+      tmp.filter(e => e.listingId === id).forEach(e => {
+        if (
+          parseInt(e.listingId) === parseInt(id) &&
+          e.status === 'accepted' &&
+          new Date(e.dateRange.start).getFullYear() === new Date().getFullYear()
+        ) {
+          setSumBooking(prev =>
+            prev + timeDiff(e.dateRange.end, e.dateRange.start)
+          );
+        }
+      });
     }
   };
 
@@ -113,10 +114,10 @@ const ManageBooking = (props) => {
         }
 
         <div>
-          Total booked time: {sumBooking} Days
+          Total booked time this year: {sumBooking} Days
         </div>
         <div>
-          Total profits: {sumBooking} Days
+          Total profits this year: {sumBooking * localStorage.getItem('price')} $
         </div>
         <div>
           Requests:
