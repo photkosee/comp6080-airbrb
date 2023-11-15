@@ -26,6 +26,7 @@ const BookingModal = (props) => {
                     props.setDateMin(e.$d);
                     localStorage.setItem('dateMin', e.$d);
                   }}
+                  label='dateMin'
                 />
                 Check Out:&nbsp;
                 <DatePicker
@@ -33,6 +34,7 @@ const BookingModal = (props) => {
                     props.setDateMax(e.$d);
                     localStorage.setItem('dateMax', e.$d);
                   }}
+                  label='dateMax'
                 />
               </LocalizationProvider>
               <Button onClick={() => { props.confirmBook() }}>

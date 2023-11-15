@@ -29,13 +29,16 @@ const ReviewModal = (props) => {
       >
         <Box sx={style}>
           <div className='flex flex-col flex-wrap gap-2 w-full'>
+            Rating:
             <Rating
               name="half-rating"
               value={parseFloat(props.rate)}
               onChange={e => props.setRate(parseFloat(e.target.value))}
               precision={1}
+              data-testid="rating"
             />
 
+            Comments:
             <Input
               type='text'
               value={props.text}
