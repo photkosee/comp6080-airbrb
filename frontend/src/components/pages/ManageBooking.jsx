@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
-import StatusCard from '../cards/StatusCard';
 import BookingCard from '../cards/BookingCard';
 
 const ManageBooking = (props) => {
@@ -134,15 +133,17 @@ const ManageBooking = (props) => {
                     dateRange={e.dateRange}
                     acceptBooking={() => acceptBooking(e.id)}
                     declineBooking={() => declineBooking(e.id)}
+                    hasStatus={false}
                   />
                 )
               } else {
                 return (
-                  <StatusCard
+                  <BookingCard
                     key={idx}
                     owner={e.owner}
                     dateRange={e.dateRange}
                     status={e.status}
+                    hasStatus={true}
                   />
                 )
               }

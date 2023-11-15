@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { fileToDataUrl } from './ListingCreateModal';
-import { Button, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const ListingEditModal = (props) => {
   const [title, setTitle] = useState('');
@@ -122,9 +123,15 @@ const ListingEditModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className='text-lg font-bold mb-2'>
-            Edit a list
+          <div className='text-lg font-bold mb-5'>
+            Edit this list
           </div>
+
+          <Box className='absolute top-2 right-2'>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
 
           <form className='flex flex-col gap-2'>
             <TextField

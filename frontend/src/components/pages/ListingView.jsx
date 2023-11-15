@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardMedia,
+  CircularProgress,
   Rating,
   Typography
 } from '@mui/material';
@@ -193,7 +194,11 @@ const ListingView = (props) => {
   }
 
   if (!data || data === null) {
-    return <>loading</>;
+    return (
+      <div className='w-full h-full flex justify-center items-center'>
+        <CircularProgress />
+      </div>
+    );
   } else {
     return (
       <>
@@ -255,26 +260,23 @@ const ListingView = (props) => {
                 Number of reviews: {data.listing.reviews.length}
               </Typography>
 
-              <div className='flex flex-col text-sm'>
-                <div>
-                  Bedrooms:
-                </div>
-                <div className='flex flex-col flex-wrap'>
-                  {
-                    data.listing.metadata.bedrooms.map((e, idx) => {
-                      return (
-                        <div key={idx}>
-                          &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type}, Number of beds: {e.number}
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
+              <Typography variant="body2" color="text.secondary">
+                Bedrooms:
+              </Typography>
+              {
+                data.listing.metadata.bedrooms.map((e, idx) => {
+                  return (
+                    <Typography variant="body2" color="text.secondary" key={idx}>
+                      &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type}, Number of beds: {e.number}
+                    </Typography>
+                  )
+                })
+              }
 
               <div
                 className='flex items-center justify-center gap-2 text-sm my-2'
-                onMouseEnter={() => setOpenTooltip(true)}
+                role='button'
+                onClick={() => setOpenTooltip(true)}
               >
                 Rating:&nbsp;
                 <Rating
@@ -287,22 +289,20 @@ const ListingView = (props) => {
                 &nbsp;{calculateRating()}
               </div>
 
-              <div className='flex flex-col text-sm'>
-                <div>
-                  Comments:
-                </div>
-                <div className='flex flex-col'>
-                  {
-                    data.listing.reviews.map((e, idx) => {
-                      return (
-                        <div key={idx} className='flex flex-wrap'>
-                          &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
+              <Typography variant="body2" color="text.secondary">
+                Comments:
+              </Typography>
+              {
+                data.listing.reviews.map((e, idx) => {
+                  return (
+                    <Typography variant="body2" color="text.secondary"
+                      key={idx} className='flex flex-wrap'
+                    >
+                      &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
+                    </Typography>
+                  )
+                })
+              }
 
               {
                 localStorage.getItem('token') &&
@@ -356,7 +356,7 @@ const ListingView = (props) => {
           />
         </div>
       </>
-    )
+    );
   }
 }
 

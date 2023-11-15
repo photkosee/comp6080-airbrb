@@ -1,7 +1,8 @@
 import React from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { Button, Input, Rating } from '@mui/material';
+import { Button, IconButton, Input, Rating } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 // style for MUI box
 export const style = {
@@ -9,7 +10,7 @@ export const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 300,
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
@@ -28,6 +29,16 @@ const ReviewModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <div className='text-lg font-bold mb-5'>
+            Leave your Feedback
+          </div>
+
+          <Box className='absolute top-2 right-2'>
+            <IconButton onClick={() => props.setOpenReview(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
           <div className='flex flex-col flex-wrap gap-2 w-full'>
             Rating:
             <Rating

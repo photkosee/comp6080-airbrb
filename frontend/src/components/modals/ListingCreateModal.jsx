@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 // converting an image file into date url
 export function fileToDataUrl (file) {
@@ -167,9 +168,15 @@ const ListingCreateModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className='text-lg font-bold mb-2'>
+          <div className='text-lg font-bold mb-5'>
             Create a new list
           </div>
+
+          <Box className='absolute top-2 right-2'>
+            <IconButton onClick={() => props.setOpen(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
 
           <form className='flex flex-col gap-2'>
             <TextField

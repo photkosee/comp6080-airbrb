@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { style } from './ReviewModal';
+import CloseIcon from '@mui/icons-material/Close';
 
 const AvailableModal = (props) => {
   const [range, setRange] = useState([
@@ -88,26 +89,34 @@ const AvailableModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className='text-lg font-bold mb-2'>
-            Pick availabiity date range(s)
+          <div className='text-lg font-bold mb-5'>
+            Pick available range(s)
           </div>
 
-          <form className='flex flex-col gap-2'>
+          <Box className='absolute top-2 right-2'>
+            <IconButton onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          <form className='flex flex-col gap-3'>
             {
               range.map((input, idx) => {
                 return (
-                  <div key={idx} className='flex'>
+                  <div key={idx} className='flex flex-col gap-1'>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         onChange={e => {
                           handleOnChangeStart(e, idx);
                         }}
+                        label='Check in'
                       />
 
                       <DatePicker
                         onChange={e => {
                           handleOnChangeEnd(e, idx);
                         }}
+                        label='Check out'
                       />
                     </LocalizationProvider>
 

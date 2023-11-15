@@ -276,7 +276,7 @@ export const LandingPage = (props) => {
         setToken={props.setToken} page='/'
       />
 
-      <div className='flex justify-center items-center flex-wrap pt-5 mb-5'>
+      <div className='flex justify-center items-center flex-wrap pt-5 mb-5 gap-2'>
         <TextField
           label="Search for titles or cities"
           variant="outlined"
