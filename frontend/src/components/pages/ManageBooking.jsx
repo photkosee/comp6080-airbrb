@@ -193,7 +193,6 @@ const ManageBooking = (props) => {
                     dateRange={e.dateRange}
                     acceptBooking={() => acceptBooking(e.id)}
                     declineBooking={() => declineBooking(e.id)}
-                    hasStatus={false}
                   />
                 )
               } else {
@@ -203,7 +202,7 @@ const ManageBooking = (props) => {
                     owner={e.owner}
                     dateRange={e.dateRange}
                     status={e.status}
-                    hasStatus={true}
+                    hasStatus
                   />
                 )
               }

@@ -91,7 +91,7 @@ const HostCard = (props) => {
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
-            Bathroom Number: {props.item.metadata.bathroomNumber}
+            Number of bathrooms: {props.item.metadata.bathroomNumber}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Price per night: {props.item.price} $
@@ -113,22 +113,30 @@ const HostCard = (props) => {
         </CardContent>
 
         <CardActions>
-          <div className='flex flex-col gap-2 w-full justify-center items-center'>
-            <div className='flex gap-1'>
-              <Button size="small" onClick={() => setOpenEdit(true)}>Edit</Button>
-              <Button size="small" onClick={deleteList}>Delete</Button>
+          <div className="flex flex-col gap-2 w-full justify-center items-center">
+            <div className="flex justify-between w-full gap-1">
+              <Button size="small" className="flex-1" onClick={() => setOpenEdit(true)}>
+                Edit
+              </Button>
+              <Button size="small" className="flex-1" onClick={deleteList}>
+                Delete
+              </Button>
 
               {
                 published
-                  ? <Button size="small" onClick={unpublish}>Unpublish</Button>
-                  : <Button size="small" onClick={() => setOpenPublish(true)}>
+                  ? <Button size="small" className="flex-1" onClick={unpublish}>
+                      Unpublish
+                    </Button>
+                  : <Button size="small" className="flex-1" onClick={
+                      () => setOpenPublish(true)
+                    }>
                       Publish
                     </Button>
               }
             </div>
 
-            <div className='flex justify-center'>
-              <Button size="small" onClick={() => {
+            <div className="flex justify-center w-full">
+              <Button size="small" className="w-full" onClick={() => {
                 localStorage.setItem('postedOn', props.item.postedOn);
                 localStorage.setItem('price', props.item.price);
                 navigate(`/dashboard/${props.item.id}`);

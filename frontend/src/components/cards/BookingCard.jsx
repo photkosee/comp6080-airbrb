@@ -14,21 +14,24 @@ const BookingCard = (props) => {
           User: {props.owner}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          From: {props.dateRange.start.substring(0, 10)}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          To: {props.dateRange.end.substring(0, 10)}
+          {props.dateRange.start.substring(0, 10)} : {props.dateRange.end.substring(0, 10)}
         </Typography>
       </CardContent>
       <CardActions>
-        {
-          props.hasStatus
-            ? <Chip label={props.status} variant="outlined" />
-            : <>
-                <Button size="small" onClick={props.acceptBooking}>Accept</Button>
-                <Button size="small" onClick={props.declineBooking}>Decline</Button>
-              </>
-        }
+        <div className='flex justify-between gap-1'>
+          {
+            props.hasStatus
+              ? <Chip label={props.status} variant="outlined" />
+              : <>
+                  <Button size="small" className="flex-1" onClick={props.acceptBooking}>
+                    Accept
+                  </Button>
+                  <Button size="small" className="flex-1" onClick={props.declineBooking}>
+                    Decline
+                  </Button>
+                </>
+          }
+        </div>
       </CardActions>
     </Card>
   );

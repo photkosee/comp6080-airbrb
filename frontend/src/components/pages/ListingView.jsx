@@ -14,13 +14,14 @@ import BookingModal from '../modals/BookingModal';
 import ReviewModal from '../modals/ReviewModal';
 import TooltipModal from '../modals/TooltipModal';
 import RatingCommentModal from '../modals/RatingCommnetModal';
+import BookingCard from '../cards/BookingCard';
 
 const ListingView = (props) => {
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
   const [dateMax, setDateMax] = useState('');
   const [dateMin, setDateMin] = useState('');
-  const [list, setList] = useState([]);
+  const [listBookings, setListBookings] = useState([]);
   const [openReview, setOpenReview] = useState(false);
   const [rate, setRate] = useState(0);
   const [text, setText] = useState('');
@@ -33,12 +34,12 @@ const ListingView = (props) => {
   // starting with fetching a list of all bookings and a list of listings
   useEffect(() => {
     getData();
-    showBookings();
+    getBookings();
   }, []);
 
   // filter those listings that the user booked
   useEffect(() => {
-    list.forEach(e => {
+    listBookings.forEach(e => {
       if (
         e.owner === localStorage.getItem('email') &&
         parseInt(e.listingId) === parseInt(id)
@@ -46,7 +47,7 @@ const ListingView = (props) => {
         setBookingId(e.id);
       }
     })
-  }, [list]);
+  }, [listBookings]);
 
   // event when open a review modal form
   const handleOpenReview = () => {
@@ -76,7 +77,7 @@ const ListingView = (props) => {
   }
 
   // getting a list of all bookings
-  const showBookings = async () => {
+  const getBookings = async () => {
     if (localStorage.getItem('token')) {
       const response = await fetch('http://localhost:5005/bookings', {
         method: 'GET',
@@ -91,7 +92,7 @@ const ListingView = (props) => {
         alert(data.error);
       } else if (data.bookings) {
         const tmp = data.bookings;
-        setList(tmp);
+        setListBookings(tmp);
       }
     }
   };
@@ -159,7 +160,7 @@ const ListingView = (props) => {
       } else {
         getData();
         setOpen(false);
-        showBookings();
+        getBookings();
         alert('Booking success');
       }
     } else {
@@ -191,6 +192,25 @@ const ListingView = (props) => {
     setDateMin('');
     setDateMax('');
     setOpen(true);
+  }
+
+  // cancel a pending booking with given id
+  const cancleBooking = async (bId) => {
+    const response = await fetch(`http://localhost:5005/bookings/${bId}`, {
+      method: 'Delete',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      getBookings();
+      alert('Cancel successfully');
+    }
   }
 
   if (!data || data === null) {
@@ -272,17 +292,17 @@ const ListingView = (props) => {
 
               {
                 localStorage.getItem('token') &&
-                <div className='flex w-full justify-center'>
-                  <Button onClick={() => handleOpen()}>Book</Button>
+                <div className="flex w-full justify-center mt-5">
+                  <Button className="w-full" onClick={() => handleOpen()}>Book</Button>
                 </div>
               }
 
               {
-                list.some(e => e.owner === localStorage.getItem('email') &&
+                listBookings.some(e => e.owner === localStorage.getItem('email') &&
                   parseInt(e.listingId) === parseInt(id)
                 ) &&
-                <div className='flex w-full justify-center'>
-                  <Button onClick={() => handleOpenReview()}>Review</Button>
+                <div className="flex w-full justify-center">
+                  <Button className="w-full" onClick={() => handleOpenReview()}>Review</Button>
                 </div>
               }
             </CardContent>
@@ -373,6 +393,48 @@ const ListingView = (props) => {
               </div>
             </CardContent>
           </Card>
+
+          {
+            localStorage.getItem('token') &&
+            <Card sx={{ maxWidth: 300 }}>
+              <CardContent>
+                <div className='flex justify-center mb-1'>
+                  <Typography variant="body2" color="text.secondary">
+                    Your bookings
+                  </Typography>
+                </div>
+
+                <div className='flex flex-col gap-1'>
+                  {
+                    listBookings.filter(e =>
+                      e.owner === localStorage.getItem('email') &&
+                      e.listingId === id &&
+                      e.status
+                    ).map((e, idx) => {
+                      return (
+                        <>
+                          <BookingCard
+                            key={idx}
+                            owner={e.owner}
+                            dateRange={e.dateRange}
+                            status={e.status}
+                            hasStatus
+                          />
+
+                          {
+                            e.status === 'pending' &&
+                            <Button onClick={() => cancleBooking(e.id)}>
+                              ^ Cancel booking
+                            </Button>
+                          }
+                        </>
+                      );
+                    })
+                  }
+                </div>
+              </CardContent>
+            </Card>
+          }
         </div>
       </>
     );

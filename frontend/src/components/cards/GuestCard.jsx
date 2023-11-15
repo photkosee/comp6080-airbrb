@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
+import { Chip, Rating } from '@mui/material';
 
 const GuestCard = (props) => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const GuestCard = (props) => {
   return (
     <>
       <Card
-        sx={{ width: 350 }}
+        sx={{ width: 300 }}
         onClick={() => navigate(`/listing/${props.item.id}`)}
         role="button"
       >
@@ -32,16 +33,37 @@ const GuestCard = (props) => {
               ></iframe>
         }
 
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+        <CardContent className="relative">
+          <Typography gutterBottom variant="h5" component="div" className="px-1">
             {props.item.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Number of total reviews: {props.item.reviews.length}
+          <Typography gutterBottom variant="body5" component="div" className="px-1">
+            {props.item.address.city}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Rating: {(props.item.rating).toFixed(2)}
+          <Typography variant="body2" color="text.secondary" className="px-1">
+            Price per night: {props.item.price} $
           </Typography>
+          <Typography variant="body2" color="text.secondary" className="px-1">
+            Number of reviews: {props.item.reviews.length}
+          </Typography>
+
+          <Rating
+            name="read-rating"
+            value={parseFloat((props.item.rating).toFixed(2))}
+            size="small"
+            precision={0.1}
+            readOnly
+          />
+
+          {
+            props.bookingIds.includes(parseInt(props.item.id)) &&
+            <Chip label="booked" variant="outlined" className="absolute bottom-3 right-3" />
+          }
+
+          {
+            props.item.owner === localStorage.getItem('email') &&
+            <Chip label="owner" variant="outlined" className="absolute bottom-3 right-3" />
+          }
         </CardContent>
       </Card>
     </>

@@ -34,6 +34,7 @@ export const Navbar = (props) => {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div"
+              role="button"
               sx={{ flexGrow: 1 }}
               onClick={() => navigate('/')}
             >

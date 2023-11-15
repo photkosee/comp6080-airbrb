@@ -16,6 +16,7 @@ export const LandingPage = (props) => {
   const [bedroomNumber, setBedroomNumber] = useState('');
   const [sort, setSort] = useState(0);
   const [open, setOpen] = useState(false);
+  const [bookingIds, setBookingIds] = useState([]);
 
   // start with clearing all filtering and getting a list of all bookings
   // for ordering
@@ -165,6 +166,10 @@ export const LandingPage = (props) => {
       alert(data.error);
     } else {
       getList(data.bookings);
+      setBookingIds(data.bookings.filter(e =>
+        e.owner === localStorage.getItem('email') &&
+        (e.status === 'accepted' || e.status === 'pending')
+      ).map(e => parseInt(e.listingId)));
     }
   }
 
@@ -273,16 +278,16 @@ export const LandingPage = (props) => {
     <>
       <Navbar
         token={localStorage.getItem('token')}
-        setToken={props.setToken} page='/'
+        setToken={props.setToken} page="/"
       />
 
-      <div className='flex justify-center items-center flex-wrap pt-5 mb-5 gap-2'>
+      <div className="flex justify-center items-center flex-wrap pt-5 mb-5 gap-2">
         <TextField
           label="Search for titles or cities"
           variant="outlined"
           value={nameSearch}
           onChange={e => setNameSearch(e.target.value)}
-          type='text'
+          type="text"
         />
 
         <Button onClick={() => setOpen(true)}>Other filters</Button>
@@ -304,13 +309,13 @@ export const LandingPage = (props) => {
         />
       </div>
 
-      <div className='flex flex-wrap gap-2 justify-center mb-5'>
+      <div className="flex flex-wrap gap-2 justify-center mb-5">
         {
           list.map((item, idx) => {
             if (applyFilter(item)) {
               return (
-              <GuestCard key={idx} item={item} />
-              )
+                <GuestCard key={idx} item={item} bookingIds={bookingIds} />
+              );
             } else {
               return null;
             }
