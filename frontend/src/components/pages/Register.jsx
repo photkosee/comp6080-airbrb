@@ -11,7 +11,7 @@ const Register = (props) => {
 
   // registering event
   const register = async () => {
-    if (password === setConfirmPassword) {
+    if (password === confirmPassword) {
       const response = await fetch('http://localhost:5005/user/auth/register', {
         method: 'POST',
         body: JSON.stringify({

@@ -246,9 +246,9 @@ const ListingView = (props) => {
                         Total price:&nbsp;
                         {calculatePrice(
                           localStorage.getItem('dateMin'), localStorage.getItem('dateMax')
-                        )}
+                        )} $
                       </>
-                    : <>Price per night: {data.listing.price}</>
+                    : <>Price per night: {data.listing.price} $</>
                 }
               </Typography>
               <Typography variant="body2" color="text.secondary">

@@ -158,7 +158,7 @@ const ListingCreateModal = (props) => {
 
   return (
     <>
-      <Button onClick={handleOpen}>Create New Listing Now!</Button>
+      <Button onClick={handleOpen}>Host a new list</Button>
 
       <Modal
         open={open}
@@ -253,7 +253,7 @@ const ListingCreateModal = (props) => {
 
             <div className='flex items-center gap-2'>
               <TextField
-                label="Price per night"
+                label="Price per night ($)"
                 variant="outlined"
                 value={price}
                 onChange={e => setPrice(e.target.value)}

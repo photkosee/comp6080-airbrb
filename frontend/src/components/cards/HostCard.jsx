@@ -94,7 +94,7 @@ const HostCard = (props) => {
             Bathroom Number: {props.item.metadata.bathroomNumber}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Price per night: {props.item.price}
+            Price per night: {props.item.price} $
           </Typography>
 
           <Typography variant="body2" color="text.secondary">

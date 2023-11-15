@@ -194,7 +194,7 @@ const ListingEditModal = (props) => {
 
             <div className='flex items-center gap-2'>
               <TextField
-                label="Price per night"
+                label="Price per night ($)"
                 variant="outlined"
                 value={price}
                 onChange={e => setPrice(e.target.value)}
