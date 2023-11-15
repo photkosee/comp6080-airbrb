@@ -93,7 +93,7 @@ const ManageBooking = (props) => {
     setProfitData(tmp);
   }
 
-  // get a list of all bookings
+  // showing a list of all bookings
   const showBookings = async () => {
     const response = await fetch('http://localhost:5005/bookings', {
       method: 'GET',
@@ -111,7 +111,7 @@ const ManageBooking = (props) => {
       setListBooking(tmp.filter(e => e.listingId === id));
       setSumBooking(0);
 
-      calculatePastProfit(tmp)
+      calculatePastProfit(tmp);
       tmp.filter(e => e.listingId === id).forEach(e => {
         if (
           parseInt(e.listingId) === parseInt(id) &&

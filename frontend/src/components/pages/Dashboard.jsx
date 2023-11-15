@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import ListingCreate from '../modals/ListingCreateModal';
 import { Navbar } from '../navbar/Navbar';
 import HostCard from '../cards/HostCard';
+import { Card } from '@mui/material';
+import { BarChart } from '@mui/x-charts';
 
 const Dashboard = (props) => {
   const [list, setList] = useState([]);
+  const [profitData, setProfitData] = useState(Array(31).fill(0));
 
   // start with fetching all the listings
   useEffect(() => {
@@ -31,6 +34,54 @@ const Dashboard = (props) => {
     }
   }
 
+  // calculating profits earning each day for the past 30 days
+  const calculatePastProfit = (listId, bookings, listPrice) => {
+    const tmp = Array(31).fill(0);
+    bookings.filter(e =>
+      listId.includes(parseInt(e.listingId)) &&
+      e.status === 'accepted'
+    ).forEach(e => {
+      const startDate = e.dateRange.start;
+      const endDate = e.dateRange.end;
+
+      for (let i = 0; i <= 30; i++) {
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - i + 1);
+
+        if (
+          new Date(startDate) <= currentDate &&
+          currentDate <= new Date(endDate)
+        ) {
+          tmp[i] += parseInt(listPrice[listId.indexOf(parseInt(e.listingId))]);
+        }
+      }
+    });
+
+    setProfitData(tmp);
+  }
+
+  // getting a list of all bookings
+  const getBookings = async (list) => {
+    const response = await fetch('http://localhost:5005/bookings', {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert(data.error);
+    } else {
+      calculatePastProfit(
+        list.filter(e => e.owner === localStorage.getItem('email')).map(e => e.id),
+        data.bookings,
+        list.filter(e => e.owner === localStorage.getItem('email')).map(e => e.price),
+      );
+    }
+  };
+
   // get all the listings
   const getList = async () => {
     setList([]);
@@ -49,6 +100,7 @@ const Dashboard = (props) => {
       data.listings.forEach((list) => {
         getData(list.id);
       });
+      getBookings(data.listings);
     }
   }
 
@@ -68,6 +120,27 @@ const Dashboard = (props) => {
         />
 
         <div className='flex flex-wrap gap-2 justify-center'>
+          <Card className='flex flex-col items-center justify-center'>
+            <BarChart
+              xAxis={[{
+                scaleType: 'band',
+                data: Array.from({ length: 31 }, (_, index) => index),
+                label: 'number of days ago',
+              }]}
+              yAxis={[{
+                label: '$$ made',
+              }]}
+              series={[
+                {
+                  data: profitData,
+                },
+              ]}
+              width={350}
+              height={200}
+            >
+            </BarChart>
+          </Card>
+
           {
             list.map((item, idx) => {
               if (item.owner !== localStorage.getItem('email')) {
