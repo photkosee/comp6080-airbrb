@@ -298,7 +298,7 @@ const ListingView = (props) => {
                 localStorage.getItem('token') &&
                 <div className="flex w-full justify-center mt-5">
                   <Button className="w-full flex gap-2" onClick={() => handleOpen()}>
-                    Book
+                    Book your stay
                     <BookIcon fontSize="small" />
                   </Button>
                 </div>
@@ -310,7 +310,7 @@ const ListingView = (props) => {
                 ) &&
                 <div className="flex w-full justify-center">
                   <Button className="w-full flex gap-2" onClick={() => handleOpenReview()}>
-                    Review
+                    Leave your review
                     <RateReviewIcon fontSize="small" />
                   </Button>
                 </div>
