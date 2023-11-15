@@ -104,9 +104,9 @@ const ManageBooking = (props) => {
 
       <div className='flex flex-col gap-3 items-center'>
         {
-          localStorage.getItem('postOn') !== 'null'
+          localStorage.getItem('postedOn') !== 'null'
             ? <div>
-                Up online: {timeDiff(null, localStorage.getItem('postOn'))}
+                Up online: {timeDiff(null, localStorage.getItem('postedOn'))}
               </div>
             : <div>
                 Currently not publishing
