@@ -35,15 +35,6 @@ export const Navbar = (props) => {
           <div className="flex flex-wrap justify-between items-center">
             <div className="flex justify-start items-center">
               {
-                props.page === '/' &&
-                <form>
-                  <label htmlFor="topbar-search" className="sr-only">
-                    Search
-                  </label>
-                </form>
-              }
-
-              {
                 props.page.includes('/listing/') &&
                 <Button onClick={() => navigate('/')}>
                   Back
