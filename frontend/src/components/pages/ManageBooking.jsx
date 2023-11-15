@@ -3,7 +3,7 @@ import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
 import BookingCard from '../cards/BookingCard';
 import { Card, CardContent, Typography } from '@mui/material';
-import { LineChart } from '@mui/x-charts';
+import { BarChart } from '@mui/x-charts';
 
 const ManageBooking = (props) => {
   const [listBooking, setListBooking] = useState([]);
@@ -159,8 +159,15 @@ const ManageBooking = (props) => {
           </Card>
 
           <Card>
-            <LineChart
-              xAxis={[{ data: Array.from({ length: 31 }, (_, index) => index) }]}
+            <BarChart
+              xAxis={[{
+                scaleType: 'band',
+                data: Array.from({ length: 31 }, (_, index) => index),
+                label: 'number of days ago',
+              }]}
+              yAxis={[{
+                label: '$$ made',
+              }]}
               series={[
                 {
                   data: profitData,
@@ -168,7 +175,8 @@ const ManageBooking = (props) => {
               ]}
               width={350}
               height={200}
-            />
+            >
+            </BarChart>
           </Card>
         </div>
 
