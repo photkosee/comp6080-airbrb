@@ -232,7 +232,7 @@ const ListingView = (props) => {
                 {data.listing.title}
               </Typography>
               <Typography gutterBottom variant="body1" component="div">
-                Address: {data.listing.address.street},
+                {data.listing.address.street},
                   &nbsp;{data.listing.address.city},
                   &nbsp;{data.listing.address.state},
                   &nbsp;{data.listing.address.postcode},
@@ -242,7 +242,7 @@ const ListingView = (props) => {
                 Property Type: {data.listing.metadata.propertyType}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Bathroom Number: {data.listing.metadata.bathroomNumber}
+                Number of bathrooms: {data.listing.metadata.bathroomNumber}
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 {
@@ -255,9 +255,6 @@ const ListingView = (props) => {
                       </>
                     : <>Price per night: {data.listing.price} $</>
                 }
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Number of reviews: {data.listing.reviews.length}
               </Typography>
 
               <Typography variant="body2" color="text.secondary">
@@ -329,6 +326,7 @@ const ListingView = (props) => {
               <div
                 className='flex flex-wrap items-center justify-center gap-2 text-sm my-2'
                 role='button'
+                onMouseEnter={() => setOpenTooltip(true)}
                 onClick={() => setOpenTooltip(true)}
               >
                 Rating:
@@ -340,6 +338,12 @@ const ListingView = (props) => {
                   readOnly
                 />
                 {calculateRating()}
+              </div>
+
+              <div className='flex justify-center mb-1'>
+                <Typography variant="body2" color="text.secondary">
+                  Number of reviews: {data.listing.reviews.length}
+                </Typography>
               </div>
 
               <div className='flex flex-col gap-1'>
