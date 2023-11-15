@@ -5,7 +5,7 @@ import { IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
 
-const ErrorModal = (props) => {
+const CustomErrorModal = (props) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -35,7 +35,7 @@ const ErrorModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
-export default ErrorModal;
+export default CustomErrorModal;

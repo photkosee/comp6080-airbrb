@@ -55,7 +55,7 @@ const BookingModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default BookingModal;

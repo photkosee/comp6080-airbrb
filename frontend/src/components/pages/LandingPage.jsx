@@ -318,5 +318,5 @@ export const LandingPage = (props) => {
         }
       </div>
     </>
-  )
+  );
 }

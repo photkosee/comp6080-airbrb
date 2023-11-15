@@ -132,7 +132,7 @@ const AvailableModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default AvailableModal;

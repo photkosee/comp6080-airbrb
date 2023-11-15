@@ -96,7 +96,7 @@ const TooltipModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default TooltipModal;

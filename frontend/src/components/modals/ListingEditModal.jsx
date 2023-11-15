@@ -277,7 +277,7 @@ const ListingEditModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default ListingEditModal;

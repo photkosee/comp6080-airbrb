@@ -336,7 +336,7 @@ const ListingCreateModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default ListingCreateModal;

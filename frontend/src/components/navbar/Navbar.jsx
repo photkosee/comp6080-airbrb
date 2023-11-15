@@ -89,5 +89,5 @@ export const Navbar = (props) => {
         </AppBar>
       </Box>
     </>
-  )
+  );
 }

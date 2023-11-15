@@ -63,7 +63,7 @@ const ReviewModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default ReviewModal;

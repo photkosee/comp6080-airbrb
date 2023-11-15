@@ -152,7 +152,7 @@ const ManageBooking = (props) => {
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default ManageBooking;

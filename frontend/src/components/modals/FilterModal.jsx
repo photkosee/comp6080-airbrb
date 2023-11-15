@@ -94,7 +94,7 @@ const FilterModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default FilterModal;

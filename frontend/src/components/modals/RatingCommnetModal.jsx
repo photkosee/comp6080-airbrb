@@ -48,7 +48,7 @@ const RatingCommentModal = (props) => {
         </Box>
       </Modal>
     </>
-  )
+  );
 }
 
 export default RatingCommentModal;
