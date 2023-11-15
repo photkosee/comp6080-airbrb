@@ -23,21 +23,41 @@ export const LandingPage = (props) => {
 
     if (localStorage.getItem('token')) {
       getBookings();
+    } else {
+      getList([]);
     }
   }, []);
 
   // sort by rating
-  const handleSort = (e) => {
-    setSort(e.target.value);
+  const handleSort = (value) => {
+    setSort(value);
     let newList = [...list];
 
-    if (parseInt(e.target.value) === 10) {
+    if (parseInt(value) === 10) {
       newList = [...list].sort((b, a) => a.rating - b.rating);
-    } else if (parseInt(e.target.value) === 20) {
+      setList(newList);
+    } else if (parseInt(value) === 20) {
       newList = [...list].sort((a, b) => a.rating - b.rating);
-    }
+      setList(newList);
+    } else if (parseInt(value) === 0) {
+      setList((prevList) => {
+        const left = [];
+        const right = [];
 
-    setList(newList);
+        for (const listing of prevList) {
+          if (listing.book === false) {
+            right.push(listing);
+          } else {
+            left.push(listing);
+          }
+        }
+
+        left.sort((a, b) => a.title.localeCompare(b.title));
+        right.sort((a, b) => a.title.localeCompare(b.title));
+
+        return [...left, ...right];
+      });
+    }
   }
 
   // calculate average rating
@@ -243,7 +263,7 @@ export const LandingPage = (props) => {
     setDateMax('');
     setDateMin('');
     setBedroomNumber('');
-    setSort(0);
+    handleSort(0);
     localStorage.removeItem('dateMin');
     localStorage.removeItem('dateMax');
   }
@@ -304,7 +324,7 @@ export const LandingPage = (props) => {
           setPriceMin={setPriceMin}
           setPriceMax={setPriceMax}
           sort={sort}
-          handleSort={handleSort}
+          handleSort={e => handleSort(e.target.value)}
         />
       </div>
 
