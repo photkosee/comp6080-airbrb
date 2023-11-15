@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
 import BookingCard from '../cards/BookingCard';
+import { Card, CardContent, Typography } from '@mui/material';
+import { LineChart } from '@mui/x-charts';
 
 const ManageBooking = (props) => {
   const [listBooking, setListBooking] = useState([]);
   const [sumBooking, setSumBooking] = useState(0);
+  const [profitData, setProfitData] = useState(Array(31).fill(0));
   const { id } = useParams();
 
   // start with fetching a list of all bookings
@@ -63,6 +66,33 @@ const ManageBooking = (props) => {
     }
   };
 
+  // calculating profits earning each day for the past 30 days
+  const calculatePastProfit = (list) => {
+    const tmp = Array(31).fill(0);
+
+    list.filter(e =>
+      e.listingId === id &&
+      e.status === 'accepted'
+    ).forEach(e => {
+      const startDate = e.dateRange.start;
+      const endDate = e.dateRange.end;
+
+      for (let i = 0; i <= 30; i++) {
+        const currentDate = new Date();
+        currentDate.setDate(currentDate.getDate() - i + 1);
+
+        if (
+          new Date(startDate) <= currentDate &&
+          currentDate <= new Date(endDate)
+        ) {
+          tmp[i] += parseInt(localStorage.getItem('price'));
+        }
+      }
+    });
+
+    setProfitData(tmp);
+  }
+
   // get a list of all bookings
   const showBookings = async () => {
     const response = await fetch('http://localhost:5005/bookings', {
@@ -80,6 +110,8 @@ const ManageBooking = (props) => {
       const tmp = data.bookings;
       setListBooking(tmp.filter(e => e.listingId === id));
       setSumBooking(0);
+
+      calculatePastProfit(tmp)
       tmp.filter(e => e.listingId === id).forEach(e => {
         if (
           parseInt(e.listingId) === parseInt(id) &&
@@ -102,22 +134,42 @@ const ManageBooking = (props) => {
         page={`/dashboard/${props.id}`}
       />
 
-      <div className='flex flex-col gap-3 items-center pt-5 mb-5'>
-        {
-          localStorage.getItem('postedOn') !== 'null'
-            ? <div>
-                Up online: {timeDiff(null, localStorage.getItem('postedOn'))}
-              </div>
-            : <div>
-                Currently not publishing
-              </div>
-        }
+      <div className='flex flex-col gap-5 items-center pt-5 mb-5'>
+        <div className='flex flex-wrap gap-5 items-center justify-center'>
+          <Card>
+            <CardContent>
+              <Typography gutterBottom variant="body3" component="div">
+                {
+                  localStorage.getItem('postedOn') !== 'null'
+                    ? <div>
+                        Up online: {timeDiff(null, localStorage.getItem('postedOn'))} Days
+                      </div>
+                    : <div>
+                        Currently not publishing
+                      </div>
+                }
+              </Typography>
+              <Typography gutterBottom variant="body5" component="div">
+                Total booked time this year: {sumBooking} Days
+              </Typography>
+              <Typography variant="body5">
+                Total profits this year: {sumBooking * localStorage.getItem('price')} $
+              </Typography>
+            </CardContent>
+          </Card>
 
-        <div>
-          Total booked time this year: {sumBooking} Days
-        </div>
-        <div>
-          Total profits this year: {sumBooking * localStorage.getItem('price')} $
+          <Card>
+            <LineChart
+              xAxis={[{ data: Array.from({ length: 31 }, (_, index) => index) }]}
+              series={[
+                {
+                  data: profitData,
+                },
+              ]}
+              width={350}
+              height={200}
+            />
+          </Card>
         </div>
 
         <div className='h-full w-full flex flex-wrap justify-center gap-3'>
