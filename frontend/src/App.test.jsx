@@ -15,6 +15,7 @@ test('renders available modal', async () => {
       setPublished={() => {}}
     />
   );
+
   const text = screen.getByText(/Pick availabiity date range/i);
   expect(text).toBeInTheDocument();
   const add = screen.getByRole('button', { name: /Add more/i });
