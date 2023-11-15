@@ -10,7 +10,11 @@ const GuestCard = (props) => {
 
   return (
     <>
-      <Card sx={{ width: 250 }} onClick={() => navigate(`/listing/${props.item.id}`)}>
+      <Card
+        sx={{ width: 350 }}
+        onClick={() => navigate(`/listing/${props.item.id}`)}
+        role="button"
+      >
         {
           /^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(props.item.thumbnail)
             ? <CardMedia

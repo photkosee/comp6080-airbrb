@@ -3,7 +3,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { style } from './ReviewModal';
 import CloseIcon from '@mui/icons-material/Close';
-import { IconButton } from '@mui/material';
+import { Card, IconButton, Rating, Typography } from '@mui/material';
 
 const RatingCommentModal = (props) => {
   return (
@@ -34,15 +34,29 @@ const RatingCommentModal = (props) => {
                         props.reviews.filter(e => parseInt(e.rating) === props.tooltipRate)
                           .map((e, idx) => {
                             return (
-                              <div key={idx} className='flex flex-wrap'>
-                                &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
-                              </div>
-                            )
+                              <Card key={idx}>
+                                <Typography variant="body5" component="div" className='px-2'>
+                                  {e.owner}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary" className='px-2'>
+                                  {e.comment}
+                                </Typography>
+
+                                <Rating
+                                  name="read-rating"
+                                  value={parseInt(e.rating)}
+                                  size="small"
+                                  precision={0.1}
+                                  readOnly
+                                  className='p-1'
+                                />
+                              </Card>
+                            );
                           })
                       }
                     </div>
                   </div>
-                : <div>No comments</div>
+                : <div>No reviews</div>
             }
           </div>
         </Box>

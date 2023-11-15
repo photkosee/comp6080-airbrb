@@ -57,7 +57,7 @@ const HostCard = (props) => {
 
   return (
     <>
-      <Card sx={{ maxWidth: 300 }}>
+      <Card sx={{ maxWidth: 350 }}>
         {
           /^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(props.item.thumbnail)
             ? <CardMedia

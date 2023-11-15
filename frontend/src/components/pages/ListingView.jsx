@@ -208,8 +208,8 @@ const ListingView = (props) => {
           page={`/listing/${props.id}`}
         />
 
-        <div className='flex justify-center mt-3 pb-5 pt-5'>
-          <Card sx={{ maxWidth: 300 }}>
+        <div className='flex flex-wrap gap-5 justify-center mt-3 pb-5 pt-5'>
+          <Card sx={{ maxWidth: 350 }}>
             {
               /^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(data.listing.thumbnail)
                 ? <CardMedia
@@ -273,37 +273,6 @@ const ListingView = (props) => {
                 })
               }
 
-              <div
-                className='flex items-center justify-center gap-2 text-sm my-2'
-                role='button'
-                onClick={() => setOpenTooltip(true)}
-              >
-                Rating:&nbsp;
-                <Rating
-                  name="read-rating"
-                  value={parseInt(calculateRating())}
-                  size="small"
-                  precision={0.1}
-                  readOnly
-                />
-                &nbsp;{calculateRating()}
-              </div>
-
-              <Typography variant="body2" color="text.secondary">
-                Comments:
-              </Typography>
-              {
-                data.listing.reviews.map((e, idx) => {
-                  return (
-                    <Typography variant="body2" color="text.secondary"
-                      key={idx} className='flex flex-wrap'
-                    >
-                      &nbsp;&nbsp;&nbsp;&nbsp;{e.owner} : {e.comment}
-                    </Typography>
-                  )
-                })
-              }
-
               {
                 localStorage.getItem('token') &&
                 <div className='flex w-full justify-center'>
@@ -354,6 +323,52 @@ const ListingView = (props) => {
             reviews={data.listing.reviews}
             tooltipRate={tooltipRate}
           />
+
+          <Card sx={{ maxWidth: 350 }}>
+            <CardContent>
+              <div
+                className='flex flex-wrap items-center justify-center gap-2 text-sm my-2'
+                role='button'
+                onClick={() => setOpenTooltip(true)}
+              >
+                Rating:
+                <Rating
+                  name="read-rating"
+                  value={parseFloat(calculateRating())}
+                  size="small"
+                  precision={0.1}
+                  readOnly
+                />
+                {calculateRating()}
+              </div>
+
+              <div className='flex flex-col gap-1'>
+                {
+                  data.listing.reviews.map((e, idx) => {
+                    return (
+                      <Card key={idx} onClick={() => setOpenTooltip(true)} role="button">
+                        <Typography variant="body5" component="div" className='px-2'>
+                          {e.owner}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" className='px-2'>
+                          {e.comment}
+                        </Typography>
+
+                        <Rating
+                          name="read-rating"
+                          value={parseInt(e.rating)}
+                          size="small"
+                          precision={0.1}
+                          readOnly
+                          className='p-1'
+                        />
+                      </Card>
+                    );
+                  })
+                }
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </>
     );
