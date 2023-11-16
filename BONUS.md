@@ -24,4 +24,5 @@
 - Good looking UI and icons for a11y
 - toast messages indicating both success and error with meaningful messages
 - Allow users to delete a booking they booked with a pending status in a list booking card
+- Allow hosts to delete their own lists
 - Displaying a review section in each list with a user name, feedback, and star rating (and could be clicked to view all other reviews just like 2.6.1)
