@@ -12,10 +12,12 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PublicOffIcon from '@mui/icons-material/PublicOff';
 import PublicIcon from '@mui/icons-material/Public';
 import CustomErrorModal from '../modals/CustomErrorModal';
+import ConfirmModal from '../modals/ConfirmModal';
 
 // a card of list containing sufficient information for hosting page
 const HostListCard = (props) => {
   const [openError, setOpenError] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -36,6 +38,7 @@ const HostListCard = (props) => {
       setError(data.error);
       setOpenError(true);
     } else {
+      setOpenConfirm(false);
       setError('');
       setOpenError(true);
       props.getList();
@@ -132,14 +135,18 @@ const HostListCard = (props) => {
                 Edit
                 <ModeEditIcon fontSize="small" />
               </Button>
-              <Button size="small" className="flex-1 gap-1" onClick={deleteList}>
+              <Button size="small" className="flex-1 gap-1"
+                onClick={() => setOpenConfirm(true)}
+              >
                 Delete
                 <DeleteForeverIcon fontSize="small" />
               </Button>
 
               {
                 props.published
-                  ? <Button size="small" className="flex-1 gap-1" onClick={unpublish}>
+                  ? <Button size="small" className="flex-1 gap-1"
+                      onClick={unpublish}
+                    >
                       Unpublish
                       <PublicOffIcon fontSize="small" />
                     </Button>
@@ -164,6 +171,13 @@ const HostListCard = (props) => {
           </div>
         </CardActions>
       </Card>
+
+      <ConfirmModal
+        message={'Do you want to delete this list'}
+        openConfirm={openConfirm}
+        setOpenConfirm={setOpenConfirm}
+        confirm={deleteList}
+      />
 
       <CustomErrorModal
         error={error}

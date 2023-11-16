@@ -20,17 +20,17 @@ const BookingModal = (props) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <div className='text-lg font-bold mb-5'>
+          <div className="text-lg font-bold mb-5">
             Book your stay
           </div>
 
-          <Box className='absolute top-2 right-2'>
+          <Box className="absolute top-2 right-2">
             <IconButton onClick={() => props.setOpen(false)}>
               <CloseIcon />
             </IconButton>
           </Box>
 
-          <div className='flex flex-col flex-wrap gap-2 w-full'>
+          <div className="flex flex-col flex-wrap gap-2 w-full">
             <div className="relative flex flex-col items-center gap-2">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
@@ -49,7 +49,7 @@ const BookingModal = (props) => {
                   label='Check out'
                 />
               </LocalizationProvider>
-              <Button onClick={() => { props.confirmBook() }}>
+              <Button onClick={() => props.confirmBook()}>
                 Confirm
               </Button>
             </div>

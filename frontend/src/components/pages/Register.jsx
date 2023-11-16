@@ -110,6 +110,7 @@ const Register = (props) => {
                     e.preventDefault();
                     register();
                   }}
+                  disabled={!email || !password || !confirmPassword}
                 >
                   Register
                 </Button>

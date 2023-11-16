@@ -8,11 +8,14 @@ import BookingCard from './BookingCard';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import CustomErrorModal from '../modals/CustomErrorModal';
+import ConfirmModal from '../modals/ConfirmModal';
 
 // a card containing a list of booking cards
 const ListBookingCard = (props) => {
   const [openError, setOpenError] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
   const [error, setError] = useState('');
+  const [bookingId, setBookingId] = useState('');
 
   // cancel a pending booking with given id
   const cancleBooking = async (bId) => {
@@ -29,6 +32,7 @@ const ListBookingCard = (props) => {
       setError(data.error);
       setOpenError(true);
     } else {
+      setOpenConfirm(false);
       setError('');
       setOpenError(true);
       props.getBookings();
@@ -65,7 +69,10 @@ const ListBookingCard = (props) => {
                       e.status === 'pending' &&
                       <Button
                         className="flex gap-1"
-                        onClick={() => cancleBooking(e.id)}
+                        onClick={() => {
+                          setBookingId(e.id);
+                          setOpenConfirm(true);
+                        }}
                       >
                         <ArrowDropUpIcon fontSize="small" />
                         Cancel booking
@@ -79,6 +86,13 @@ const ListBookingCard = (props) => {
           </div>
         </CardContent>
       </Card>
+
+      <ConfirmModal
+        message={'Do you want to delete this booking'}
+        openConfirm={openConfirm}
+        setOpenConfirm={setOpenConfirm}
+        confirm={() => cancleBooking(bookingId)}
+      />
 
       <CustomErrorModal
         error={error}

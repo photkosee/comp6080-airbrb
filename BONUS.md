@@ -16,6 +16,7 @@
 - Apply filters automatically when typing or adding new filters (one of the forum post confirmed that this can be counted as one of the bonus features)
 
 ### 2.4.1 Making a booking and checking its status
+- The total price can change according to users booking a new booking
 - Allow users to delete a booking they booked with a pending status in a list booking card
 
 ### 2.5.2. Viewing booking requests and history for a hosted listing
@@ -28,7 +29,8 @@
 ## Extra functionalities
 - Good looking UI and icons for a11y
 - toast messages indicating both success and error with meaningful messages
-- Validating collaping date inputs
+- Validating collaping date inputs, and other inputs. Having constraints (when login-register) to give a better ux
+- Having a confirmation modal for actions such as delete (booking and listing), publish
 - Allow users to delete a booking they booked with a pending status in a list booking card
 - Allow hosts to delete their own lists
 - Displaying a review section in each list with a user name, feedback, and star rating (and could be clicked to view all other reviews just like 2.6.1)

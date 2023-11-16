@@ -83,6 +83,7 @@ const Login = (props) => {
                     e.preventDefault();
                     login();
                   }}
+                  disabled={!email || !password}
                 >
                   Sign in
                 </Button>
