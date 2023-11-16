@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
@@ -11,9 +11,12 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PublicOffIcon from '@mui/icons-material/PublicOff';
 import PublicIcon from '@mui/icons-material/Public';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
 // a card of list containing sufficient information for hosting page
 const HostListCard = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   // an event deleting this listing
@@ -30,8 +33,11 @@ const HostListCard = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
+      setError('');
+      setOpenError(true);
       props.getList();
     }
   };
@@ -50,8 +56,11 @@ const HostListCard = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
+      setError('');
+      setOpenError(true);
       props.setPublished(false);
       props.getList();
     }
@@ -155,6 +164,12 @@ const HostListCard = (props) => {
           </div>
         </CardActions>
       </Card>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

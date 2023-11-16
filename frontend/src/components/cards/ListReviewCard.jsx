@@ -8,7 +8,7 @@ import { Rating } from '@mui/material';
 // a card containing a list of review cards
 const ListReviewCard = (props) => {
   return (
-    <Card sx={{ maxWidth: 350 }}>
+    <Card sx={{ maxWidth: 350, maxHeight: 550, overflow: 'auto' }}>
       <CardContent>
         <div
           className='flex flex-wrap items-center justify-center gap-2 text-sm my-2'

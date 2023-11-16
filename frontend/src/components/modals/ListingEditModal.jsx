@@ -6,9 +6,12 @@ import { fileToDataUrl } from './ListingCreateModal';
 import { Button, IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
+import CustomErrorModal from './CustomErrorModal';
 
 // a modal inputting information when editing a list
 const ListingEditModal = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
@@ -96,8 +99,11 @@ const ListingEditModal = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
+      setError('');
+      setOpenError(true);
       props.getList();
     }
   };
@@ -264,6 +270,12 @@ const ListingEditModal = (props) => {
           </form>
         </Box>
       </Modal>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

@@ -4,9 +4,12 @@ import ListingCreate from '../modals/ListingCreateModal';
 import { Navbar } from '../navbar/Navbar';
 import HostCard from '../cards/HostCard';
 import ChartCard from '../cards/ChartCard';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
 // a page for hosting and managing users' lists
 const Dashboard = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [list, setList] = useState([]);
   const [profitData, setProfitData] = useState(Array(31).fill(0));
 
@@ -27,7 +30,8 @@ const Dashboard = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listing) {
       const newList = data.listing;
       newList.id = id;
@@ -73,7 +77,8 @@ const Dashboard = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       calculatePastProfit(
         list.filter(e => e.owner === localStorage.getItem('email')).map(e => e.id),
@@ -96,7 +101,8 @@ const Dashboard = (props) => {
     const data = await response.json();
 
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listings) {
       data.listings.forEach((list) => {
         getData(list.id);
@@ -141,6 +147,12 @@ const Dashboard = (props) => {
           }
         </div>
       </div>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

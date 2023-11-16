@@ -7,9 +7,12 @@ import FilterModal from '../modals/FilterModal';
 import { TextField } from '@mui/material';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
 // a page for all users, listing all published lists
 export const LandingPage = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [list, setList] = useState([]);
   const [nameSearch, setNameSearch] = useState('');
   const [priceMax, setPriceMax] = useState('');
@@ -146,7 +149,8 @@ export const LandingPage = (props) => {
     const data = await response.json();
 
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listings) {
       data.listings.forEach((list) => {
         getData(list.id, bookings);
@@ -166,7 +170,8 @@ export const LandingPage = (props) => {
     const data = await response.json();
 
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       getList(data.bookings);
       setBookingIds(data.bookings.filter(e =>
@@ -331,6 +336,12 @@ export const LandingPage = (props) => {
           })
         }
       </div>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

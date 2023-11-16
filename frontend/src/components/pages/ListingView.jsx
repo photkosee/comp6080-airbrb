@@ -10,9 +10,12 @@ import RatingCommentModal from '../modals/RatingCommnetModal';
 import ListBookingCard from '../cards/ListBookingCard';
 import ListReviewCard from '../cards/ListReviewCard';
 import ListViewCard from '../cards/ListViewCard';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
 // a page viewing a list in more details
 const ListingView = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
   const [dateMax, setDateMax] = useState('');
@@ -66,7 +69,8 @@ const ListingView = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listing) {
       setData(data);
     }
@@ -85,7 +89,8 @@ const ListingView = (props) => {
 
       const data = await response.json();
       if (data.error) {
-        alert(data.error);
+        setError(data.error);
+        setOpenError(true);
       } else if (data.bookings) {
         const tmp = data.bookings;
         setListBookings(tmp);
@@ -118,11 +123,13 @@ const ListingView = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       getData();
       setOpenReview(false);
-      alert('Feedback sent');
+      setError('');
+      setOpenError(true);
     }
   };
 
@@ -151,13 +158,15 @@ const ListingView = (props) => {
 
       const data = await response.json();
       if (data.error) {
-        alert(data.error);
         setOpen(false);
+        setError(data.error);
+        setOpenError(true);
       } else {
         getData();
         setOpen(false);
+        setError('');
+        setOpenError(true);
         getBookings();
-        alert('Booking success');
       }
     } else {
       alert('Need to provide both start and end dates')
@@ -263,6 +272,12 @@ const ListingView = (props) => {
             />
           }
         </div>
+
+        <CustomErrorModal
+          error={error}
+          openError={openError}
+          setOpenError={setOpenError}
+        />
       </>
     );
   }

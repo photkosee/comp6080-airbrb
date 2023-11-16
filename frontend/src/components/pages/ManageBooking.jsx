@@ -5,9 +5,12 @@ import { Navbar } from '../navbar/Navbar';
 import BookingCard from '../cards/BookingCard';
 import TotalProfitCard from '../cards/TotalProfitCard';
 import ChartCard from '../cards/ChartCard';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
 // a page for managing booking requests of a list
 const ManageBooking = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [listBooking, setListBooking] = useState([]);
   const [sumBooking, setSumBooking] = useState(0);
   const [profitData, setProfitData] = useState(Array(31).fill(0));
@@ -42,7 +45,8 @@ const ManageBooking = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       showBookings();
     }
@@ -62,8 +66,11 @@ const ManageBooking = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
+      setError('');
+      setOpenError(true);
       showBookings();
     }
   };
@@ -107,7 +114,8 @@ const ManageBooking = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       const tmp = data.bookings;
       setListBooking(tmp.filter(e => e.listingId === id));
@@ -172,6 +180,12 @@ const ManageBooking = (props) => {
           }
         </div>
       </div>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }
