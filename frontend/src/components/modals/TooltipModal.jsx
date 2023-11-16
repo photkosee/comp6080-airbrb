@@ -24,7 +24,7 @@ const TooltipModal = (props) => {
           </div>
 
           <Box className="absolute top-2 right-2">
-            <IconButton onClick={() => props.setOpenTooltip(false)}>
+            <IconButton onClick={() => props.setOpenTooltip(false)} data-testid="closeTool">
               <CloseIcon />
             </IconButton>
           </Box>

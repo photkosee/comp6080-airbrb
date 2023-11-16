@@ -7,6 +7,7 @@ import AvailableModal from './components/modals/AvailableModal';
 import BookingModal from './components/modals/BookingModal';
 import ReviewModal from './components/modals/ReviewModal';
 import CustomErrorModal from './components/modals/CustomErrorModal';
+import TooltipModal from './components/modals/TooltipModal';
 
 // testing the modal for inputting the availability when publishing
 test('Rendering available modal', async () => {
@@ -111,7 +112,7 @@ test('Rendering review modal', async () => {
   }, 1000);
 });
 
-test('Rendering test modal', async () => {
+test('Rendering test modal manual close', async () => {
   render(
     <CustomErrorModal
       error={'Error Message'}
@@ -126,8 +127,60 @@ test('Rendering test modal', async () => {
   expect(alert).toBeInTheDocument();
   userEvent.click(alert);
 
+  // Message is hidden after clicking
   setTimeout(() => {
     const text = screen.getByText(/Error Message/i);
+    expect(text).toBeNull();
+  }, 1000);
+});
+
+test('Rendering test modal auto close', async () => {
+  render(
+    <CustomErrorModal
+      error={'Error Message'}
+      openError={() => {}}
+      setOpenError={() => {}}
+    />
+  );
+
+  // Message is hidden after waiting
+  setTimeout(() => {
+    const text = screen.getByText(/Error Message/i);
+    expect(text).toBeNull();
+  }, 6000);
+});
+
+test('Rendering test modal auto close', async () => {
+  render(
+    <TooltipModal
+      openTooltip={true}
+      setOpenTooltip={() => {}}
+      setTooltipRate={() => {}}
+      setOpenRateTooltip={() => {}}
+      reviews={[]}
+    />
+  );
+
+  const feedback = screen.getByText(/feedback/i);
+  expect(feedback).toBeInTheDocument();
+  const star0 = screen.getByText(/0 Star/i);
+  expect(star0).toBeInTheDocument();
+  const star1 = screen.getByText(/1 Star/i);
+  expect(star1).toBeInTheDocument();
+  const star2 = screen.getByText(/2 Star/i);
+  expect(star2).toBeInTheDocument();
+  const star3 = screen.getByText(/3 Star/i);
+  expect(star3).toBeInTheDocument();
+  const star4 = screen.getByText(/4 Star/i);
+  expect(star4).toBeInTheDocument();
+  const star5 = screen.getByText(/5 Star/i);
+  expect(star5).toBeInTheDocument();
+
+  const close = screen.getByTestId('closeTool');
+  userEvent.click(close);
+
+  setTimeout(() => {
+    const text = screen.getByText(/Star/i);
     expect(text).toBeNull();
   }, 1000);
 });
