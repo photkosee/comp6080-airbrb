@@ -17,7 +17,7 @@
 - Having a toast messages for all of the interaction that requires feedback to help users know that their actions have been taken
 
 ### Constraints
-- Limiting the errors users can make by disable the submit button for most of the features that is appropricate
+- Limiting the errors users can make by disable the submit button for most of the features that is appropricate (when login-register, and some other forms such as booking, publishing, and more)
 - Only allow users to delete pending bookings
 
 ### Effectiveness & Utility

@@ -86,6 +86,7 @@ const AvailableModal = (props) => {
 
   // close this modal
   const handleClose = () => {
+    setRange([{ start: '', end: '' }]);
     props.setOpen(false);
   }
 
@@ -112,7 +113,7 @@ const AvailableModal = (props) => {
             {
               range.map((input, idx) => {
                 return (
-                  <div key={idx} className='flex flex-col gap-1'>
+                  <div key={idx} className='flex flex-col gap-2'>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         onChange={e => {
@@ -136,7 +137,14 @@ const AvailableModal = (props) => {
             }
 
             <Button onClick={() => add()}>Add more</Button>
-            <Button onClick={e => submit(e)}>Submit</Button>
+            <Button
+              onClick={e => submit(e)}
+              disabled={
+                range.some(obj => Object.values(obj).some(value => value === ''))
+              }
+            >
+              Submit
+            </Button>
           </form>
         </Box>
       </Modal>

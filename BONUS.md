@@ -13,7 +13,7 @@
 ### 2.3.2 Search Filters
 - Having a button allowing a user to clear all of the filters applied
 - Allowing users to apply multiple filters, and can input only min or max as a filter
-- Apply filters automatically when typing or adding new filters (one of the forum post confirmed that this can be counted as one of the bonus features)
+- Apply filters automatically when typing or adding new filters (one of the forum post confirmed that this can be counted as one of the bonus features), which will show all the values of filters applied until a user click the clear filters
 
 ### 2.4.1 Making a booking and checking its status
 - The total price can change according to users booking a new booking
@@ -29,8 +29,8 @@
 ## Extra functionalities
 - Good looking UI and icons for a11y
 - toast messages indicating both success and error with meaningful messages
-- Validating collaping date inputs, and other inputs. Having constraints (when login-register) to give a better ux
+- Validating collaping date inputs, and other inputs. Having constraints (when login-register, and some other forms such as booking, publishing, and more) to give a better ux, preventing users to face an error
 - Having a confirmation modal for actions such as delete (booking and listing), publish
 - Allow users to delete a booking they booked with a pending status in a list booking card
 - Allow hosts to delete their own lists
-- Displaying a review section in each list with a user name, feedback, and star rating (and could be clicked to view all other reviews just like 2.6.1)
+- Displaying a review section in each list with a user name, feedback, and star rating (and could be clicked to view all other reviews just like 2.6.1), making the card scrollable (for both displaying reviews and booking history to support many elements)

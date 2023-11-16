@@ -1,5 +1,6 @@
 import React from 'react';
 
+import dayjs from 'dayjs';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { IconButton, InputLabel, NativeSelect, TextField } from '@mui/material';
@@ -31,9 +32,10 @@ const FilterModal = (props) => {
           </Box>
 
           <div className='flex flex-col flex-wrap gap-2 w-full'>
-            <div className="relative flex flex-col items-center gap-1">
+            <div className="relative flex flex-col items-center gap-2">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                  defaultValue={props.dateMin ? dayjs(props.dateMin) : null}
                   onChange={e => {
                     props.setDateMin(e.$d);
                     localStorage.setItem('dateMin', e.$d);
@@ -42,6 +44,7 @@ const FilterModal = (props) => {
                 />
 
                 <DatePicker
+                  defaultValue={props.dateMax ? dayjs(props.dateMax) : null}
                   onChange={e => {
                     props.setDateMax(e.$d);
                     localStorage.setItem('dateMax', e.$d);

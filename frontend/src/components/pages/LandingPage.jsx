@@ -317,6 +317,8 @@ export const LandingPage = (props) => {
           setOpen={setOpen}
           bedroomNumber={bedroomNumber}
           setBedroomNumber={setBedroomNumber}
+          dateMin={dateMin}
+          dateMax={dateMax}
           setDateMin={setDateMin}
           setDateMax={setDateMax}
           priceMin={priceMin}

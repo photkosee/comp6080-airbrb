@@ -49,7 +49,11 @@ const BookingModal = (props) => {
                   label='Check out'
                 />
               </LocalizationProvider>
-              <Button onClick={() => props.confirmBook()}>
+
+              <Button
+                onClick={() => props.confirmBook()}
+                disabled={!props.dateMin || !props.dateMax}
+              >
                 Confirm
               </Button>
             </div>

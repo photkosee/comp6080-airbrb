@@ -169,7 +169,8 @@ const ListingView = (props) => {
         getBookings();
       }
     } else {
-      alert('Need to provide both start and end dates')
+      setError('Need to provide both start and end dates');
+      setOpenError(true);
     }
   }
 
@@ -227,6 +228,8 @@ const ListingView = (props) => {
           <BookingModal
             open={open}
             setOpen={setOpen}
+            dateMin={dateMin}
+            dateMax={dateMax}
             setDateMin={setDateMin}
             setDateMax={setDateMax}
             confirmBook={confirmBook}
