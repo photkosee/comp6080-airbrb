@@ -297,6 +297,7 @@ export const LandingPage = (props) => {
           label="Search for titles or cities"
           aria-label="search by text"
           variant="outlined"
+          size="small"
           value={nameSearch}
           onChange={e => setNameSearch(e.target.value)}
           type="text"

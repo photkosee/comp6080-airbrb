@@ -38,7 +38,7 @@ const FilterModal = (props) => {
                     props.setDateMin(e.$d);
                     localStorage.setItem('dateMin', e.$d);
                   }}
-                  label='Check in'
+                  label="Check in"
                 />
 
                 <DatePicker
@@ -46,7 +46,7 @@ const FilterModal = (props) => {
                     props.setDateMax(e.$d);
                     localStorage.setItem('dateMax', e.$d);
                   }}
-                  label='Check out'
+                  label="Check out"
                 />
               </LocalizationProvider>
             </div>
@@ -54,24 +54,27 @@ const FilterModal = (props) => {
             <TextField
               label="Number of beds"
               variant="outlined"
-              type='number'
+              type="number"
+              size="small"
               value={props.bedroomNumber}
               onChange={e => props.setBedroomNumber(e.target.value)}
             />
 
             <div className="relative flex items-center gap-1">
               <TextField
-                label="Min Price"
+                label="Min Price ($)"
                 variant="outlined"
                 value={props.priceMin}
-                type='number'
+                type="number"
+                size="small"
                 onChange={e => props.setPriceMin(e.target.value)}
               />
 
               <TextField
-                label="Max Price"
+                label="Max Price ($)"
                 variant="outlined"
-                type='number'
+                type="number"
+                size="small"
                 value={props.priceMax}
                 onChange={e => props.setPriceMax(e.target.value)}
               />

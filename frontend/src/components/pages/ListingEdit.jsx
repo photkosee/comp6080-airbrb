@@ -17,6 +17,7 @@ const ListingEdit = (props) => {
   const [state, setState] = useState('');
   const [postcode, setPostcode] = useState('');
   const [country, setCountry] = useState('');
+  const [video, setVideo] = useState('');
   const [price, setPrice] = useState('');
   const [thumbnail, setThumbnail] = useState('');
   const [propertyType, setPropertyType] = useState('');
@@ -65,11 +66,16 @@ const ListingEdit = (props) => {
     e.preventDefault();
 
     if (
-      !propertyType || !bathroomNumber || !bed || !propertyAmenities ||
-      !street || !city || !state || !postcode || !country || !title ||
-      !price || !thumbnail
+      !propertyType || !bathroomNumber || !bed || !title ||
+      !street || !city || !state || !postcode || !country ||
+      !price || (!thumbnail && !video)
     ) {
-      setError('Please fill all inputs');
+      setError('Please fill all required inputs');
+      setOpenError(true);
+    } else if (thumbnail && video) {
+      setError('Can only choose 1 type of thumpnail');
+      setThumbnail('');
+      setVideo('');
       setOpenError(true);
     } else {
       const metadata = {
@@ -87,12 +93,19 @@ const ListingEdit = (props) => {
         country
       }
 
+      let imgVideo = '';
+      if (thumbnail) {
+        imgVideo = thumbnail;
+      } else {
+        imgVideo = video;
+      }
+
       const response = await fetch(
         `http://localhost:5005/listings/${id}`,
         {
           method: 'PUT',
           body: JSON.stringify({
-            title, address, price, thumbnail, metadata
+            title, address, price, imgVideo, metadata
           }),
           headers: {
             'Content-type': 'application/json',
@@ -129,6 +142,7 @@ const ListingEdit = (props) => {
             <TextField
               label="Title"
               variant="outlined"
+              size="small"
               value={title}
               onChange={e => setTitle(e.target.value)}
               required
@@ -138,6 +152,7 @@ const ListingEdit = (props) => {
               <TextField
                 label="Street"
                 variant="outlined"
+                size="small"
                 value={street}
                 onChange={e => setStreet(e.target.value)}
                 required
@@ -146,6 +161,7 @@ const ListingEdit = (props) => {
               <TextField
                 label="City"
                 variant="outlined"
+                size="small"
                 value={city}
                 onChange={e => setCity(e.target.value)}
                 required
@@ -156,6 +172,7 @@ const ListingEdit = (props) => {
               <TextField
                 label="State"
                 variant="outlined"
+                size="small"
                 value={state}
                 onChange={e => setState(e.target.value)}
                 required
@@ -164,6 +181,7 @@ const ListingEdit = (props) => {
               <TextField
                 label="Postcode"
                 variant="outlined"
+                size="small"
                 value={postcode}
                 onChange={e => setPostcode(e.target.value)}
                 required
@@ -173,12 +191,13 @@ const ListingEdit = (props) => {
             <TextField
               label="Country"
               variant="outlined"
+              size="small"
               value={country}
               onChange={e => setCountry(e.target.value)}
               required
             />
 
-            <div className='flex items-center gap-2'>
+            <div className='flex flex-col'>
               <label htmlFor="thumbnail" className="label-tw">
                 Thumbnail
               </label>
@@ -191,10 +210,25 @@ const ListingEdit = (props) => {
               />
             </div>
 
-            <div className='flex items-center gap-2'>
+            <div className='flex flex-col'>
+              <label htmlFor="video" className="label-tw">
+                Video Thumbnail
+              </label>
+              <input
+                type="text"
+                name="video"
+                id="video"
+                className="input-tw"
+                placeholder='e.g. https://www.youtube.com/...'
+                onChange={e => setVideo(e.target.value)}
+              />
+            </div>
+
+            <div className='flex justify-between gap-2'>
               <TextField
-                label="Price per night ($)"
+                label="Price/night ($)"
                 variant="outlined"
+                size="small"
                 value={price}
                 onChange={e => setPrice(e.target.value)}
                 required
@@ -204,41 +238,45 @@ const ListingEdit = (props) => {
               <TextField
                 label="Property type"
                 variant="outlined"
+                size="small"
                 value={country}
                 onChange={e => setPropertyType(e.target.value)}
                 required
               />
             </div>
 
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col'>
               <div>Bedrooms:</div>
+              <div className='flex flex-col gap-2'>
+                {
+                  bed.map((input, idx) => {
+                    return (
+                      <div key={idx} className='flex gap-2'>
+                        <TextField
+                          label="Type"
+                          variant="outlined"
+                          size="small"
+                          value={bed[idx].type}
+                          onChange={e => handleOnChangeTypeBed(e, idx)}
+                          required
+                        />
 
-              {
-                bed.map((input, idx) => {
-                  return (
-                    <div key={idx} className='flex gap-2'>
-                      <TextField
-                        label="Type of bed"
-                        variant="outlined"
-                        value={bed[idx].type}
-                        onChange={e => handleOnChangeTypeBed(e, idx)}
-                        required
-                      />
+                        <TextField
+                          label="# of beds"
+                          variant="outlined"
+                          size="small"
+                          value={bed[idx].number}
+                          onChange={e => handleOnChangeNumBed(e, idx)}
+                          required
+                          type='number'
+                        />
 
-                      <TextField
-                        label="Number of beds"
-                        variant="outlined"
-                        value={bed[idx].number}
-                        onChange={e => handleOnChangeNumBed(e, idx)}
-                        required
-                        type='number'
-                      />
-
-                      <Button onClick={() => deleteBed(idx)}>Delete</Button>
-                    </div>
-                  )
-                })
-              }
+                        <Button onClick={() => deleteBed(idx)}>Delete</Button>
+                      </div>
+                    )
+                  })
+                }
+              </div>
 
               <Button onClick={() => moreBedRoom()}>Add more beds</Button>
             </div>
@@ -247,6 +285,7 @@ const ListingEdit = (props) => {
               <TextField
                 label="Number of bathrooms"
                 variant="outlined"
+                size="small"
                 value={bathroomNumber}
                 onChange={e => setBathroomNumber(e.target.value)}
                 required
@@ -254,11 +293,11 @@ const ListingEdit = (props) => {
               />
 
               <TextField
-                label="Property of Amentities"
+                label="Amentities"
                 variant="outlined"
+                size="small"
                 value={propertyAmenities}
                 onChange={e => setpropertyAmenities(e.target.value)}
-                required
               />
             </div>
 

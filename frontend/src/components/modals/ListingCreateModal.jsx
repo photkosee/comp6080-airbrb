@@ -41,7 +41,7 @@ const ListingCreateModal = (props) => {
   const [postcode, setPostcode] = useState('');
   const [country, setCountry] = useState('');
   const [price, setPrice] = useState(0);
-  const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnail, setThumbnail] = useState('');
   const [video, setVideo] = useState('');
   const [propertyType, setPropertyType] = useState('');
   const [bathroomNumber, setBathroomNumber] = useState(0);
@@ -111,11 +111,16 @@ const ListingCreateModal = (props) => {
     e.preventDefault();
 
     if (
-      !propertyType || !bathroomNumber || !bed || !propertyAmenities ||
-      !street || !city || !state || !postcode || !country || !title ||
-      !price || !thumbnail
+      !propertyType || !bathroomNumber || !bed || !title ||
+      !street || !city || !state || !postcode || !country ||
+      !price || (!thumbnail && !video)
     ) {
-      setError('Please fill all inputs');
+      setError('Please fill all required inputs');
+      setOpenError(true);
+    } else if (thumbnail && video) {
+      setError('Can only choose 1 type of thumpnail');
+      setThumbnail('');
+      setVideo('');
       setOpenError(true);
     } else {
       const metadata = {
@@ -134,7 +139,7 @@ const ListingCreateModal = (props) => {
       }
 
       let imgVideo = '';
-      if (thumbnail && thumbnail !== null && thumbnail !== '') {
+      if (thumbnail) {
         imgVideo = thumbnail;
       } else {
         imgVideo = video;
@@ -193,6 +198,7 @@ const ListingCreateModal = (props) => {
               label="Title"
               data-testid="create-title"
               variant="outlined"
+              size="small"
               value={title}
               onChange={e => setTitle(e.target.value)}
               required
@@ -201,6 +207,7 @@ const ListingCreateModal = (props) => {
             <div className='flex justify-between gap-2'>
               <TextField
                 label="Street"
+                size="small"
                 data-testid="create-street"
                 variant="outlined"
                 value={street}
@@ -211,6 +218,7 @@ const ListingCreateModal = (props) => {
               <TextField
                 label="City"
                 data-testid="create-city"
+                size="small"
                 variant="outlined"
                 value={city}
                 onChange={e => setCity(e.target.value)}
@@ -222,6 +230,7 @@ const ListingCreateModal = (props) => {
               <TextField
                 data-testid="create-state"
                 label="State"
+                size="small"
                 variant="outlined"
                 value={state}
                 onChange={e => setState(e.target.value)}
@@ -231,6 +240,7 @@ const ListingCreateModal = (props) => {
               <TextField
                 label="Postcode"
                 variant="outlined"
+                size="small"
                 value={postcode}
                 onChange={e => setPostcode(e.target.value)}
                 required
@@ -240,6 +250,7 @@ const ListingCreateModal = (props) => {
             <TextField
               label="Country"
               variant="outlined"
+              size="small"
               value={country}
               onChange={e => setCountry(e.target.value)}
               required
@@ -274,52 +285,57 @@ const ListingCreateModal = (props) => {
 
             <div className='flex items-center gap-2'>
               <TextField
-                label="Price per night ($)"
+                label="Price/night ($)"
                 variant="outlined"
+                size="small"
                 value={price}
                 onChange={e => setPrice(e.target.value)}
                 required
-                type='number'
+                type="number"
               />
 
               <TextField
                 label="Property type"
                 variant="outlined"
+                size="small"
                 value={country}
                 onChange={e => setPropertyType(e.target.value)}
                 required
               />
             </div>
 
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col'>
               <div>Bedrooms:</div>
+              <div className='flex flex-col gap-2'>
+                {
+                  bed.map((input, idx) => {
+                    return (
+                      <div key={idx} className='flex gap-2'>
+                        <TextField
+                          label="Type"
+                          variant="outlined"
+                          size="small"
+                          value={bed[idx].type}
+                          onChange={e => handleOnChangeTypeBed(e, idx)}
+                          required
+                        />
 
-              {
-                bed.map((input, idx) => {
-                  return (
-                    <div key={idx} className='flex gap-2'>
-                      <TextField
-                        label="Type of bed"
-                        variant="outlined"
-                        value={bed[idx].type}
-                        onChange={e => handleOnChangeTypeBed(e, idx)}
-                        required
-                      />
+                        <TextField
+                          label="# of beds"
+                          variant="outlined"
+                          size="small"
+                          value={bed[idx].number}
+                          onChange={e => handleOnChangeNumBed(e, idx)}
+                          required
+                          type="number"
+                        />
 
-                      <TextField
-                        label="Number of beds"
-                        variant="outlined"
-                        value={bed[idx].number}
-                        onChange={e => handleOnChangeNumBed(e, idx)}
-                        required
-                        type='number'
-                      />
-
-                      <Button onClick={() => deleteBed(idx)}>Delete</Button>
-                    </div>
-                  )
-                })
-              }
+                        <Button onClick={() => deleteBed(idx)}>Delete</Button>
+                      </div>
+                    )
+                  })
+                }
+              </div>
 
               <Button onClick={() => moreBedRoom()}>Add more beds</Button>
             </div>
@@ -328,18 +344,19 @@ const ListingCreateModal = (props) => {
               <TextField
                 label="Number of bathrooms"
                 variant="outlined"
+                size="small"
                 value={bathroomNumber}
                 onChange={e => setBathroomNumber(e.target.value)}
                 required
-                type='number'
+                type="number"
               />
 
               <TextField
-                label="Property of Amentities"
+                label="Amentities"
                 variant="outlined"
+                size="small"
                 value={propertyAmenities}
                 onChange={e => setpropertyAmenities(e.target.value)}
-                required
               />
             </div>
 
