@@ -7,14 +7,18 @@ import { BarChart } from '@mui/x-charts';
 const ChartCard = (props) => {
   return (
     <Card>
+      <div className="flex justify-center mt-5">
+        Profit for the past month
+      </div>
+
       <BarChart
         xAxis={[{
           scaleType: 'band',
           data: Array.from({ length: 31 }, (_, index) => index),
-          label: 'number of days ago',
+          label: 'Number of how many days ago',
         }]}
         yAxis={[{
-          label: '$$ made',
+          label: 'Profit made ($)',
         }]}
         series={[
           {

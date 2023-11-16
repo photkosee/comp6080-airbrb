@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
@@ -68,9 +67,12 @@ const ListingCreateJsonModal = (props) => {
         const jsonObj = await readFile(file);
         create(jsonObj);
       } catch (error) {
-        setError('cannot read the file');
+        setError('Cannot read the file');
         setOpenError(true);
       }
+    } else {
+      setError('Please upload a JSON file');
+      setOpenError(true);
     }
   };
 
@@ -100,10 +102,6 @@ const ListingCreateJsonModal = (props) => {
                 onChange={handleFileUpload}
               />
             </div>
-
-            <Button onClick={(e) => create(e)}>
-              Create
-            </Button>
           </form>
         </Box>
       </Modal>

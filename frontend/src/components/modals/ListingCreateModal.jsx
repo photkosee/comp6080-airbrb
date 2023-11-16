@@ -108,51 +108,61 @@ const ListingCreateModal = (props) => {
 
   // creating the new list
   const create = async (e) => {
-    const metadata = {
-      propertyType,
-      bathroomNumber,
-      bedrooms: bed,
-      propertyAmenities
-    }
-
-    const address = {
-      street,
-      city,
-      state,
-      postcode,
-      country
-    }
-
-    let imgVideo = '';
-    if (thumbnail && thumbnail !== null && thumbnail !== '') {
-      imgVideo = thumbnail;
-    } else {
-      imgVideo = video;
-    }
-
     e.preventDefault();
-    const response = await fetch('http://localhost:5005/listings/new', {
-      method: 'POST',
-      body: JSON.stringify({
-        title, address, price, thumbnail: imgVideo, metadata
-      }),
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
 
-    const data = await response.json();
-    if (data.error) {
-      setError(data.error);
+    if (
+      !propertyType || !bathroomNumber || !bed || !propertyAmenities ||
+      !street || !city || !state || !postcode || !country || !title ||
+      !price || !thumbnail
+    ) {
+      setError('Please fill all inputs');
       setOpenError(true);
-    } else if (data.listingId) {
-      props.getList();
-      setOpen(false);
-      setError('');
-      setOpenError(true);
+    } else {
+      const metadata = {
+        propertyType,
+        bathroomNumber,
+        bedrooms: bed,
+        propertyAmenities
+      }
+
+      const address = {
+        street,
+        city,
+        state,
+        postcode,
+        country
+      }
+
+      let imgVideo = '';
+      if (thumbnail && thumbnail !== null && thumbnail !== '') {
+        imgVideo = thumbnail;
+      } else {
+        imgVideo = video;
+      }
+
+      const response = await fetch('http://localhost:5005/listings/new', {
+        method: 'POST',
+        body: JSON.stringify({
+          title, address, price, thumbnail: imgVideo, metadata
+        }),
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        setError(data.error);
+        setOpenError(true);
+      } else if (data.listingId) {
+        props.getList();
+        setOpen(false);
+        setError('');
+        setOpenError(true);
+      }
     }
-  };
+  }
 
   return (
     <>
