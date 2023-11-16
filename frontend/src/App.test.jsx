@@ -1,4 +1,3 @@
-// This file can be deleted if you'd like
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { Button } from '@mui/material';

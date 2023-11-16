@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Navbar } from '../navbar/Navbar';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, Card, TextField } from '@mui/material';
 import CustomErrorModal from '../modals/CustomErrorModal';
 import { fileToDataUrl } from '../modals/ListingCreateModal';
 
@@ -61,19 +61,20 @@ const ListingEdit = (props) => {
     });
   }
 
+  // check whether all required inputs are assigned
+  const validateInput = () => {
+    return !propertyType || bathroomNumber === '' || !title ||
+      bed.some(obj => Object.values(obj).some(value => value === '')) ||
+      !street || !city || !state || !postcode || !country ||
+      !price || (!thumbnail && !video);
+  }
+
   // editing event
   const edit = async (e) => {
     e.preventDefault();
 
-    if (
-      !propertyType || !bathroomNumber || !bed || !title ||
-      !street || !city || !state || !postcode || !country ||
-      !price || (!thumbnail && !video)
-    ) {
-      setError('Please fill all required inputs');
-      setOpenError(true);
-    } else if (thumbnail && video) {
-      setError('Can only choose 1 type of thumpnail');
+    if (thumbnail && video) {
+      setError('Can only choose 1 type of thumbnail');
       setThumbnail('');
       setVideo('');
       setOpenError(true);
@@ -197,32 +198,38 @@ const ListingEdit = (props) => {
               required
             />
 
-            <div className='flex flex-col'>
-              <label htmlFor="thumbnail" className="label-tw">
-                Thumbnail
-              </label>
-              <input
-                type="file"
-                name="thumbnail"
-                id="thumbnail"
-                className="input-tw"
-                onChange={e => handleThumbnail(e)}
-              />
-            </div>
+            <Card className='p-2 mb-1'>
+              <div className='flex flex-col'>
+                <label htmlFor="thumbnail" className="label-tw">
+                  Thumbnail image *
+                </label>
+                <input
+                  type="file"
+                  name="thumbnail"
+                  id="thumbnail"
+                  className="input-tw"
+                  onChange={e => handleThumbnail(e)}
+                />
+              </div>
 
-            <div className='flex flex-col'>
-              <label htmlFor="video" className="label-tw">
-                Video Thumbnail
-              </label>
-              <input
-                type="text"
-                name="video"
-                id="video"
-                className="input-tw"
-                placeholder='e.g. https://www.youtube.com/...'
-                onChange={e => setVideo(e.target.value)}
-              />
-            </div>
+              <div className='flex justify-center mt-2 text-sm text-gray-400'>
+                OR
+              </div>
+
+              <div className='flex flex-col'>
+                <label htmlFor="video" className="label-tw">
+                  Video Thumbnail *
+                </label>
+                <input
+                  type="text"
+                  name="video"
+                  id="video"
+                  className="input-tw"
+                  placeholder='e.g. https://www.youtube.com/...'
+                  onChange={e => setVideo(e.target.value)}
+                />
+              </div>
+            </Card>
 
             <div className='flex justify-between gap-2'>
               <TextField
@@ -239,14 +246,14 @@ const ListingEdit = (props) => {
                 label="Property type"
                 variant="outlined"
                 size="small"
-                value={country}
+                value={propertyType}
                 onChange={e => setPropertyType(e.target.value)}
                 required
               />
             </div>
 
             <div className='flex flex-col'>
-              <div>Bedrooms:</div>
+              <div className='mb-1'>Bedrooms:</div>
               <div className='flex flex-col gap-2'>
                 {
                   bed.map((input, idx) => {
@@ -301,7 +308,7 @@ const ListingEdit = (props) => {
               />
             </div>
 
-            <Button onClick={(e) => edit(e)}>
+            <Button onClick={(e) => edit(e)} disabled={validateInput()}>
               Confirm
             </Button>
           </form>

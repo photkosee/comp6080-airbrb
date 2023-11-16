@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { IconButton, TextField } from '@mui/material';
+import { Card, IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
 import ListingCreateJsonModal from './ListingCreateJsonModal';
@@ -49,12 +49,12 @@ const ListingCreateModal = (props) => {
   const [open, setOpen] = useState(false);
   const [openCreateJson, setOpenCreateJson] = useState(false);
   const [bed, setBed] = useState([
-    { type: '', number: 0 }
+    { type: '', number: 1 }
   ]);
 
   // add more input boxes for more bedrooms
   const moreBedRoom = () => {
-    const newBed = { type: '', number: 0 };
+    const newBed = { type: '', number: 1 };
     setBed([...bed, newBed]);
   }
 
@@ -93,10 +93,10 @@ const ListingCreateModal = (props) => {
     setPropertyType('');
     setBathroomNumber(0);
     setpropertyAmenities('');
-    setOpen(true);
     setBed([
-      { type: '', number: 0 }
+      { type: '', number: 1 }
     ]);
+    setOpen(true);
   }
 
   // upload image (thumbnail)
@@ -106,19 +106,20 @@ const ListingCreateModal = (props) => {
     });
   }
 
+  // check whether all required inputs are assigned
+  const validateInput = () => {
+    return !propertyType || bathroomNumber === '' || !title ||
+      bed.some(obj => Object.values(obj).some(value => value === '')) ||
+      !street || !city || !state || !postcode || !country ||
+      !price || (!thumbnail && !video);
+  }
+
   // creating the new list
   const create = async (e) => {
     e.preventDefault();
 
-    if (
-      !propertyType || !bathroomNumber || !bed || !title ||
-      !street || !city || !state || !postcode || !country ||
-      !price || (!thumbnail && !video)
-    ) {
-      setError('Please fill all required inputs');
-      setOpenError(true);
-    } else if (thumbnail && video) {
-      setError('Can only choose 1 type of thumpnail');
+    if (thumbnail && video) {
+      setError('Can only choose 1 type of thumbnail');
       setThumbnail('');
       setVideo('');
       setOpenError(true);
@@ -256,32 +257,38 @@ const ListingCreateModal = (props) => {
               required
             />
 
-            <div className='flex flex-col'>
-              <label htmlFor="thumbnail" className="label-tw">
-                Thumbnail
-              </label>
-              <input
-                type="file"
-                name="thumbnail"
-                id="thumbnail"
-                className="input-tw"
-                onChange={e => handleThumbnail(e)}
-              />
-            </div>
+            <Card className='p-2 mb-1'>
+              <div className='flex flex-col'>
+                <label htmlFor="thumbnail" className="label-tw">
+                  Thumbnail image *
+                </label>
+                <input
+                  type="file"
+                  name="thumbnail"
+                  id="thumbnail"
+                  className="input-tw"
+                  onChange={e => handleThumbnail(e)}
+                />
+              </div>
 
-            <div className='flex flex-col'>
-              <label htmlFor="video" className="label-tw">
-                Video Thumbnail
-              </label>
-              <input
-                type="text"
-                name="video"
-                id="video"
-                className="input-tw"
-                placeholder='e.g. https://www.youtube.com/...'
-                onChange={e => setVideo(e.target.value)}
-              />
-            </div>
+              <div className='flex justify-center mt-2 text-sm text-gray-400'>
+                OR
+              </div>
+
+              <div className='flex flex-col'>
+                <label htmlFor="video" className="label-tw">
+                  Video Thumbnail *
+                </label>
+                <input
+                  type="text"
+                  name="video"
+                  id="video"
+                  className="input-tw"
+                  placeholder='e.g. https://www.youtube.com/...'
+                  onChange={e => setVideo(e.target.value)}
+                />
+              </div>
+            </Card>
 
             <div className='flex items-center gap-2'>
               <TextField
@@ -298,14 +305,14 @@ const ListingCreateModal = (props) => {
                 label="Property type"
                 variant="outlined"
                 size="small"
-                value={country}
+                value={propertyType}
                 onChange={e => setPropertyType(e.target.value)}
                 required
               />
             </div>
 
             <div className='flex flex-col'>
-              <div>Bedrooms:</div>
+              <div className='mb-1'>Bedrooms:</div>
               <div className='flex flex-col gap-2'>
                 {
                   bed.map((input, idx) => {
@@ -360,11 +367,11 @@ const ListingCreateModal = (props) => {
               />
             </div>
 
-            <Button onClick={(e) => create(e)}>
+            <Button onClick={(e) => create(e)} disabled={validateInput()}>
               Create
             </Button>
             <Button onClick={() => setOpenCreateJson(true)}>
-              Create by JSON file
+              or Create with a JSON file
             </Button>
           </form>
         </Box>
