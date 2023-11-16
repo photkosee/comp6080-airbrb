@@ -47,7 +47,7 @@ export const LandingPage = (props) => {
         left.push(listing);
       }
     }
-    console.log(value)
+
     if (value === 0) {
       left.sort((a, b) => a.title.localeCompare(b.title));
       right.sort((a, b) => a.title.localeCompare(b.title));

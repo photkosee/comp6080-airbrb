@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, TextField } from '@mui/material';
 import CustomErrorModal from '../modals/CustomErrorModal';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField
+} from '@mui/material';
 
 // a login page
 const Login = (props) => {
@@ -10,6 +20,7 @@ const Login = (props) => {
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   // logging in event
@@ -67,15 +78,30 @@ const Login = (props) => {
                   type='email'
                 />
 
-                <TextField
-                  label="Password"
-                  data-testid="login-password"
-                  variant="outlined"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                  type='password'
-                />
+                <FormControl sx={{ width: '100%' }} variant="outlined">
+                  <InputLabel htmlFor="login-password">Password</InputLabel>
+                  <OutlinedInput
+                    id="login-password"
+                    data-testid="login-password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(prev => !prev)}
+                          onMouseDown={e => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                </FormControl>
 
                 <Button
                   data-testid="login-submit"

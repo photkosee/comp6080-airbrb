@@ -130,20 +130,21 @@ const Dashboard = (props) => {
           <ChartCard profitData={profitData} />
 
           {
-            list.map((item, idx) => {
-              if (item.owner !== localStorage.getItem('email')) {
-                return null;
-              } else {
-                return (
-                  <HostCard
-                    key={idx}
-                    item={item}
-                    getList={getList}
-                    token={localStorage.getItem('token')}
-                  />
-                )
-              }
-            })
+            list.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' }))
+              .map((item, idx) => {
+                if (item.owner !== localStorage.getItem('email')) {
+                  return null;
+                } else {
+                  return (
+                    <HostCard
+                      key={idx}
+                      item={item}
+                      getList={getList}
+                      token={localStorage.getItem('token')}
+                    />
+                  )
+                }
+              })
           }
         </div>
       </div>

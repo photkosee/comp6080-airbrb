@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button, TextField } from '@mui/material';
 import CustomErrorModal from '../modals/CustomErrorModal';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import {
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField
+} from '@mui/material';
 
 // a page for registering
 const Register = (props) => {
@@ -11,6 +21,8 @@ const Register = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [name, setName] = useState('');
   const navigate = useNavigate();
 
@@ -40,7 +52,7 @@ const Register = (props) => {
         navigate('/');
       }
     } else {
-      setError('Passwords not mathcing');
+      setError('Passwords not matching');
       setOpenError(true);
     }
   };
@@ -84,25 +96,55 @@ const Register = (props) => {
                   type='email'
                 />
 
-                <TextField
-                  label="Password"
-                  data-testid="register-password"
-                  variant="outlined"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                  type='password'
-                />
+                <FormControl sx={{ width: '100%' }} variant="outlined">
+                  <InputLabel htmlFor="register-password">Password</InputLabel>
+                  <OutlinedInput
+                    id="register-password"
+                    data-testid="register-password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(prev => !prev)}
+                          onMouseDown={e => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                </FormControl>
 
-                <TextField
-                  label="Confirm your password"
-                  data-testid="register-confirm"
-                  variant="outlined"
-                  value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
-                  required
-                  type='password'
-                />
+                <FormControl sx={{ width: '100%' }} variant="outlined">
+                  <InputLabel htmlFor="register-confirm">Password</InputLabel>
+                  <OutlinedInput
+                    id="register-confirm"
+                    data-testid="register-confirm"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    required
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowConfirmPassword(prev => !prev)}
+                          onMouseDown={e => e.preventDefault()}
+                          edge="end"
+                        >
+                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Confirm Password"
+                  />
+                </FormControl>
 
                 <Button
                   data-testid="register-submit"

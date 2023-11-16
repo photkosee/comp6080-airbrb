@@ -30,12 +30,12 @@ export const Navbar = (props) => {
       setError(data.error);
       setOpenError(true);
     } else {
+      navigate('/');
       localStorage.removeItem('email');
       localStorage.removeItem('token');
       localStorage.removeItem('dateMin');
       localStorage.removeItem('dateMax');
       props.setToken('');
-      navigate('/');
     }
   };
 

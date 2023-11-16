@@ -1,7 +1,18 @@
 ## More functionalities on milstones
 
+### 2.1.1. Login Screen
+- Toggle show/hide password
+- Disable the submit button until all inputs are assigned for better UX
+
+### 2.1.2. Register Screen
+- Toggle show/hide password/confirm password
+- Disable the submit button until all inputs are assigned for better UX
+
 ### 2.1.4. Items on all screens
 - Conditionally display only a button that lead to another screen (not to itself, swtiching from hosting/travelling), and a back button when viewing another screen
+
+### 2.2.1. Hosted Listings Screen
+- Also sort listings in an alphabetical order for consistency and better ux
 
 ### 2.2.4 Publishing a listing
 - Can add more availabilities when publishing
