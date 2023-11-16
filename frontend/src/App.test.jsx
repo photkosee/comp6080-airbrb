@@ -112,7 +112,8 @@ test('Rendering review modal', async () => {
   }, 1000);
 });
 
-test('Rendering test modal manual close', async () => {
+// testing the toast message when closing it manually
+test('Rendering toast manual close', async () => {
   render(
     <CustomErrorModal
       error={'Error Message'}
@@ -134,7 +135,8 @@ test('Rendering test modal manual close', async () => {
   }, 1000);
 });
 
-test('Rendering test modal auto close', async () => {
+// testing the toast message
+test('Rendering toast auto close', async () => {
   render(
     <CustomErrorModal
       error={'Error Message'}
@@ -143,14 +145,15 @@ test('Rendering test modal auto close', async () => {
     />
   );
 
-  // Message is hidden after waiting
+  // Message is hidden after waiting for some time
   setTimeout(() => {
     const text = screen.getByText(/Error Message/i);
     expect(text).toBeNull();
   }, 6000);
 });
 
-test('Rendering test modal auto close', async () => {
+// test for closing a modal and display rating modal
+test('Testing closing a rating modal', async () => {
   render(
     <TooltipModal
       openTooltip={true}
@@ -161,6 +164,7 @@ test('Rendering test modal auto close', async () => {
     />
   );
 
+  // check the existance of all star ratings
   const feedback = screen.getByText(/feedback/i);
   expect(feedback).toBeInTheDocument();
   const star0 = screen.getByText(/0 Star/i);
@@ -176,6 +180,7 @@ test('Rendering test modal auto close', async () => {
   const star5 = screen.getByText(/5 Star/i);
   expect(star5).toBeInTheDocument();
 
+  // test closing
   const close = screen.getByTestId('closeTool');
   userEvent.click(close);
 
