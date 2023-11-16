@@ -7,6 +7,7 @@ import { TextField } from '@mui/material';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
+// a page for all users, listing all published lists
 export const LandingPage = (props) => {
   const [list, setList] = useState([]);
   const [nameSearch, setNameSearch] = useState('');

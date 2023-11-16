@@ -4,6 +4,7 @@ import { Navbar } from '../navbar/Navbar';
 import HostCard from '../cards/HostCard';
 import ChartCard from '../cards/ChartCard';
 
+// a page for hosting and managing users' lists
 const Dashboard = (props) => {
   const [list, setList] = useState([]);
   const [profitData, setProfitData] = useState(Array(31).fill(0));

@@ -10,6 +10,7 @@ import ListBookingCard from '../cards/ListBookingCard';
 import ListReviewCard from '../cards/ListReviewCard';
 import ListViewCard from '../cards/ListViewCard';
 
+// a page viewing a list in more details
 const ListingView = (props) => {
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);

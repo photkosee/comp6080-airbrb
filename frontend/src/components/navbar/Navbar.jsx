@@ -7,6 +7,7 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import RoofingIcon from '@mui/icons-material/Roofing';
 import ReplyIcon from '@mui/icons-material/Reply';
 
+// a navbar for all pages except login/register
 export const Navbar = (props) => {
   const navigate = useNavigate();
 

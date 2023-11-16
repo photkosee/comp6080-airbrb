@@ -2,6 +2,7 @@ import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// a login page
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

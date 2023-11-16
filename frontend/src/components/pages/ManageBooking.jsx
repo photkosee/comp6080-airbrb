@@ -5,6 +5,7 @@ import BookingCard from '../cards/BookingCard';
 import TotalProfitCard from '../cards/TotalProfitCard';
 import ChartCard from '../cards/ChartCard';
 
+// a page for managing booking requests of a list
 const ManageBooking = (props) => {
   const [listBooking, setListBooking] = useState([]);
   const [sumBooking, setSumBooking] = useState(0);
