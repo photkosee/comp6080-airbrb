@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
+
+import { Navbar } from '../navbar/Navbar';
 import { CircularProgress } from '@mui/material';
 import BookingModal from '../modals/BookingModal';
 import ReviewModal from '../modals/ReviewModal';

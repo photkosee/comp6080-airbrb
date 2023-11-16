@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
+
+import { Navbar } from '../navbar/Navbar';
 import BookingCard from '../cards/BookingCard';
 import TotalProfitCard from '../cards/TotalProfitCard';
 import ChartCard from '../cards/ChartCard';
