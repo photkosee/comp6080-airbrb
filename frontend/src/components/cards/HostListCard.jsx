@@ -144,13 +144,13 @@ const HostListCard = (props) => {
 
               {
                 props.published
-                  ? <Button size="small" className="flex-1 gap-1"
+                  ? <Button data-testid="host-card-unpublish" size="small" className="flex-1 gap-1"
                       onClick={unpublish}
                     >
                       Unpublish
                       <PublicOffIcon fontSize="small" />
                     </Button>
-                  : <Button size="small" className="flex-1 gap-1" onClick={
+                  : <Button data-testid="host-card-publish" size="small" className="flex-1 gap-1" onClick={
                       () => props.setOpenPublish(true)
                     }>
                       Publish
