@@ -33,9 +33,17 @@ export const Navbar = (props) => {
     }
   };
 
+  const style = {
+    position: 'fixed',
+    flexGrow: 1,
+    width: '100%',
+    zIndex: 100,
+    top: 0
+  };
+
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={style}>
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div"

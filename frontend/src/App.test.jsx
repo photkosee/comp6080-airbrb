@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import AvailableModal from './components/modals/AvailableModal';
 import BookingModal from './components/modals/BookingModal';
 import ReviewModal from './components/modals/ReviewModal';
+// import CustomErrorModal from './components/modals/CustomErrorModal';
 
 // testing the modal for inputting the availability when publishing
 test('Rendering available modal', async () => {
@@ -111,3 +112,26 @@ test('Rendering review modal', async () => {
     expect(text).toBeNull();
   }, 1000);
 });
+
+// test('Rendering test modal', async () => {
+//   render(
+//     <CustomErrorModal
+//       error='context'
+//     />
+//   );
+
+//   const ratingText = screen.getByText(/Rating:/i);
+//   expect(ratingText).toBeInTheDocument();
+//   const commentsText = screen.getByText(/Comments:/i);
+//   expect(commentsText).toBeInTheDocument();
+//   const send = screen.getByRole('button', { name: /Send/i });
+//   expect(send).toBeInTheDocument();
+//   const rating = screen.getByTestId('rating');
+//   expect(rating).toBeInTheDocument();
+//   userEvent.click(send);
+
+//   setTimeout(() => {
+//     const closeButton = screen.queryByText('delete');
+//       expect(deletedButton).toBeNull();
+//   }, 1000);
+// });
