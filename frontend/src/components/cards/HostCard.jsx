@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
-import ListingEdit from '../modals/ListingEditModal';
 import AvailableModal from '../modals/AvailableModal';
 import HostListCard from './HostListCard';
 
 // a wrapper of host list card and modals
 const HostCard = (props) => {
   const [published, setPublished] = useState(props.item.published);
-  const [openEdit, setOpenEdit] = useState(false);
   const [openPublish, setOpenPublish] = useState(false);
 
   return (
@@ -15,18 +13,9 @@ const HostCard = (props) => {
       <HostListCard
         published={published}
         setPublished={setOpenPublish}
-        setOpenEdit={setOpenEdit}
         setOpenPublish={setOpenPublish}
         item={props.item}
         getList={() => props.getList()}
-      />
-
-      <ListingEdit
-        token={localStorage.getItem('token')}
-        listingId={props.item.id}
-        open={openEdit}
-        setOpen={setOpenEdit}
-        getList={props.getList}
       />
 
       <AvailableModal

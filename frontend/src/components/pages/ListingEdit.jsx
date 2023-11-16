@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import { fileToDataUrl } from './ListingCreateModal';
-import { Button, IconButton, TextField } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { style } from './ReviewModal';
-import CustomErrorModal from './CustomErrorModal';
+import { Navbar } from '../navbar/Navbar';
+import { Box, Button, TextField } from '@mui/material';
+import CustomErrorModal from '../modals/CustomErrorModal';
+import { fileToDataUrl } from '../modals/ListingCreateModal';
 
-// a modal inputting information when editing a list
-const ListingEditModal = (props) => {
+// a page edting a list
+const ListingEdit = (props) => {
+  const { id } = useParams();
   const [openError, setOpenError] = useState(false);
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
@@ -26,11 +25,6 @@ const ListingEditModal = (props) => {
   const [bed, setBed] = useState([
     { type: '', number: 0 }
   ]);
-
-  // close the editing modal
-  const handleClose = () => {
-    props.setOpen(false);
-  }
 
   // add more input boxes for more bedrooms
   const moreBedRoom = () => {
@@ -68,64 +62,68 @@ const ListingEditModal = (props) => {
 
   // editing event
   const edit = async (e) => {
-    const metadata = {
-      propertyType,
-      bathroomNumber,
-      bedrooms: bed,
-      propertyAmenities
-    }
-
-    const address = {
-      street,
-      city,
-      state,
-      postcode,
-      country
-    }
-
     e.preventDefault();
-    const response = await fetch(
-      `http://localhost:5005/listings/${props.listingId}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify({
-          title, address, price, thumbnail, metadata
-        }),
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
 
-    const data = await response.json();
-    if (data.error) {
-      setError(data.error);
+    if (
+      !propertyType || !bathroomNumber || !bed || !propertyAmenities ||
+      !street || !city || !state || !postcode || !country || !title ||
+      !price || !thumbnail
+    ) {
+      setError('Please fill all inputs');
       setOpenError(true);
     } else {
-      setError('');
-      setOpenError(true);
-      props.getList();
+      const metadata = {
+        propertyType,
+        bathroomNumber,
+        bedrooms: bed,
+        propertyAmenities
+      }
+
+      const address = {
+        street,
+        city,
+        state,
+        postcode,
+        country
+      }
+
+      const response = await fetch(
+        `http://localhost:5005/listings/${id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            title, address, price, thumbnail, metadata
+          }),
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+      const data = await response.json();
+      if (data.error) {
+        setError(data.error);
+        setOpenError(true);
+      } else {
+        setError('');
+        setOpenError(true);
+      }
     }
   };
 
   return (
     <>
-      <Modal
-        open={props.open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
+      <Navbar
+        token={localStorage.getItem('token')}
+        setToken={props.setToken}
+        page={`/edit/${props.id}`}
+      />
+
+      <div className='flex flex-wrap gap-5 justify-center mt-16 pb-5 pt-5'>
+        <Box className="px-3">
           <div className='text-lg font-bold mb-5'>
             Edit this list
           </div>
-
-          <Box className='absolute top-2 right-2'>
-            <IconButton onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
 
           <form className='flex flex-col gap-2'>
             <TextField
@@ -265,19 +263,19 @@ const ListingEditModal = (props) => {
             </div>
 
             <Button onClick={(e) => edit(e)}>
-              Create
+              Confirm
             </Button>
           </form>
         </Box>
-      </Modal>
 
-      <CustomErrorModal
-        error={error}
-        openError={openError}
-        setOpenError={setOpenError}
-      />
+        <CustomErrorModal
+          error={error}
+          openError={openError}
+          setOpenError={setOpenError}
+        />
+      </div>
     </>
   );
 }
 
-export default ListingEditModal;
+export default ListingEdit;

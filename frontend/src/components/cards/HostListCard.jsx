@@ -127,7 +127,7 @@ const HostListCard = (props) => {
           <div className="flex flex-col gap-2 w-full justify-center items-center">
             <div className="flex justify-between w-full gap-1">
               <Button size="small" className="flex-1 gap-1" onClick={
-                () => props.setOpenEdit(true)
+                () => navigate(`/edit/${props.item.id}`)
               }>
                 Edit
                 <ModeEditIcon fontSize="small" />

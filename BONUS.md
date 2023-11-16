@@ -13,6 +13,7 @@
 ### 2.3.2 Search Filters
 - Having a button allowing a user to clear all of the filters applied
 - Allowing users to apply multiple filters, and can input only min or max as a filter
+- Apply filters automatically when typing or adding new filters (one of the forum post confirmed that this can be counted as one of the bonus features)
 
 ### 2.4.1 Making a booking and checking its status
 - Allow users to delete a booking they booked with a pending status in a list booking card
