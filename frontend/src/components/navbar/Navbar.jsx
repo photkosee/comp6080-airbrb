@@ -1,14 +1,19 @@
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import RoofingIcon from '@mui/icons-material/Roofing';
 import ReplyIcon from '@mui/icons-material/Reply';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
+// a navbar for all pages except login/register
 export const Navbar = (props) => {
   const navigate = useNavigate();
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
 
   // logging out event, clear all localStorage
   const logout = async () => {
@@ -22,7 +27,8 @@ export const Navbar = (props) => {
     const data = await response.json();
 
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       localStorage.removeItem('email');
       localStorage.removeItem('token');
@@ -120,6 +126,12 @@ export const Navbar = (props) => {
           </Toolbar>
         </AppBar>
       </Box>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

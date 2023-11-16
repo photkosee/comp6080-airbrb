@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
-import BookingCard from '../cards/BookingCard';
-import { Card, CardContent, Typography } from '@mui/material';
-import { BarChart } from '@mui/x-charts';
 
+import { Navbar } from '../navbar/Navbar';
+import BookingCard from '../cards/BookingCard';
+import TotalProfitCard from '../cards/TotalProfitCard';
+import ChartCard from '../cards/ChartCard';
+import CustomErrorModal from '../modals/CustomErrorModal';
+
+// a page for managing booking requests of a list
 const ManageBooking = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [listBooking, setListBooking] = useState([]);
   const [sumBooking, setSumBooking] = useState(0);
   const [profitData, setProfitData] = useState(Array(31).fill(0));
@@ -40,7 +45,8 @@ const ManageBooking = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       showBookings();
     }
@@ -60,8 +66,11 @@ const ManageBooking = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
+      setError('');
+      setOpenError(true);
       showBookings();
     }
   };
@@ -105,7 +114,8 @@ const ManageBooking = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       const tmp = data.bookings;
       setListBooking(tmp.filter(e => e.listingId === id));
@@ -136,48 +146,8 @@ const ManageBooking = (props) => {
 
       <div className='flex flex-col gap-5 items-center pt-5 mb-5'>
         <div className='flex flex-wrap gap-5 items-center justify-center'>
-          <Card>
-            <CardContent>
-              <Typography gutterBottom variant="body3" component="div">
-                {
-                  localStorage.getItem('postedOn') !== 'null'
-                    ? <div>
-                        Up online: {timeDiff(null, localStorage.getItem('postedOn'))} Days
-                      </div>
-                    : <div>
-                        Currently not publishing
-                      </div>
-                }
-              </Typography>
-              <Typography gutterBottom variant="body5" component="div">
-                Total booked time this year: {sumBooking} Days
-              </Typography>
-              <Typography variant="body5">
-                Total profits this year: {sumBooking * localStorage.getItem('price')} $
-              </Typography>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <BarChart
-              xAxis={[{
-                scaleType: 'band',
-                data: Array.from({ length: 31 }, (_, index) => index),
-                label: 'number of days ago',
-              }]}
-              yAxis={[{
-                label: '$$ made',
-              }]}
-              series={[
-                {
-                  data: profitData,
-                },
-              ]}
-              width={350}
-              height={200}
-            >
-            </BarChart>
-          </Card>
+          <TotalProfitCard timeDiff={timeDiff} sumBooking={sumBooking} />
+          <ChartCard profitData={profitData} />
         </div>
 
         <div className='h-full w-full flex flex-wrap justify-center gap-3'>
@@ -210,6 +180,12 @@ const ManageBooking = (props) => {
           }
         </div>
       </div>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

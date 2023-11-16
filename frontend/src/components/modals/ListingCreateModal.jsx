@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -7,10 +8,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
 import ListingCreateJsonModal from './ListingCreateJsonModal';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CustomErrorModal from './CustomErrorModal';
 
 // converting an image file into date url
 export function fileToDataUrl (file) {
-  const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg']
+  const validFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
   const valid = validFileTypes.find(type => type === file.type);
 
   if (!valid) {
@@ -28,7 +30,10 @@ export function fileToDataUrl (file) {
   return dataUrlPromise;
 }
 
+// a modal for inputting information when creating a list
 const ListingCreateModal = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
@@ -139,10 +144,13 @@ const ListingCreateModal = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listingId) {
       props.getList();
       setOpen(false);
+      setError('');
+      setOpenError(true);
     }
   };
 
@@ -336,6 +344,12 @@ const ListingCreateModal = (props) => {
         open={openCreateJson}
         setOpen={setOpenCreateJson}
         setAllOpen={setOpen}
+      />
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
       />
     </>
   );

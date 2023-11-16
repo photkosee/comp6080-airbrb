@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { Button, IconButton } from '@mui/material';
@@ -8,6 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { style } from './ReviewModal';
 import CloseIcon from '@mui/icons-material/Close';
 
+// a modal picking stay range when booking
 const BookingModal = (props) => {
   return (
     <>

@@ -1,8 +1,13 @@
-import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Button, TextField } from '@mui/material';
+import CustomErrorModal from '../modals/CustomErrorModal';
+
+// a login page
 const Login = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -22,7 +27,8 @@ const Login = (props) => {
     const data = await response.json();
 
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.token) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('email', email);
@@ -92,6 +98,12 @@ const Login = (props) => {
           </div>
         </div>
       </section>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

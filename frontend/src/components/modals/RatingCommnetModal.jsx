@@ -1,10 +1,12 @@
 import React from 'react';
+
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { style } from './ReviewModal';
 import CloseIcon from '@mui/icons-material/Close';
 import { Card, IconButton, Rating, Typography } from '@mui/material';
 
+// a modal for viewing users' feedback and rating
 const RatingCommentModal = (props) => {
   return (
     <>

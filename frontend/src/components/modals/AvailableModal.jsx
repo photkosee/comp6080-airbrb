@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { Button, IconButton } from '@mui/material';
@@ -7,8 +8,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { style } from './ReviewModal';
 import CloseIcon from '@mui/icons-material/Close';
+import CustomErrorModal from './CustomErrorModal';
 
+// a modal selecting available date range before submitting
 const AvailableModal = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [range, setRange] = useState([
     { start: '', end: '' }
   ]);
@@ -49,7 +54,8 @@ const AvailableModal = (props) => {
       const end = new Date(date.end);
 
       if (end.getTime() < start.getTime()) {
-        alert('invalid time');
+        setError('invalid time');
+        setOpenError(true);
       }
     }
 
@@ -69,8 +75,11 @@ const AvailableModal = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
+      setError('');
+      setOpenError(true);
       props.setPublished(true);
     }
   }
@@ -131,6 +140,12 @@ const AvailableModal = (props) => {
           </form>
         </Box>
       </Modal>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
+
 import ListingCreate from '../modals/ListingCreateModal';
 import { Navbar } from '../navbar/Navbar';
 import HostCard from '../cards/HostCard';
-import { Card } from '@mui/material';
-import { BarChart } from '@mui/x-charts';
+import ChartCard from '../cards/ChartCard';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
+// a page for hosting and managing users' lists
 const Dashboard = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [list, setList] = useState([]);
   const [profitData, setProfitData] = useState(Array(31).fill(0));
 
@@ -26,7 +30,8 @@ const Dashboard = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listing) {
       const newList = data.listing;
       newList.id = id;
@@ -72,7 +77,8 @@ const Dashboard = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       calculatePastProfit(
         list.filter(e => e.owner === localStorage.getItem('email')).map(e => e.id),
@@ -95,7 +101,8 @@ const Dashboard = (props) => {
     const data = await response.json();
 
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listings) {
       data.listings.forEach((list) => {
         getData(list.id);
@@ -120,26 +127,7 @@ const Dashboard = (props) => {
         />
 
         <div className='flex flex-wrap gap-2 justify-center'>
-          <Card className='flex flex-col items-center justify-center'>
-            <BarChart
-              xAxis={[{
-                scaleType: 'band',
-                data: Array.from({ length: 31 }, (_, index) => index),
-                label: 'number of days ago',
-              }]}
-              yAxis={[{
-                label: '$$ made',
-              }]}
-              series={[
-                {
-                  data: profitData,
-                },
-              ]}
-              width={350}
-              height={200}
-            >
-            </BarChart>
-          </Card>
+          <ChartCard profitData={profitData} />
 
           {
             list.map((item, idx) => {
@@ -159,6 +147,12 @@ const Dashboard = (props) => {
           }
         </div>
       </div>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React from 'react';
+
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -8,6 +9,7 @@ import { Chip } from '@mui/material';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 
+// a booking card with user name, date rangr, and status
 const BookingCard = (props) => {
   return (
     <Card sx={{ maxWidth: 300 }}>

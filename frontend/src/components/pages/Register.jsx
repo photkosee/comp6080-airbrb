@@ -1,8 +1,13 @@
-import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { Button, TextField } from '@mui/material';
+import CustomErrorModal from '../modals/CustomErrorModal';
+
+// a page for registering
 const Register = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -26,7 +31,8 @@ const Register = (props) => {
       const data = await response.json();
 
       if (data.error) {
-        alert(data.error);
+        setError(data.error);
+        setOpenError(true);
       } else if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email);
@@ -34,7 +40,8 @@ const Register = (props) => {
         navigate('/');
       }
     } else {
-      alert('Passwords not mathcing')
+      setError('Passwords not mathcing');
+      setOpenError(true);
     }
   };
 
@@ -115,6 +122,12 @@ const Register = (props) => {
           </div>
         </div>
       </section>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

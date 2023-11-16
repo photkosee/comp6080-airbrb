@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
+import CustomErrorModal from './CustomErrorModal';
 
+// a modal uploading JSON file for creating a list
 const ListingCreateJsonModal = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
+
   // a promise to read the uploaded file
   const readFile = (file) => {
     return new Promise((resolve, reject) => {
@@ -42,10 +48,13 @@ const ListingCreateJsonModal = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listingId) {
       props.getList();
       props.setOpen(false);
+      setError('');
+      setOpenError(true);
       props.setAllOpen(false);
     }
   };
@@ -59,7 +68,8 @@ const ListingCreateJsonModal = (props) => {
         const jsonObj = await readFile(file);
         create(jsonObj);
       } catch (error) {
-        alert('error json file')
+        setError('cannot read the file');
+        setOpenError(true);
       }
     }
   };
@@ -97,6 +107,12 @@ const ListingCreateJsonModal = (props) => {
           </form>
         </Box>
       </Modal>
+
+      <CustomErrorModal
+        error={error}
+        openError={openError}
+        setOpenError={setOpenError}
+      />
     </>
   );
 }

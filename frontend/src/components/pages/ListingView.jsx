@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar } from '../navbar/Navbar';
 import { useParams } from 'react-router-dom';
-import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  CircularProgress,
-  Rating,
-  Typography
-} from '@mui/material';
+
+import { Navbar } from '../navbar/Navbar';
+import { CircularProgress } from '@mui/material';
 import BookingModal from '../modals/BookingModal';
 import ReviewModal from '../modals/ReviewModal';
 import TooltipModal from '../modals/TooltipModal';
 import RatingCommentModal from '../modals/RatingCommnetModal';
-import BookingCard from '../cards/BookingCard';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import RateReviewIcon from '@mui/icons-material/RateReview';
-import BookIcon from '@mui/icons-material/Book';
+import ListBookingCard from '../cards/ListBookingCard';
+import ListReviewCard from '../cards/ListReviewCard';
+import ListViewCard from '../cards/ListViewCard';
+import CustomErrorModal from '../modals/CustomErrorModal';
 
+// a page viewing a list in more details
 const ListingView = (props) => {
+  const [openError, setOpenError] = useState(false);
+  const [error, setError] = useState('');
   const [data, setData] = useState(null);
   const [open, setOpen] = useState(false);
   const [dateMax, setDateMax] = useState('');
@@ -74,7 +69,8 @@ const ListingView = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else if (data.listing) {
       setData(data);
     }
@@ -93,7 +89,8 @@ const ListingView = (props) => {
 
       const data = await response.json();
       if (data.error) {
-        alert(data.error);
+        setError(data.error);
+        setOpenError(true);
       } else if (data.bookings) {
         const tmp = data.bookings;
         setListBookings(tmp);
@@ -126,11 +123,13 @@ const ListingView = (props) => {
 
     const data = await response.json();
     if (data.error) {
-      alert(data.error);
+      setError(data.error);
+      setOpenError(true);
     } else {
       getData();
       setOpenReview(false);
-      alert('Feedback sent');
+      setError('');
+      setOpenError(true);
     }
   };
 
@@ -159,13 +158,15 @@ const ListingView = (props) => {
 
       const data = await response.json();
       if (data.error) {
-        alert(data.error);
         setOpen(false);
+        setError(data.error);
+        setOpenError(true);
       } else {
         getData();
         setOpen(false);
+        setError('');
+        setOpenError(true);
         getBookings();
-        alert('Booking success');
       }
     } else {
       alert('Need to provide both start and end dates')
@@ -198,25 +199,6 @@ const ListingView = (props) => {
     setOpen(true);
   }
 
-  // cancel a pending booking with given id
-  const cancleBooking = async (bId) => {
-    const response = await fetch(`http://localhost:5005/bookings/${bId}`, {
-      method: 'Delete',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-
-    const data = await response.json();
-    if (data.error) {
-      alert(data.error);
-    } else {
-      getBookings();
-      alert('Cancel successfully');
-    }
-  }
-
   if (!data || data === null) {
     return (
       <div className='w-full h-full flex justify-center items-center'>
@@ -233,90 +215,14 @@ const ListingView = (props) => {
         />
 
         <div className='flex flex-wrap gap-5 justify-center mt-3 pb-5 pt-5'>
-          <Card sx={{ maxWidth: 350 }}>
-            {
-              /^data:image\/[a-zA-Z]+;base64,[^\s]+$/.test(data.listing.thumbnail)
-                ? <CardMedia
-                    component="img"
-                    alt="thumbnail"
-                    style={{ height: '200px', width: '100%' }}
-                    image={data.listing.thumbnail} />
-                : <iframe
-                    style={{ height: '200px', width: '100%' }}
-                    src={data.listing.thumbnail}
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write;
-                      encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-            }
-
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {data.listing.title}
-              </Typography>
-              <Typography gutterBottom variant="body1" component="div">
-                {data.listing.address.street},
-                  &nbsp;{data.listing.address.city},
-                  &nbsp;{data.listing.address.state},
-                  &nbsp;{data.listing.address.postcode},
-                  &nbsp;{data.listing.address.country}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Property Type: {data.listing.metadata.propertyType}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Number of bathrooms: {data.listing.metadata.bathroomNumber}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {
-                  (localStorage.getItem('dateMin') && localStorage.getItem('dateMax'))
-                    ? <>
-                        Total price:&nbsp;
-                        {calculatePrice(
-                          localStorage.getItem('dateMin'), localStorage.getItem('dateMax')
-                        )} $
-                      </>
-                    : <>Price per night: {data.listing.price} $</>
-                }
-              </Typography>
-
-              <Typography variant="body2" color="text.secondary">
-                Bedrooms:
-              </Typography>
-              {
-                data.listing.metadata.bedrooms.map((e, idx) => {
-                  return (
-                    <Typography variant="body2" color="text.secondary" key={idx}>
-                      &nbsp;&nbsp;&nbsp;&nbsp;Type: {e.type}, Number of beds: {e.number}
-                    </Typography>
-                  )
-                })
-              }
-
-              {
-                localStorage.getItem('token') &&
-                <div className="flex w-full justify-center mt-5">
-                  <Button className="w-full flex gap-2" onClick={() => handleOpen()}>
-                    Book your stay
-                    <BookIcon fontSize="small" />
-                  </Button>
-                </div>
-              }
-
-              {
-                listBookings.some(e => e.owner === localStorage.getItem('email') &&
-                  parseInt(e.listingId) === parseInt(id)
-                ) &&
-                <div className="flex w-full justify-center">
-                  <Button className="w-full flex gap-2" onClick={() => handleOpenReview()}>
-                    Leave your review
-                    <RateReviewIcon fontSize="small" />
-                  </Button>
-                </div>
-              }
-            </CardContent>
-          </Card>
+          <ListViewCard
+            data={data}
+            calculatePrice={calculatePrice}
+            handleOpen={handleOpen}
+            listBookings={listBookings}
+            handleOpenReview={handleOpenReview}
+            id={id}
+          />
 
           <BookingModal
             open={open}
@@ -351,106 +257,27 @@ const ListingView = (props) => {
             tooltipRate={tooltipRate}
           />
 
-          <Card sx={{ maxWidth: 350 }}>
-            <CardContent>
-              <div
-                className='flex flex-wrap items-center justify-center gap-2 text-sm my-2'
-                role='button'
-                onMouseEnter={() => setOpenTooltip(true)}
-                onClick={() => setOpenTooltip(true)}
-              >
-                Rating:
-                <Rating
-                  name="read-rating"
-                  value={parseFloat(calculateRating())}
-                  size="small"
-                  precision={0.1}
-                  readOnly
-                />
-                {calculateRating()}
-              </div>
-
-              <div className='flex justify-center mb-1'>
-                <Typography variant="body2" color="text.secondary">
-                  Number of reviews: {data.listing.reviews.length}
-                </Typography>
-              </div>
-
-              <div className='flex flex-col gap-1'>
-                {
-                  data.listing.reviews.map((e, idx) => {
-                    return (
-                      <Card key={idx} onClick={() => setOpenTooltip(true)} role="button">
-                        <Typography variant="body5" component="div" className='px-2'>
-                          {e.owner}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" className='px-2'>
-                          {e.comment}
-                        </Typography>
-
-                        <Rating
-                          name="read-rating"
-                          value={parseInt(e.rating)}
-                          size="small"
-                          precision={0.1}
-                          readOnly
-                          className='p-1'
-                        />
-                      </Card>
-                    );
-                  })
-                }
-              </div>
-            </CardContent>
-          </Card>
+          <ListReviewCard
+            setOpenTooltip={setOpenTooltip}
+            calculateRating={calculateRating}
+            data={data}
+          />
 
           {
             localStorage.getItem('token') &&
-            <Card sx={{ maxWidth: 300 }}>
-              <CardContent>
-                <div className='flex justify-center mb-1'>
-                  <Typography variant="body2" color="text.secondary">
-                    Your bookings
-                  </Typography>
-                </div>
-
-                <div className='flex flex-col gap-1'>
-                  {
-                    listBookings.filter(e =>
-                      e.owner === localStorage.getItem('email') &&
-                      e.listingId === id &&
-                      e.status
-                    ).map((e, idx) => {
-                      return (
-                        <>
-                          <BookingCard
-                            key={idx}
-                            owner={e.owner}
-                            dateRange={e.dateRange}
-                            status={e.status}
-                            hasStatus
-                          />
-
-                          {
-                            e.status === 'pending' &&
-                            <Button
-                              className="flex gap-1"
-                              onClick={() => cancleBooking(e.id)}
-                            >
-                              <ArrowDropUpIcon fontSize="small" />
-                              Cancel booking
-                              <HighlightOffIcon fontSize="small" />
-                            </Button>
-                          }
-                        </>
-                      );
-                    })
-                  }
-                </div>
-              </CardContent>
-            </Card>
+            <ListBookingCard
+              getBookings={getBookings}
+              id={id}
+              listBookings={listBookings}
+            />
           }
         </div>
+
+        <CustomErrorModal
+          error={error}
+          openError={openError}
+          setOpenError={setOpenError}
+        />
       </>
     );
   }
