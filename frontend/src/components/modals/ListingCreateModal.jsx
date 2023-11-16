@@ -156,7 +156,7 @@ const ListingCreateModal = (props) => {
 
   return (
     <>
-      <Button onClick={handleOpen} className="flex gap-2">
+      <Button data-testid="create-host" onClick={handleOpen} className="flex gap-2">
         Host a new list
         <AddCircleOutlineIcon fontSize="small" />
       </Button>
@@ -181,6 +181,7 @@ const ListingCreateModal = (props) => {
           <form className='flex flex-col gap-2'>
             <TextField
               label="Title"
+              data-testid="create-title"
               variant="outlined"
               value={title}
               onChange={e => setTitle(e.target.value)}
@@ -190,6 +191,7 @@ const ListingCreateModal = (props) => {
             <div className='flex justify-between gap-2'>
               <TextField
                 label="Street"
+                data-testid="create-street"
                 variant="outlined"
                 value={street}
                 onChange={e => setStreet(e.target.value)}
@@ -198,6 +200,7 @@ const ListingCreateModal = (props) => {
 
               <TextField
                 label="City"
+                data-testid="create-city"
                 variant="outlined"
                 value={city}
                 onChange={e => setCity(e.target.value)}
@@ -207,6 +210,7 @@ const ListingCreateModal = (props) => {
 
             <div className='flex justify-between gap-2'>
               <TextField
+                data-testid="create-state"
                 label="State"
                 variant="outlined"
                 value={state}

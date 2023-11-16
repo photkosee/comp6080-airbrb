@@ -36,36 +36,39 @@ export const LandingPage = (props) => {
     }
   }, []);
 
+  const sortListHelper = (prevList, value) => {
+    const left = [];
+    const right = [];
+
+    for (const listing of prevList) {
+      if (listing.book === false) {
+        right.push(listing);
+      } else {
+        left.push(listing);
+      }
+    }
+    console.log(value)
+    if (value === 0) {
+      left.sort((a, b) => a.title.localeCompare(b.title));
+      right.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (value === 10) {
+      left.sort((b, a) => a.rating - b.rating);
+      right.sort((b, a) => a.rating - b.rating);
+    } else if (value === 20) {
+      left.sort((a, b) => a.rating - b.rating);
+      right.sort((a, b) => a.rating - b.rating);
+    }
+
+    return [...left, ...right];
+  }
+
   // sort by rating
   const handleSort = (value) => {
     setSort(value);
-    let newList = [...list];
 
-    if (parseInt(value) === 10) {
-      newList = [...list].sort((b, a) => a.rating - b.rating);
-      setList(newList);
-    } else if (parseInt(value) === 20) {
-      newList = [...list].sort((a, b) => a.rating - b.rating);
-      setList(newList);
-    } else if (parseInt(value) === 0) {
-      setList((prevList) => {
-        const left = [];
-        const right = [];
-
-        for (const listing of prevList) {
-          if (listing.book === false) {
-            right.push(listing);
-          } else {
-            left.push(listing);
-          }
-        }
-
-        left.sort((a, b) => a.title.localeCompare(b.title));
-        right.sort((a, b) => a.title.localeCompare(b.title));
-
-        return [...left, ...right];
-      });
-    }
+    setList((prevList) => {
+      return sortListHelper(prevList, parseInt(value));
+    });
   }
 
   // calculate average rating

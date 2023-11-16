@@ -59,6 +59,7 @@ const Login = (props) => {
               <form className="space-y-4 md:space-y-6 flex flex-col" action="#">
                 <TextField
                   label="Email"
+                  data-testid="login-email"
                   variant="outlined"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -68,6 +69,7 @@ const Login = (props) => {
 
                 <TextField
                   label="Password"
+                  data-testid="login-password"
                   variant="outlined"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
@@ -76,6 +78,7 @@ const Login = (props) => {
                 />
 
                 <Button
+                  data-testid="login-submit"
                   onClick={e => {
                     e.preventDefault();
                     login();
@@ -88,6 +91,7 @@ const Login = (props) => {
                   Dont have an account yet?&nbsp;
                   <a
                     href="#"
+                    data-testid="login-register"
                     className="font-medium text-primary-600 hover:underline
                       dark:text-primary-500"
                     onClick={() => navigate('/register')}

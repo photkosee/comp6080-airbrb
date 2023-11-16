@@ -83,7 +83,7 @@ export const Navbar = (props) => {
             {
               localStorage.getItem('token') && props.page === '/' &&
                 <>
-                  <Button color="inherit" className="flex flex-wrap gap-1 items-center"
+                  <Button data-testid="hosting-navbar" color="inherit" className="flex flex-wrap gap-1 items-center"
                     onClick={() => navigate('dashboard')}
                   >
                     <RoofingIcon fontSize="small" />
@@ -107,7 +107,7 @@ export const Navbar = (props) => {
             {
               localStorage.getItem('token')
                 ? <>
-                    <Button color="inherit" className="flex flex-wrap gap-1 items-center"
+                    <Button color="inherit" data-testid="logout-navbar" className="flex flex-wrap gap-1 items-center"
                       onClick={logout}
                     >
                       Log out
@@ -115,7 +115,7 @@ export const Navbar = (props) => {
                     </Button>
                   </>
                 : <>
-                    <Button color="inherit" className="flex flex-wrap gap-1 items-center"
+                    <Button color="inherit" data-testid="login-navbar" className="flex flex-wrap gap-1 items-center"
                       onClick={() => navigate('/login')}
                     >
                       Log in

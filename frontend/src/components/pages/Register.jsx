@@ -67,6 +67,7 @@ const Register = (props) => {
               <form className="space-y-4 md:space-y-6 flex flex-col" action="#">
                 <TextField
                   label="Name"
+                  data-testid="register-name"
                   variant="outlined"
                   value={name}
                   onChange={e => setName(e.target.value)}
@@ -75,6 +76,7 @@ const Register = (props) => {
 
                 <TextField
                   label="Email"
+                  data-testid="register-email"
                   variant="outlined"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -84,6 +86,7 @@ const Register = (props) => {
 
                 <TextField
                   label="Password"
+                  data-testid="register-password"
                   variant="outlined"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
@@ -93,6 +96,7 @@ const Register = (props) => {
 
                 <TextField
                   label="Confirm your password"
+                  data-testid="register-confirm"
                   variant="outlined"
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
@@ -101,6 +105,7 @@ const Register = (props) => {
                 />
 
                 <Button
+                  data-testid="register-submit"
                   onClick={e => {
                     e.preventDefault();
                     register();

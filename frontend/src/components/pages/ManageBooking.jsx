@@ -48,6 +48,8 @@ const ManageBooking = (props) => {
       setError(data.error);
       setOpenError(true);
     } else {
+      setError('');
+      setOpenError(true);
       showBookings();
     }
   };
