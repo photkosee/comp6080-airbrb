@@ -1,5 +1,8 @@
 ## More functionalities on milstones
 
+### 2.1.4. Items on all screens
+- Conditionally display only a button that lead to another screen (not to itself, swtiching from hosting/travelling), and a back button when viewing another screen
+
 ### 2.2.4 Publishing a listing
 - Can add more availabilities when publishing
 
@@ -9,6 +12,7 @@
 
 ### 2.3.2 Search Filters
 - Having a button allowing a user to clear all of the filters applied
+- Allowing users to apply multiple filters, and can input only min or max as a filter
 
 ### 2.4.1 Making a booking and checking its status
 - Allow users to delete a booking they booked with a pending status in a list booking card
@@ -23,6 +27,7 @@
 ## Extra functionalities
 - Good looking UI and icons for a11y
 - toast messages indicating both success and error with meaningful messages
+- Validating collaping date inputs
 - Allow users to delete a booking they booked with a pending status in a list booking card
 - Allow hosts to delete their own lists
 - Displaying a review section in each list with a user name, feedback, and star rating (and could be clicked to view all other reviews just like 2.6.1)
