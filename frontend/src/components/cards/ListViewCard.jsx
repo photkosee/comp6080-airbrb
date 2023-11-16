@@ -83,7 +83,8 @@ const ListViewCard = (props) => {
 
         {
           props.listBookings.some(e => e.owner === localStorage.getItem('email') &&
-            parseInt(e.listingId) === parseInt(props.id)
+            parseInt(e.listingId) === parseInt(props.id) &&
+            e.status === 'accepted'
           ) &&
           <div className="flex w-full justify-center">
             <Button className="w-full flex gap-2" onClick={() => props.handleOpenReview()}>
