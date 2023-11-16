@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import AvailableModal from './components/modals/AvailableModal';
 import BookingModal from './components/modals/BookingModal';
 import ReviewModal from './components/modals/ReviewModal';
-// import CustomErrorModal from './components/modals/CustomErrorModal';
+import CustomErrorModal from './components/modals/CustomErrorModal';
 
 // testing the modal for inputting the availability when publishing
 test('Rendering available modal', async () => {
@@ -20,15 +20,15 @@ test('Rendering available modal', async () => {
     />
   );
 
-  const text = screen.getByText(/Pick availabiity date range/i);
+  const text = screen.getByText(/Pick available range/i);
   expect(text).toBeInTheDocument();
   const add = screen.getByRole('button', { name: /Add more/i });
   expect(add).toBeInTheDocument();
   const submit = screen.getByRole('button', { name: /Submit/i });
   expect(submit).toBeInTheDocument();
   render(<Button name="Add more" />);
-  const deleteButtons = screen.getAllByText(/delete/i);
-  expect(text).toBeInTheDocument();
+  const deleteButtons = screen.getByRole('button', { name: /Delete/i });
+  expect(deleteButtons).toBeInTheDocument();
 
   const addButton = screen.getByText('Add more');
   userEvent.click(addButton);
@@ -64,20 +64,18 @@ test('Rendering booking modal', async () => {
     />
   );
 
-  const checkIn = screen.getByText(/Check In/i);
-  expect(checkIn).toBeInTheDocument();
-  const checkOut = screen.getByText(/Check In/i);
-  expect(checkOut).toBeInTheDocument();
+  const book = screen.getByText(/Book your stay/i);
+  expect(book).toBeInTheDocument();
   const confirm = screen.getByRole('button', { name: /Confirm/i });
   expect(confirm).toBeInTheDocument();
-  const dateMin = screen.getByLabelText('dateMin');
-  const dateMax = screen.getByLabelText('dateMax');
+  const dateMin = screen.getByLabelText('Check in');
+  const dateMax = screen.getByLabelText('Check out');
   userEvent.type(dateMin, '2023-01-01');
   userEvent.type(dateMax, '2023-01-02');
   userEvent.click(confirm);
 
   setTimeout(() => {
-    const text = screen.getByText(/Check In/i);
+    const text = screen.getByText(/Confirm/i);
     expect(text).toBeNull();
   }, 1000);
 });
@@ -113,25 +111,23 @@ test('Rendering review modal', async () => {
   }, 1000);
 });
 
-// test('Rendering test modal', async () => {
-//   render(
-//     <CustomErrorModal
-//       error='context'
-//     />
-//   );
+test('Rendering test modal', async () => {
+  render(
+    <CustomErrorModal
+      error={'Error Message'}
+      openError={() => {}}
+      setOpenError={() => {}}
+    />
+  );
 
-//   const ratingText = screen.getByText(/Rating:/i);
-//   expect(ratingText).toBeInTheDocument();
-//   const commentsText = screen.getByText(/Comments:/i);
-//   expect(commentsText).toBeInTheDocument();
-//   const send = screen.getByRole('button', { name: /Send/i });
-//   expect(send).toBeInTheDocument();
-//   const rating = screen.getByTestId('rating');
-//   expect(rating).toBeInTheDocument();
-//   userEvent.click(send);
+  const message = screen.getByText(/Error Message/i);
+  expect(message).toBeInTheDocument();
+  const alert = screen.getByRole('alert');
+  expect(alert).toBeInTheDocument();
+  userEvent.click(alert);
 
-//   setTimeout(() => {
-//     const closeButton = screen.queryByText('delete');
-//       expect(deletedButton).toBeNull();
-//   }, 1000);
-// });
+  setTimeout(() => {
+    const text = screen.getByText(/Error Message/i);
+    expect(text).toBeNull();
+  }, 1000);
+});

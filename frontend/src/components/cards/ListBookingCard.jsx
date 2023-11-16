@@ -39,13 +39,13 @@ const ListBookingCard = (props) => {
     <>
       <Card sx={{ maxWidth: 300, maxHeight: 550, overflow: 'auto' }}>
         <CardContent>
-          <div className='flex justify-center mb-1'>
+          <div className="flex justify-center mb-1">
             <Typography variant="body2" color="text.secondary">
               Your bookings
             </Typography>
           </div>
 
-          <div className='flex flex-col gap-1'>
+          <div className="flex flex-col gap-3">
             {
               props.listBookings.filter(e =>
                 e.owner === localStorage.getItem('email') &&
@@ -53,9 +53,8 @@ const ListBookingCard = (props) => {
                 e.status
               ).map((e, idx) => {
                 return (
-                  <>
+                  <div key={idx} className="flex flex-col">
                     <BookingCard
-                      key={idx}
                       owner={e.owner}
                       dateRange={e.dateRange}
                       status={e.status}
@@ -73,7 +72,7 @@ const ListBookingCard = (props) => {
                         <HighlightOffIcon fontSize="small" />
                       </Button>
                     }
-                  </>
+                  </div>
                 );
               })
             }
