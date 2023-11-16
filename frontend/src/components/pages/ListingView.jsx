@@ -214,7 +214,7 @@ const ListingView = (props) => {
           page={`/listing/${props.id}`}
         />
 
-        <div className='flex flex-wrap gap-5 justify-center mt-3 pb-5 pt-5'>
+        <div className='flex flex-wrap gap-5 justify-center mt-16 pb-5 pt-5'>
           <ListViewCard
             data={data}
             calculatePrice={calculatePrice}

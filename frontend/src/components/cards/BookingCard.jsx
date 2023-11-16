@@ -31,14 +31,14 @@ const BookingCard = (props) => {
                     onClick={props.acceptBooking}
                   >
                     Accept
-                    <ThumbUpAltIcon fontSize="small" />
+                    <ThumbUpAltIcon fontSize="small" className="mb-1" />
                   </Button>
 
                   <Button size="small" className="flex-1 gap-1"
                     onClick={props.declineBooking}
                   >
                     Decline
-                    <ThumbDownAltIcon fontSize="small" />
+                    <ThumbDownAltIcon fontSize="small" className="mb-1" />
                   </Button>
                 </>
           }

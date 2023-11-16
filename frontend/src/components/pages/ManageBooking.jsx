@@ -144,7 +144,7 @@ const ManageBooking = (props) => {
         page={`/dashboard/${props.id}`}
       />
 
-      <div className='flex flex-col gap-5 items-center pt-5 mb-5'>
+      <div className='flex flex-col gap-5 items-center pt-5 mt-16 mb-5'>
         <div className='flex flex-wrap gap-5 items-center justify-center'>
           <TotalProfitCard timeDiff={timeDiff} sumBooking={sumBooking} />
           <ChartCard profitData={profitData} />
