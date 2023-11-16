@@ -245,7 +245,7 @@ const ListingCreateModal = (props) => {
               required
             />
 
-            <div className='flex items-center gap-2'>
+            <div className='flex flex-col'>
               <label htmlFor="thumbnail" className="label-tw">
                 Thumbnail
               </label>
@@ -258,7 +258,7 @@ const ListingCreateModal = (props) => {
               />
             </div>
 
-            <div className='flex items-center gap-2'>
+            <div className='flex flex-col'>
               <label htmlFor="video" className="label-tw">
                 Video Thumbnail
               </label>

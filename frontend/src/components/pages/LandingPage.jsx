@@ -295,6 +295,7 @@ export const LandingPage = (props) => {
       <div className="flex justify-center items-center flex-wrap mt-16 pt-5 mb-5 gap-2">
         <TextField
           label="Search for titles or cities"
+          aria-label="search by text"
           variant="outlined"
           value={nameSearch}
           onChange={e => setNameSearch(e.target.value)}
