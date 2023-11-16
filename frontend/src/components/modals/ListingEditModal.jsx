@@ -6,6 +6,7 @@ import { Button, IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
 
+// a modal inputting information when editing a list
 const ListingEditModal = (props) => {
   const [title, setTitle] = useState('');
   const [street, setStreet] = useState('');

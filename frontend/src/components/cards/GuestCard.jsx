@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { Chip, Rating } from '@mui/material';
 
+// a card of list containing sufficient information for landing page
 const GuestCard = (props) => {
   const navigate = useNavigate();
 

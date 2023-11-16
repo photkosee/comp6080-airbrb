@@ -5,6 +5,7 @@ import { IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
 
+// a cutom error modal showing custom error message
 const CustomErrorModal = (props) => {
   const [open, setOpen] = useState(false);
 

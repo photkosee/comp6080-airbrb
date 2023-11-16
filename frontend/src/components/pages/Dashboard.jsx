@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ListingCreate from '../modals/ListingCreateModal';
 import { Navbar } from '../navbar/Navbar';
 import HostCard from '../cards/HostCard';
-import { Card } from '@mui/material';
-import { BarChart } from '@mui/x-charts';
+import ChartCard from '../cards/ChartCard';
 
 const Dashboard = (props) => {
   const [list, setList] = useState([]);
@@ -120,26 +119,7 @@ const Dashboard = (props) => {
         />
 
         <div className='flex flex-wrap gap-2 justify-center'>
-          <Card className='flex flex-col items-center justify-center'>
-            <BarChart
-              xAxis={[{
-                scaleType: 'band',
-                data: Array.from({ length: 31 }, (_, index) => index),
-                label: 'number of days ago',
-              }]}
-              yAxis={[{
-                label: '$$ made',
-              }]}
-              series={[
-                {
-                  data: profitData,
-                },
-              ]}
-              width={350}
-              height={200}
-            >
-            </BarChart>
-          </Card>
+          <ChartCard profitData={profitData} />
 
           {
             list.map((item, idx) => {

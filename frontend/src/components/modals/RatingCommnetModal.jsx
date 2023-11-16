@@ -5,6 +5,7 @@ import { style } from './ReviewModal';
 import CloseIcon from '@mui/icons-material/Close';
 import { Card, IconButton, Rating, Typography } from '@mui/material';
 
+// a modal for viewing users' feedback and rating
 const RatingCommentModal = (props) => {
   return (
     <>

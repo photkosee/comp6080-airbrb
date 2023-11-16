@@ -8,6 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { style } from './ReviewModal';
 import CloseIcon from '@mui/icons-material/Close';
 
+// a modal selecting available date range before submitting
 const AvailableModal = (props) => {
   const [range, setRange] = useState([
     { start: '', end: '' }

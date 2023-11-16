@@ -20,6 +20,7 @@ export const style = {
   overflowY: 'auto'
 };
 
+// a modal for leaving users' feedback and rating
 const ReviewModal = (props) => {
   return (
     <>

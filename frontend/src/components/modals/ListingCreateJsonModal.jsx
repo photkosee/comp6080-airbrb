@@ -6,6 +6,7 @@ import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { style } from './ReviewModal';
 
+// a modal uploading JSON file for creating a list
 const ListingCreateJsonModal = (props) => {
   // a promise to read the uploaded file
   const readFile = (file) => {

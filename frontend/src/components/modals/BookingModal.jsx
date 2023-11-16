@@ -8,6 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { style } from './ReviewModal';
 import CloseIcon from '@mui/icons-material/Close';
 
+// a modal picking stay range when booking
 const BookingModal = (props) => {
   return (
     <>

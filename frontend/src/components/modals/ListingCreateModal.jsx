@@ -28,6 +28,7 @@ export function fileToDataUrl (file) {
   return dataUrlPromise;
 }
 
+// a modal for inputting information when creating a list
 const ListingCreateModal = (props) => {
   const [title, setTitle] = useState('');
   const [street, setStreet] = useState('');
