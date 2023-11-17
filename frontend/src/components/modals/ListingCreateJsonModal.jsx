@@ -38,7 +38,7 @@ const ListingCreateJsonModal = (props) => {
   const create = async (jsonObj) => {
     const response = await fetch('http://localhost:5005/listings/new', {
       method: 'POST',
-      body: jsonObj,
+      body: JSON.stringify(jsonObj),
       headers: {
         'Content-type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('token')}`

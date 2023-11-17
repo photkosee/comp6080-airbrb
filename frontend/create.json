@@ -1,0 +1,24 @@
+{
+    "title": "JSON Testing",
+    "owner": "example@email.com",
+    "address": {
+      "street": "1 Big Street1",
+      "city": "Sydney1",
+      "state": "NSW1",
+      "postcode": "2001",
+      "country": "Australia1"
+    },
+    "price": "10001",
+    "thumbnail": "https://www.youtube.com/embed/U9mJuUkhUzk",
+    "metadata": {
+      "propertyType": "no1",
+      "bathroomNumber": "9",
+      "bedrooms": [
+        {
+          "type": "king1",
+          "number": "09"
+        }
+      ],
+      "propertyAmenities": "No features for this hotel1"
+    }
+}
