@@ -14,6 +14,9 @@
 ### 2.2.1. Hosted Listings Screen
 - Also sort listings in an alphabetical order for consistency and better ux
 
+### 2.2.2. Hosted Listing Create
+- Allow users to add as many beds as they want
+
 ### 2.2.4 Publishing a listing
 - Can add more availabilities when publishing
 

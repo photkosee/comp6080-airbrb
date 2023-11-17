@@ -59,10 +59,10 @@ const Register = (props) => {
 
   return (
     <>
-      <section className="bg-gray-50 dark:bg-gray-900">
+      <section className="bg-gray-50 h-screen w-full flex items-center dark:bg-gray-900">
         <div
           className="flex flex-col items-center justify-center px-6 py-8
-            mx-auto md:h-screen lg:py-0"
+            mx-auto my-auto w-full h-full"
         >
           <div
             className="w-full bg-white rounded-lg shadow dark:border md:mt-0
@@ -97,7 +97,7 @@ const Register = (props) => {
                 />
 
                 <FormControl sx={{ width: '100%' }} variant="outlined">
-                  <InputLabel htmlFor="register-password">Password</InputLabel>
+                  <InputLabel htmlFor="register-password">Password*</InputLabel>
                   <OutlinedInput
                     id="register-password"
                     data-testid="register-password"
@@ -122,7 +122,7 @@ const Register = (props) => {
                 </FormControl>
 
                 <FormControl sx={{ width: '100%' }} variant="outlined">
-                  <InputLabel htmlFor="register-confirm">Password</InputLabel>
+                  <InputLabel htmlFor="register-confirm">Confirm Password*</InputLabel>
                   <OutlinedInput
                     id="register-confirm"
                     data-testid="register-confirm"

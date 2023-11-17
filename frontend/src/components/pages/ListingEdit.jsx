@@ -74,58 +74,51 @@ const ListingEdit = (props) => {
   const edit = async (e) => {
     e.preventDefault();
 
-    if (thumbnail && video) {
-      setError('Can only choose 1 type of thumbnail');
-      setThumbnail('');
-      setVideo('');
+    const metadata = {
+      propertyType,
+      bathroomNumber,
+      bedrooms: bed,
+      propertyAmenities
+    }
+
+    const address = {
+      street,
+      city,
+      state,
+      postcode,
+      country
+    }
+
+    let imgVideo = '';
+    if (thumbnail) {
+      imgVideo = thumbnail;
+    } else {
+      imgVideo = video;
+    }
+
+    const response = await fetch(
+      `http://localhost:5005/listings/${id}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          title, address, price, imgVideo, metadata
+        }),
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+    const data = await response.json();
+    if (data.error) {
+      setError(data.error);
       setOpenError(true);
     } else {
-      const metadata = {
-        propertyType,
-        bathroomNumber,
-        bedrooms: bed,
-        propertyAmenities
-      }
-
-      const address = {
-        street,
-        city,
-        state,
-        postcode,
-        country
-      }
-
-      let imgVideo = '';
-      if (thumbnail) {
-        imgVideo = thumbnail;
-      } else {
-        imgVideo = video;
-      }
-
-      const response = await fetch(
-        `http://localhost:5005/listings/${id}`,
-        {
-          method: 'PUT',
-          body: JSON.stringify({
-            title, address, price, imgVideo, metadata
-          }),
-          headers: {
-            'Content-type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-
-      const data = await response.json();
-      if (data.error) {
-        setError(data.error);
-        setOpenError(true);
-      } else {
-        setError('');
-        setOpenError(true);
-        navigate('/dashboard');
-      }
+      setError('');
+      setOpenError(true);
+      navigate('/dashboard');
     }
-  };
+  }
 
   return (
     <>
@@ -218,6 +211,7 @@ const ListingEdit = (props) => {
                   id="thumbnail"
                   className="input-tw"
                   onChange={e => handleThumbnail(e)}
+                  disabled={video}
                 />
               </div>
 
@@ -237,6 +231,7 @@ const ListingEdit = (props) => {
                   className="input-tw"
                   placeholder='e.g. https://www.youtube.com/...'
                   onChange={e => setVideo(e.target.value)}
+                  disabled={thumbnail}
                 />
               </div>
             </Card>

@@ -118,55 +118,48 @@ const ListingCreateModal = (props) => {
   const create = async (e) => {
     e.preventDefault();
 
-    if (thumbnail && video) {
-      setError('Can only choose 1 type of thumbnail');
-      setThumbnail('');
-      setVideo('');
-      setOpenError(true);
+    const metadata = {
+      propertyType,
+      bathroomNumber,
+      bedrooms: bed,
+      propertyAmenities
+    }
+
+    const address = {
+      street,
+      city,
+      state,
+      postcode,
+      country
+    }
+
+    let imgVideo = '';
+    if (thumbnail) {
+      imgVideo = thumbnail;
     } else {
-      const metadata = {
-        propertyType,
-        bathroomNumber,
-        bedrooms: bed,
-        propertyAmenities
-      }
+      imgVideo = video;
+    }
 
-      const address = {
-        street,
-        city,
-        state,
-        postcode,
-        country
+    const response = await fetch('http://localhost:5005/listings/new', {
+      method: 'POST',
+      body: JSON.stringify({
+        title, address, price, thumbnail: imgVideo, metadata
+      }),
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
       }
+    });
 
-      let imgVideo = '';
-      if (thumbnail) {
-        imgVideo = thumbnail;
-      } else {
-        imgVideo = video;
-      }
-
-      const response = await fetch('http://localhost:5005/listings/new', {
-        method: 'POST',
-        body: JSON.stringify({
-          title, address, price, thumbnail: imgVideo, metadata
-        }),
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      const data = await response.json();
-      if (data.error) {
-        setError(data.error);
-        setOpenError(true);
-      } else if (data.listingId) {
-        props.getList();
-        setOpen(false);
-        setError('');
-        setOpenError(true);
-      }
+    const data = await response.json();
+    if (data.error) {
+      setError(data.error);
+      setOpenError(true);
+    } else if (data.listingId) {
+      props.getList();
+      setOpen(false);
+      setError('');
+      setOpenError(true);
     }
   }
 
@@ -271,6 +264,7 @@ const ListingCreateModal = (props) => {
                   id="thumbnail"
                   className="input-tw"
                   onChange={e => handleThumbnail(e)}
+                  disabled={video}
                 />
               </div>
 
@@ -290,6 +284,7 @@ const ListingCreateModal = (props) => {
                   className="input-tw"
                   placeholder='e.g. https://www.youtube.com/...'
                   onChange={e => setVideo(e.target.value)}
+                  disabled={thumbnail}
                 />
               </div>
             </Card>
