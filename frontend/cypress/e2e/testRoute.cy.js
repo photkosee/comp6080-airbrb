@@ -14,11 +14,13 @@ describe('happy path', () => {
     cy.get('[data-testid="register-email"]').type('example@email.com');
     cy.get('[data-testid="register-password"]').type('password');
     cy.get('[data-testid="register-confirm"]').type('password');
+    cy.wait(1000);
     cy.get('[data-testid="register-submit"]').click();
 
     // create listing
-    cy.wait(1000);
+    cy.wait(3000);
     cy.get('[data-testid="hosting-navbar"]').click();
+    cy.wait(3000);
     cy.get('[data-testid="create-host"]').click();
     cy.get('[data-testid="create-title"]').type('Hotel Sydney');
     cy.get('[data-testid="create-street"]').type('1 Big Street');
@@ -33,6 +35,7 @@ describe('happy path', () => {
     cy.get('[data-testid="create-bed-number"]').type(0o1);
     cy.get('[data-testid="create-bathroom-number"]').type(0o1);
     cy.get('[data-testid="create-amentities"]').type('No features for this hotel');
+    cy.wait(1000);
     cy.get('[data-testid="create-submit"]').click();
 
     // publish
@@ -40,11 +43,15 @@ describe('happy path', () => {
     cy.get('[data-testid="host-card-publish"]').click();
     cy.get('#mui-20').type(11111111);
     cy.get('#mui-22').type(12121212);
+    cy.wait(1000);
     cy.get('[data-testid="publish-submit"]').click();
 
     // switch to traveling
-    cy.wait(1000);
+    cy.wait(3000);
     cy.get('[data-testid="traveling-navbar"]').click();
+
+    // search
+    cy.wait(5000);
     cy.get('[data-testid="search"]').type('Sydney');
     cy.wait(2000);
     cy.get('[data-testid="search"]').type('ABCDEF');

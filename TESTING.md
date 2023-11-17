@@ -8,7 +8,7 @@
 7. Logs out of the application successfully
 8. Logs back into the application successfully
 
-### 2nd Happy Path
+### 2nd Test Path
 1. Registers successfully
 2. Creates a new listing successfully
 3. Publish a listing successfully

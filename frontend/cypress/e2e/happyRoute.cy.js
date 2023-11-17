@@ -14,11 +14,13 @@ describe('happy path', () => {
     cy.get('[data-testid="register-email"]').type('example@email.com');
     cy.get('[data-testid="register-password"]').type('password');
     cy.get('[data-testid="register-confirm"]').type('password');
+    cy.wait(1000);
     cy.get('[data-testid="register-submit"]').click();
 
     // create listing
-    cy.wait(1000);
+    cy.wait(3000);
     cy.get('[data-testid="hosting-navbar"]').click();
+    cy.wait(3000);
     cy.get('[data-testid="create-host"]').click();
     cy.get('[data-testid="create-title"]').type('Hotel Sydney');
     cy.get('[data-testid="create-street"]').type('1 Big Street');
@@ -33,10 +35,11 @@ describe('happy path', () => {
     cy.get('[data-testid="create-bed-number"]').type(0o1);
     cy.get('[data-testid="create-bathroom-number"]').type(0o1);
     cy.get('[data-testid="create-amentities"]').type('No features for this hotel');
+    cy.wait(1000);
     cy.get('[data-testid="create-submit"]').click();
 
     // edit
-    cy.wait(1000);
+    cy.wait(5000);
     cy.get('[data-testid="host-edit"]').click();
     cy.get('[data-testid="edit-title"]').type('Hotel Sydney1');
     cy.get('[data-testid="edit-street"]').type('1 Big Street1');
@@ -51,6 +54,7 @@ describe('happy path', () => {
     cy.get('[data-testid="edit-bed-number"]').type(0o11);
     cy.get('[data-testid="edit-bathroom-number"]').type(0o11);
     cy.get('[data-testid="edit-amentities"]').type('No features for this hotel1');
+    cy.wait(1000);
     cy.get('[data-testid="edit-submit"]').click();
 
     // publish
@@ -58,6 +62,7 @@ describe('happy path', () => {
     cy.get('[data-testid="host-card-publish"]').click();
     cy.get('#mui-33').type(11111111);
     cy.get('#mui-35').type(12121212);
+    cy.wait(1000);
     cy.get('[data-testid="publish-submit"]').click();
 
     // unpublish
@@ -69,11 +74,13 @@ describe('happy path', () => {
     cy.get('[data-testid="host-card-publish"]').click();
     cy.get('#mui-37').type(11111111);
     cy.get('#mui-39').type(12121212);
+    cy.wait(1000);
     cy.get('[data-testid="publish-submit"]').click();
 
     // logout
     cy.wait(1000);
     cy.get('[data-testid="logout-navbar"]').click();
+    cy.wait(1000);
     cy.get('[data-testid="login-navbar"]').click();
 
     // register
@@ -83,11 +90,13 @@ describe('happy path', () => {
     cy.get('[data-testid="register-email"]').type('good@email.com');
     cy.get('[data-testid="register-password"]').type('nice');
     cy.get('[data-testid="register-confirm"]').type('nice');
+    cy.wait(1000);
     cy.get('[data-testid="register-submit"]').click();
 
     // click the card
     cy.wait(3000);
     cy.get('[data-testid="guest-card"]').click();
+    cy.wait(1000);
     cy.get('[data-testid="book"]').click();
     
     // book
@@ -105,6 +114,7 @@ describe('happy path', () => {
     cy.wait(2000);
     cy.get('[data-testid="login-email"]').type('good@email.com');
     cy.get('[data-testid="login-password"]').type('nice');
+    cy.wait(1000);
     cy.get('[data-testid="login-submit"]').click();
 
     // logout
