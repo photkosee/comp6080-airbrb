@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Rating } from '@mui/material';
+import TooltipModal from '../modals/TooltipModal';
+import RatingCommentModal from '../modals/RatingCommnetModal';
 
 // a card containing a list of review cards
 const ListReviewCard = (props) => {
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const [openRateTooltip, setOpenRateTooltip] = useState(false);
+  const [target, setTarget] = useState(null);
+  const [tooltipRate, setTooltipRate] = useState(0);
+
+  // set current target for a tooltip
+  const handleHover = (e) => {
+    setTarget(e.currentTarget);
+    setOpenTooltip(true);
+  }
+
   return (
     <Card sx={{ maxWidth: 350, maxHeight: 550, overflow: 'auto' }}>
       <CardContent>
         <div
           className='flex flex-wrap items-center justify-center gap-2 text-sm my-2'
           role='button'
-          onMouseEnter={() => props.setOpenTooltip(true)}
-          onClick={() => props.setOpenTooltip(true)}
+          onMouseEnter={e => handleHover(e)}
+          onMouseLeave={() => setOpenTooltip(false)}
         >
           Rating:
           <Rating
@@ -25,6 +38,23 @@ const ListReviewCard = (props) => {
             readOnly
           />
           {props.calculateRating()}
+
+          <TooltipModal
+            openTooltip={openTooltip}
+            setOpenTooltip={setOpenTooltip}
+            setTooltipRate={setTooltipRate}
+            setOpenRateTooltip={setOpenRateTooltip}
+            reviews={props.data.listing.reviews}
+            target={target}
+          />
+
+          <RatingCommentModal
+            openRateTooltip={openRateTooltip}
+            setOpenRateTooltip={setOpenRateTooltip}
+            reviews={props.data.listing.reviews}
+            tooltipRate={tooltipRate}
+            setOpenTooltip={setOpenTooltip}
+          />
         </div>
 
         <div className='flex justify-center mb-1'>
@@ -37,11 +67,11 @@ const ListReviewCard = (props) => {
           {
             props.data.listing.reviews.map((e, idx) => {
               return (
-                <Card key={idx} onClick={() => props.setOpenTooltip(true)} role="button">
-                  <Typography variant="body5" component="div" className='px-2'>
+                <Card key={idx} role="button" sx={{ maxWidth: 200 }}>
+                  <Typography variant="body5" component="div" className='px-2 break-all'>
                     {e.owner}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" className='px-2'>
+                  <Typography variant="body2" color="text.secondary" className='px-2 break-all'>
                     {e.comment}
                   </Typography>
 

@@ -17,7 +17,7 @@ export const style = {
   boxShadow: 24,
   p: 4,
   borderRadius: 'lg',
-  maxHeight: '100vh',
+  maxHeight: '80vh',
   overflowY: 'auto'
 };
 

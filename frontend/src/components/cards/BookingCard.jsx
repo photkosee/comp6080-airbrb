@@ -12,9 +12,9 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 // a booking card with user name, date rangr, and status
 const BookingCard = (props) => {
   return (
-    <Card sx={{ maxWidth: 300 }}>
+    <Card sx={{ maxWidth: 200 }}>
       <CardContent>
-        <Typography gutterBottom variant="body5" component="div">
+        <Typography gutterBottom variant="body5" component="div" className='break-all'>
           User: {props.owner}
         </Typography>
         <Typography variant="body2" color="text.secondary">

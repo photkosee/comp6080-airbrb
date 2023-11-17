@@ -19,6 +19,7 @@
 ### Constraints
 - Limiting the errors users can make by disable the submit button for most of the features that is appropricate (when login-register, and some other forms such as booking, publishing, and more)
 - Only allow users to delete pending bookings
+- Using stopPropagation to prevent weird interactions when having a tooltip
 
 ### Effectiveness & Utility
 - Having navbar on all pages, making it easier for the users to navigate

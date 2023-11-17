@@ -12,7 +12,11 @@ const RatingCommentModal = (props) => {
     <>
       <Modal
         open={props.openRateTooltip}
-        onClose={() => props.setOpenRateTooltip(false)}
+        onClose={() => {
+          props.setOpenTooltip(false);
+          props.setOpenRateTooltip(false);
+        }}
+        onClick={e => e.stopPropagation()}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -22,7 +26,10 @@ const RatingCommentModal = (props) => {
           </div>
 
           <Box className='absolute top-2 right-2'>
-            <IconButton onClick={() => props.setOpenRateTooltip(false)}>
+            <IconButton onClick={() => {
+              props.setOpenTooltip(false);
+              props.setOpenRateTooltip(false);
+            }}>
               <CloseIcon />
             </IconButton>
           </Box>
@@ -37,10 +44,19 @@ const RatingCommentModal = (props) => {
                           .map((e, idx) => {
                             return (
                               <Card key={idx}>
-                                <Typography variant="body5" component="div" className='px-2'>
+                                <Typography
+                                  variant="body5"
+                                  component="div"
+                                  className='px-2 break-all'
+                                >
                                   {e.owner}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary" className='px-2'>
+
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                  className='px-2 break-all'
+                                >
                                   {e.comment}
                                 </Typography>
 

@@ -1,9 +1,7 @@
 import React from 'react';
 
-import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import { Button, IconButton, Typography } from '@mui/material';
-import { style } from './ReviewModal';
+import { Button, Fade, IconButton, Paper, Popper, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CircularProgressWithLabel from './CircularProgressWithLabel';
 import StarIcon from '@mui/icons-material/Star';
@@ -12,67 +10,86 @@ import StarIcon from '@mui/icons-material/Star';
 const TooltipModal = (props) => {
   return (
     <>
-      <Modal
+      <Popper
+        sx={{ m: 1, zIndex: 1 }}
         open={props.openTooltip}
-        onClose={() => props.setOpenTooltip(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        placement="bottom"
+        anchorEl={props.target}
+        transition
+        onClick={e => e.stopPropagation()}
       >
-        <Box sx={style}>
-          <div className="text-lg font-bold mb-5">
-            Feedback
-          </div>
+        {({ TransitionProps }) => (
+          <Fade {...TransitionProps} timeout={350}>
+            <Paper>
+              <Box sx={{ maxWidth: 300, p: 2 }}>
+                <div className="text-lg font-bold mb-2">
+                  Feedback
+                </div>
 
-          <Box className="absolute top-2 right-2">
-            <IconButton onClick={() => props.setOpenTooltip(false)} data-testid="closeTool">
-              <CloseIcon />
-            </IconButton>
-          </Box>
+                <div className="text-sm text-gray-400 mb-2">
+                  Total rated: {props.reviews.length}
+                </div>
 
-          <div className="flex flex-col flex-wrap gap-3 w-full">
-            <div className="flex flex-col items-start">
-              {
-                [0, 1, 2, 3, 4, 5].map((num, idx) => {
-                  return (
-                    <div
-                      className="flex flex-wrap gap-5 items-center justify-between w-full"
-                      key={idx}
-                    >
-                      <Button
-                        onClick={() => {
-                          props.setTooltipRate(num);
-                          props.setOpenRateTooltip(true);
-                        }}
-                        className="flex gap-2 items-center justify-center"
-                      >
-                        {num} Star
-                        <StarIcon fontSize="small" className="mb-1" />
-                      </Button>
+                <Box className="absolute top-2 right-2">
+                  <IconButton
+                    onClick={e => {
+                      e.stopPropagation();
+                      props.setOpenTooltip(false);
+                    }}
+                    data-testid="closeTool"
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
 
-                      <Typography variant="body2" color="text.secondary">
-                        {props.reviews.filter(e => parseInt(e.rating) === num).length}
-                        &nbsp;Rated
-                      </Typography>
+                <div className="flex flex-col flex-wrap gap-3 w-full">
+                  <div className="flex flex-col items-start">
+                    {
+                      [0, 1, 2, 3, 4, 5].map((num, idx) => {
+                        return (
+                          <div
+                            className="flex flex-wrap gap-5 items-center justify-between w-full"
+                            key={idx}
+                          >
+                            <Button
+                              onClick={e => {
+                                e.stopPropagation();
+                                props.setTooltipRate(num);
+                                props.setOpenRateTooltip(true);
+                              }}
+                              className="flex gap-2 items-center justify-center"
+                            >
+                              {num} Star
+                              <StarIcon fontSize="small" className="mb-1" />
+                            </Button>
 
-                      <div>
-                        {props.reviews.length === 0
-                          ? <CircularProgressWithLabel value={0} />
-                          : <CircularProgressWithLabel
-                              value={((props.reviews.filter(e =>
-                                parseInt(e.rating) === num).length /
-                                  props.reviews.length) * 100)
+                            <Typography variant="body2" color="text.secondary">
+                              {props.reviews.filter(e => parseInt(e.rating) === num).length}
+                              &nbsp;Rated
+                            </Typography>
+
+                            <div>
+                              {props.reviews.length === 0
+                                ? <CircularProgressWithLabel value={0} />
+                                : <CircularProgressWithLabel
+                                    value={((props.reviews.filter(e =>
+                                      parseInt(e.rating) === num).length /
+                                        props.reviews.length) * 100)
+                                    }
+                                  />
                               }
-                            />
-                        }
-                      </div>
-                    </div>
-                  )
-                })
-              }
-            </div>
-          </div>
-        </Box>
-      </Modal>
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+              </Box>
+            </Paper>
+          </Fade>
+        )}
+      </Popper>
     </>
   );
 }

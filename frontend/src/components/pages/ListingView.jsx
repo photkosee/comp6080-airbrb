@@ -5,8 +5,6 @@ import { Navbar } from '../navbar/Navbar';
 import { CircularProgress } from '@mui/material';
 import BookingModal from '../modals/BookingModal';
 import ReviewModal from '../modals/ReviewModal';
-import TooltipModal from '../modals/TooltipModal';
-import RatingCommentModal from '../modals/RatingCommnetModal';
 import ListBookingCard from '../cards/ListBookingCard';
 import ListReviewCard from '../cards/ListReviewCard';
 import ListViewCard from '../cards/ListViewCard';
@@ -25,9 +23,6 @@ const ListingView = (props) => {
   const [rate, setRate] = useState(0);
   const [text, setText] = useState('');
   const [bookingId, setBookingId] = useState('');
-  const [openTooltip, setOpenTooltip] = useState(false);
-  const [openRateTooltip, setOpenRateTooltip] = useState(false);
-  const [tooltipRate, setTooltipRate] = useState(0);
   const { id } = useParams();
 
   // starting with fetching a list of all bookings and a list of listings
@@ -245,23 +240,7 @@ const ListingView = (props) => {
             uploadReview={uploadReview}
           />
 
-          <TooltipModal
-            openTooltip={openTooltip}
-            setOpenTooltip={setOpenTooltip}
-            setTooltipRate={setTooltipRate}
-            setOpenRateTooltip={setOpenRateTooltip}
-            reviews={data.listing.reviews}
-          />
-
-          <RatingCommentModal
-            openRateTooltip={openRateTooltip}
-            setOpenRateTooltip={setOpenRateTooltip}
-            reviews={data.listing.reviews}
-            tooltipRate={tooltipRate}
-          />
-
           <ListReviewCard
-            setOpenTooltip={setOpenTooltip}
             calculateRating={calculateRating}
             data={data}
           />

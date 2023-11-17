@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
@@ -6,10 +6,22 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Chip, Rating } from '@mui/material';
+import TooltipModal from '../modals/TooltipModal';
+import RatingCommentModal from '../modals/RatingCommnetModal';
 
 // a card of list containing sufficient information for landing page
 const GuestCard = (props) => {
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const [openRateTooltip, setOpenRateTooltip] = useState(false);
+  const [target, setTarget] = useState(null);
+  const [tooltipRate, setTooltipRate] = useState(0);
   const navigate = useNavigate();
+
+  // set current target for a tooltip
+  const handleHover = (e) => {
+    setTarget(e.currentTarget);
+    setOpenTooltip(true);
+  }
 
   return (
     <>
@@ -50,13 +62,35 @@ const GuestCard = (props) => {
             Number of reviews: {props.item.reviews.length}
           </Typography>
 
-          <Rating
-            name="read-rating"
-            value={parseFloat((props.item.rating).toFixed(2))}
-            size="small"
-            precision={0.1}
-            readOnly
-          />
+          <div
+            onMouseEnter={e => handleHover(e)}
+            onMouseLeave={() => setOpenTooltip(false)}
+          >
+            <Rating
+              name="read-rating"
+              value={parseFloat((props.item.rating).toFixed(2))}
+              size="small"
+              precision={0.1}
+              readOnly
+            />
+
+            <TooltipModal
+              openTooltip={openTooltip}
+              setOpenTooltip={setOpenTooltip}
+              setTooltipRate={setTooltipRate}
+              setOpenRateTooltip={setOpenRateTooltip}
+              reviews={props.item.reviews}
+              target={target}
+            />
+
+            <RatingCommentModal
+              openRateTooltip={openRateTooltip}
+              setOpenRateTooltip={setOpenRateTooltip}
+              reviews={props.item.reviews}
+              tooltipRate={tooltipRate}
+              setOpenTooltip={setOpenTooltip}
+            />
+          </div>
 
           {
             props.bookingIds.includes(parseInt(props.item.id)) &&

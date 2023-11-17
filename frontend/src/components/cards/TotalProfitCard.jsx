@@ -20,10 +20,10 @@ const TotalProfitCard = (props) => {
                 </div>
           }
         </Typography>
-        <Typography gutterBottom variant="body5" component="div">
+        <Typography gutterBottom variant="body5" component="div" className='break-all'>
           Total booked time this year: {props.sumBooking} Days
         </Typography>
-        <Typography variant="body5">
+        <Typography variant="body5" className='break-all'>
           Total profits this year: {props.sumBooking * localStorage.getItem('price')} $
         </Typography>
       </CardContent>

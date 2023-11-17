@@ -36,11 +36,14 @@
 
 ### 2.6.1 Advanced Listing Rating Viewing
 - Good looking review cards with a user name, star rating, and feedback
+- Allowing users to view this on the landing page as well (but not in each of the individual comment in the review listing card (in the view listing page), since that would be too messy and not a good ux)
+- Using stopPropagation to prevent weird interactions when having a tooltip
 
 ## Extra functionalities
 - Good looking UI and icons for a11y
 - toast messages indicating both success and error with meaningful messages
 - Validating collaping date inputs, and other inputs. Having constraints (when login-register, and some other forms such as booking, publishing, and more) to give a better ux, preventing users to face an error
+- Wrapping all comments to make sure users can leave as long feedback as they like and it'll all be displayed (and for most of the texting part as appropriate)
 - Having a confirmation modal for actions such as delete (booking and listing), publish
 - Allow users to delete a booking they booked with a pending status in a list booking card
 - Allow hosts to delete their own lists
