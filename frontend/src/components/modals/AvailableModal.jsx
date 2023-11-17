@@ -116,6 +116,7 @@ const AvailableModal = (props) => {
                   <div key={idx} className='flex flex-col gap-2'>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
+                        data-testid="publish-in"
                         onChange={e => {
                           handleOnChangeStart(e, idx);
                         }}
@@ -123,6 +124,7 @@ const AvailableModal = (props) => {
                       />
 
                       <DatePicker
+                        data-testid="publish-out"
                         onChange={e => {
                           handleOnChangeEnd(e, idx);
                         }}
@@ -139,6 +141,7 @@ const AvailableModal = (props) => {
             <Button onClick={() => add()}>Add more</Button>
             <Button
               onClick={e => submit(e)}
+              data-testid="publish-submit"
               disabled={
                 range.some(obj => Object.values(obj).some(value => value === ''))
               }

@@ -51,6 +51,7 @@ const BookingModal = (props) => {
               </LocalizationProvider>
 
               <Button
+                data-testid="book-submit"
                 onClick={() => props.confirmBook()}
                 disabled={!props.dateMin || !props.dateMax}
               >

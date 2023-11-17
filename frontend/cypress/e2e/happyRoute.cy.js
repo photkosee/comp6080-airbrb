@@ -31,7 +31,7 @@ describe('happy path', () => {
     cy.get('[data-testid="create-postcode"]').type('2009');
     cy.get('[data-testid="create-country"]').type('Australia');
     // cy.get('input[type="file"]').attachFile('./photo.jpg');
-    cy.get('[data-testid="create-thumbnail-video"]').type('a');
+    cy.get('[data-testid="create-thumbnail-video"]').type('https://www.youtube.com/embed/U9mJuUkhUzk');
     // cy.get('[data-testid="create-video"]').type('https://www.youtube.com/embed/U9mJuUkhUzk');
     cy.get('[data-testid="create-price"]').type(1000);
     cy.get('[data-testid="create-property"]').type('no');
@@ -52,7 +52,7 @@ describe('happy path', () => {
     cy.get('[data-testid="edit-postcode"]').type('2001');
     cy.get('[data-testid="edit-country"]').type('Australia1');
     // cy.get('input[type="file"]').attachFile('./photo.jpg');
-    cy.get('[data-testid="edit-thumbnail-video"]').type('a1');
+    cy.get('[data-testid="edit-thumbnail-video"]').type('https://www.youtube.com/embed/U9mJuUkhUzk');
     // cy.get('[data-testid="edit-video"]').type('https://www.youtube.com/embed/U9mJuUkhUzk');
     cy.get('[data-testid="edit-price"]').type(10001);
     cy.get('[data-testid="edit-property"]').type('no1');
@@ -66,8 +66,8 @@ describe('happy path', () => {
     cy.wait(3000);
     cy.get('[data-testid="host-card-publish"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
-    cy.wait(1000);
-
+    cy.get('#mui-33').type(11111111);
+    cy.get('#mui-35').type(12121212);
     cy.get('[data-testid="publish-submit"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
@@ -75,11 +75,12 @@ describe('happy path', () => {
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.get('[data-testid="host-card-publish"]').click();
+    cy.get('#mui-37').type(11111111);
+    cy.get('#mui-39').type(12121212);
     cy.get('[data-testid="publish-submit"]').click();
 
     // logout
     cy.get('[data-testid="logout-navbar"]').click();
-
     cy.get('[data-testid="login-navbar"]').click();
 
     // eslint-disable-next-line cypress/unsafe-to-chain-command
@@ -96,6 +97,16 @@ describe('happy path', () => {
     cy.get('[data-testid="book"]').click();
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
+    cy.get('#mui-146').type(11111111);
+    cy.get('#mui-148').type(12121212);
     cy.get('[data-testid="book-submit"]').click();
+
+    // logout
+    cy.get('[data-testid="logout-navbar"]').click();
+    cy.get('[data-testid="login-navbar"]').click();
+
+    cy.get('[data-testid="login-email"]').type('good@email.com')
+    cy.get('[data-testid="login-password"]').type('nice')
+    cy.get('[data-testid="login-submit"]').click()
   })
 })

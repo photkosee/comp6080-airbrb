@@ -14,6 +14,7 @@ const GuestCard = (props) => {
   return (
     <>
       <Card
+        data-testid="guest-card"
         sx={{ width: 300 }}
         onClick={() => navigate(`/listing/${props.item.id}`)}
         role="button"

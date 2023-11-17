@@ -74,7 +74,7 @@ const ListViewCard = (props) => {
         {
           localStorage.getItem('token') &&
           <div className="flex w-full justify-center mt-5">
-            <Button className="w-full flex gap-2" onClick={() => props.handleOpen()}>
+            <Button data-testid="book" className="w-full flex gap-2" onClick={() => props.handleOpen()}>
               Book your stay
               <BookIcon fontSize="small" />
             </Button>
