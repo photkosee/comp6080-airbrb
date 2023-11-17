@@ -31,14 +31,36 @@ describe('happy path', () => {
     cy.get('[data-testid="create-postcode"]').type('2009');
     cy.get('[data-testid="create-country"]').type('Australia');
     // cy.get('input[type="file"]').attachFile('./photo.jpg');
+    cy.get('[data-testid="create-thumbnail-video"]').type('a');
     // cy.get('[data-testid="create-video"]').type('https://www.youtube.com/embed/U9mJuUkhUzk');
     cy.get('[data-testid="create-price"]').type(1000);
     cy.get('[data-testid="create-property"]').type('no');
     cy.get('[data-testid="create-bed-type"]').type('king');
-    cy.get('[data-testid="create-bed-number"]').type('1');
-    cy.get('[data-testid="create-bedroom"]').type(1);
+    cy.get('[data-testid="create-bed-number"]').type(0o1);
+    cy.get('[data-testid="create-bathroom-number"]').type(0o1);
     cy.get('[data-testid="create-amentities"]').type('No features for this hotel');
     cy.get('[data-testid="create-submit"]').click();
+
+    // edit
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
+    cy.get('[data-testid="host-edit"]').click();
+    cy.get('[data-testid="edit-title"]').type('Hotel Sydney1');
+    cy.get('[data-testid="edit-street"]').type('1 Big Street1');
+    cy.get('[data-testid="edit-city"]').type('Sydney1');
+    cy.get('[data-testid="edit-state"]').type('NSW1');
+    cy.get('[data-testid="edit-postcode"]').type('2001');
+    cy.get('[data-testid="edit-country"]').type('Australia1');
+    // cy.get('input[type="file"]').attachFile('./photo.jpg');
+    cy.get('[data-testid="edit-thumbnail-video"]').type('a1');
+    // cy.get('[data-testid="edit-video"]').type('https://www.youtube.com/embed/U9mJuUkhUzk');
+    cy.get('[data-testid="edit-price"]').type(10001);
+    cy.get('[data-testid="edit-property"]').type('no1');
+    cy.get('[data-testid="edit-bed-type"]').type('king1');
+    cy.get('[data-testid="edit-bed-number"]').type(0o11);
+    cy.get('[data-testid="edit-bathroom-number"]').type(0o11);
+    cy.get('[data-testid="edit-amentities"]').type('No features for this hotel1');
+    cy.get('[data-testid="edit-submit"]').click();
 
     // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(3000);

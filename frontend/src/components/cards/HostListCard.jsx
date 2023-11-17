@@ -129,7 +129,7 @@ const HostListCard = (props) => {
         <CardActions>
           <div className="flex flex-col gap-2 w-full justify-center items-center">
             <div className="flex justify-between w-full gap-1">
-              <Button size="small" className="flex-1 gap-1" onClick={
+              <Button data-testid="host-edit" size="small" className="flex-1 gap-1" onClick={
                 () => navigate(`/edit/${props.item.id}`)
               }>
                 Edit

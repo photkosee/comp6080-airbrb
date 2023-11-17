@@ -141,6 +141,7 @@ const ListingEdit = (props) => {
 
           <form className='flex flex-col gap-2'>
             <TextField
+              data-testid="edit-title"
               label="Title"
               variant="outlined"
               size="small"
@@ -151,6 +152,7 @@ const ListingEdit = (props) => {
 
             <div className='flex justify-between gap-2'>
               <TextField
+                data-testid="edit-street"
                 label="Street"
                 variant="outlined"
                 size="small"
@@ -160,6 +162,7 @@ const ListingEdit = (props) => {
               />
 
               <TextField
+                data-testid="edit-city"
                 label="City"
                 variant="outlined"
                 size="small"
@@ -171,6 +174,7 @@ const ListingEdit = (props) => {
 
             <div className='flex justify-between gap-2'>
               <TextField
+                data-testid="edit-state"
                 label="State"
                 variant="outlined"
                 size="small"
@@ -180,6 +184,7 @@ const ListingEdit = (props) => {
               />
 
               <TextField
+                data-testid="edit-postcode"
                 label="Postcode"
                 variant="outlined"
                 size="small"
@@ -190,6 +195,7 @@ const ListingEdit = (props) => {
             </div>
 
             <TextField
+              data-testid="edit-country"
               label="Country"
               variant="outlined"
               size="small"
@@ -204,6 +210,7 @@ const ListingEdit = (props) => {
                   Thumbnail image *
                 </label>
                 <input
+                  data-testid="edit-thumbnail-image"
                   type="file"
                   name="thumbnail"
                   id="thumbnail"
@@ -221,6 +228,7 @@ const ListingEdit = (props) => {
                   Video Thumbnail *
                 </label>
                 <input
+                  data-testid="edit-thumbnail-video"
                   type="text"
                   name="video"
                   id="video"
@@ -233,6 +241,7 @@ const ListingEdit = (props) => {
 
             <div className='flex justify-between gap-2'>
               <TextField
+                data-testid="edit-price"
                 label="Price/night ($)"
                 variant="outlined"
                 size="small"
@@ -243,6 +252,7 @@ const ListingEdit = (props) => {
               />
 
               <TextField
+                data-testid="edit-property"
                 label="Property type"
                 variant="outlined"
                 size="small"
@@ -260,6 +270,7 @@ const ListingEdit = (props) => {
                     return (
                       <div key={idx} className='flex gap-2'>
                         <TextField
+                          data-testid="edit-bed-type"
                           label="Type"
                           variant="outlined"
                           size="small"
@@ -269,6 +280,7 @@ const ListingEdit = (props) => {
                         />
 
                         <TextField
+                          data-testid="edit-bed-number"
                           label="# of beds"
                           variant="outlined"
                           size="small"
@@ -290,6 +302,7 @@ const ListingEdit = (props) => {
 
             <div className='flex justify-between gap-2'>
               <TextField
+                data-testid="edit-bathroom-number"
                 label="Number of bathrooms"
                 variant="outlined"
                 size="small"
@@ -300,6 +313,7 @@ const ListingEdit = (props) => {
               />
 
               <TextField
+                data-testid="edit-amentities"
                 label="Amentities"
                 variant="outlined"
                 size="small"
@@ -308,7 +322,7 @@ const ListingEdit = (props) => {
               />
             </div>
 
-            <Button onClick={(e) => edit(e)} disabled={validateInput()}>
+            <Button data-testid="edit-submit" onClick={(e) => edit(e)} disabled={validateInput()}>
               Confirm
             </Button>
           </form>

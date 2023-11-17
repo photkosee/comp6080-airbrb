@@ -239,6 +239,7 @@ const ListingCreateModal = (props) => {
               />
 
               <TextField
+                data-testid="create-postcode"
                 label="Postcode"
                 variant="outlined"
                 size="small"
@@ -249,6 +250,7 @@ const ListingCreateModal = (props) => {
             </div>
 
             <TextField
+              data-testid="create-country"
               label="Country"
               variant="outlined"
               size="small"
@@ -263,6 +265,7 @@ const ListingCreateModal = (props) => {
                   Thumbnail image *
                 </label>
                 <input
+                  data-testid="create-thumbnail-image"
                   type="file"
                   name="thumbnail"
                   id="thumbnail"
@@ -280,6 +283,7 @@ const ListingCreateModal = (props) => {
                   Video Thumbnail *
                 </label>
                 <input
+                  data-testid="create-thumbnail-video"
                   type="text"
                   name="video"
                   id="video"
@@ -292,6 +296,7 @@ const ListingCreateModal = (props) => {
 
             <div className='flex items-center gap-2'>
               <TextField
+                data-testid="create-price"
                 label="Price/night ($)"
                 variant="outlined"
                 size="small"
@@ -302,6 +307,7 @@ const ListingCreateModal = (props) => {
               />
 
               <TextField
+                data-testid="create-property"
                 label="Property type"
                 variant="outlined"
                 size="small"
@@ -319,6 +325,7 @@ const ListingCreateModal = (props) => {
                     return (
                       <div key={idx} className='flex gap-2'>
                         <TextField
+                          data-testid="create-bed-type"
                           label="Type"
                           variant="outlined"
                           size="small"
@@ -328,6 +335,7 @@ const ListingCreateModal = (props) => {
                         />
 
                         <TextField
+                          data-testid="create-bed-number"
                           label="# of beds"
                           variant="outlined"
                           size="small"
@@ -349,6 +357,7 @@ const ListingCreateModal = (props) => {
 
             <div className='flex justify-between gap-2'>
               <TextField
+                data-testid="create-bathroom-number"
                 label="Number of bathrooms"
                 variant="outlined"
                 size="small"
@@ -359,6 +368,7 @@ const ListingCreateModal = (props) => {
               />
 
               <TextField
+                data-testid="create-amentities"
                 label="Amentities"
                 variant="outlined"
                 size="small"
@@ -367,7 +377,7 @@ const ListingCreateModal = (props) => {
               />
             </div>
 
-            <Button onClick={(e) => create(e)} disabled={validateInput()}>
+            <Button data-testid="create-submit" onClick={(e) => create(e)} disabled={validateInput()}>
               Create
             </Button>
             <Button onClick={() => setOpenCreateJson(true)}>
