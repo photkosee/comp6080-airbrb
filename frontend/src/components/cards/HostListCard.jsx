@@ -135,7 +135,7 @@ const HostListCard = (props) => {
                 Edit
                 <ModeEditIcon fontSize="small" />
               </Button>
-              <Button size="small" className="flex-1 gap-1"
+              <Button data-testid="host-delete" size="small" className="flex-1 gap-1"
                 onClick={() => setOpenConfirm(true)}
               >
                 Delete

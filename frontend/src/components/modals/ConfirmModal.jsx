@@ -33,7 +33,7 @@ const ConfirmModal = (props) => {
                 {props.message}
               </Typography>
 
-              <Button className="w-full" onClick={() => props.confirm()}>
+              <Button data-testid="confirm" className="w-full" onClick={() => props.confirm()}>
                 Confirm
               </Button>
             </div>
