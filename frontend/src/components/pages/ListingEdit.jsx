@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Navbar } from '../navbar/Navbar';
 import { Box, Button, Card, TextField } from '@mui/material';
@@ -8,6 +8,7 @@ import { fileToDataUrl } from '../modals/ListingCreateModal';
 
 // a page edting a list
 const ListingEdit = (props) => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [openError, setOpenError] = useState(false);
   const [error, setError] = useState('');
@@ -121,6 +122,7 @@ const ListingEdit = (props) => {
       } else {
         setError('');
         setOpenError(true);
+        navigate('/dashboard');
       }
     }
   };
