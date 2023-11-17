@@ -60,8 +60,8 @@ describe('happy path', () => {
     // publish
     cy.wait(5000);
     cy.get('[data-testid="host-card-publish"]').click();
-    cy.get('#mui-33').type(11111111);
-    cy.get('#mui-35').type(12121212);
+    cy.get('#mui-133').type(11111111);
+    cy.get('#mui-135').type(12121212);
     cy.wait(1000);
     cy.get('[data-testid="publish-submit"]').click();
 
@@ -72,8 +72,8 @@ describe('happy path', () => {
     // publish
     cy.wait(1000);
     cy.get('[data-testid="host-card-publish"]').click();
-    cy.get('#mui-37').type(11111111);
-    cy.get('#mui-39').type(12121212);
+    cy.get('#mui-187').type(11111111);
+    cy.get('#mui-189').type(12121212);
     cy.wait(1000);
     cy.get('[data-testid="publish-submit"]').click();
 
@@ -101,8 +101,8 @@ describe('happy path', () => {
     
     // book
     cy.wait(1000);
-    cy.get('#mui-146').type(11111111);
-    cy.get('#mui-148').type(12121212);
+    cy.get('#mui-296').type(11111111);
+    cy.get('#mui-298').type(12121212);
     cy.get('[data-testid="book-submit"]').click();
 
     // logout

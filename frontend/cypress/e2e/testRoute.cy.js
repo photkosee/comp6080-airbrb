@@ -41,8 +41,8 @@ describe('happy path', () => {
     // publish
     cy.wait(5000);
     cy.get('[data-testid="host-card-publish"]').click();
-    cy.get('#mui-20').type(11111111);
-    cy.get('#mui-22').type(12121212);
+    cy.get('#mui-70').type(11111111);
+    cy.get('#mui-72').type(12121212);
     cy.wait(1000);
     cy.get('[data-testid="publish-submit"]').click();
 

@@ -31,9 +31,9 @@ const FilterModal = (props) => {
             </IconButton>
           </Box>
 
-          <div className='flex flex-col flex-wrap gap-2 w-full'>
-            <div className="relative flex flex-col items-center gap-2">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div className='flex flex-col flex-wrap gap-3 w-full'>
+            <div className="relative w-full flex flex-col items-center gap-2">
+              <LocalizationProvider dateAdapter={AdapterDayjs} className='w-full'>
                 <DatePicker
                   defaultValue={props.dateMin ? dayjs(props.dateMin) : null}
                   onChange={e => {
@@ -41,6 +41,7 @@ const FilterModal = (props) => {
                     localStorage.setItem('dateMin', e.$d);
                   }}
                   label="Check in"
+                  className='w-full'
                 />
 
                 <DatePicker
@@ -50,6 +51,7 @@ const FilterModal = (props) => {
                     localStorage.setItem('dateMax', e.$d);
                   }}
                   label="Check out"
+                  className='w-full'
                 />
               </LocalizationProvider>
             </div>

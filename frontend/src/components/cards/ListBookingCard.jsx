@@ -41,7 +41,7 @@ const ListBookingCard = (props) => {
 
   return (
     <>
-      <Card sx={{ maxWidth: 250, maxHeight: 550, overflow: 'auto' }}>
+      <Card sx={{ maxWidth: 250, maxHeight: 350, overflow: 'auto' }}>
         <CardContent>
           <div className="flex justify-center mb-1">
             <Typography variant="body2" color="text.secondary">

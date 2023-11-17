@@ -13,13 +13,37 @@ import PublicOffIcon from '@mui/icons-material/PublicOff';
 import PublicIcon from '@mui/icons-material/Public';
 import CustomErrorModal from '../modals/CustomErrorModal';
 import ConfirmModal from '../modals/ConfirmModal';
+import { Rating } from '@mui/material';
+import TooltipModal from '../modals/TooltipModal';
+import RatingCommentModal from '../modals/RatingCommnetModal';
 
 // a card of list containing sufficient information for hosting page
 const HostListCard = (props) => {
   const [openError, setOpenError] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [error, setError] = useState('');
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const [openRateTooltip, setOpenRateTooltip] = useState(false);
+  const [target, setTarget] = useState(null);
+  const [tooltipRate, setTooltipRate] = useState(0);
   const navigate = useNavigate();
+
+  // set current target for a tooltip
+  const handleHover = (e) => {
+    setTarget(e.currentTarget);
+    setOpenTooltip(true);
+  }
+
+  // calculate average rating
+  const calculateRating = (reviews) => {
+    let sum = 0;
+
+    for (const review of reviews) {
+      sum += parseFloat(review.rating);
+    }
+
+    return (reviews.length === 0) ? 0 : sum / reviews.length;
+  }
 
   // an event deleting this listing
   const deleteList = async () => {
@@ -124,10 +148,49 @@ const HostListCard = (props) => {
               )
             })
           }
+
+          <div
+            className='flex justify-center mt-2 items-center gap-2'
+            onMouseEnter={e => handleHover(e)}
+            onMouseLeave={() => setOpenTooltip(false)}
+          >
+            <div className='text-sm text-gray-600'>
+              {props.item.reviews.length} Total Reviews:
+            </div>
+
+            <Rating
+              name="read-rating"
+              value={parseFloat((calculateRating(props.item.reviews)).toFixed(2))}
+              size="small"
+              precision={0.1}
+              readOnly
+            />
+
+            <div className='text-sm text-gray-600'>
+              {parseFloat((calculateRating(props.item.reviews)).toFixed(2))}
+            </div>
+
+            <TooltipModal
+              openTooltip={openTooltip}
+              setOpenTooltip={setOpenTooltip}
+              setTooltipRate={setTooltipRate}
+              setOpenRateTooltip={setOpenRateTooltip}
+              reviews={props.item.reviews}
+              target={target}
+            />
+
+            <RatingCommentModal
+              openRateTooltip={openRateTooltip}
+              setOpenRateTooltip={setOpenRateTooltip}
+              reviews={props.item.reviews}
+              tooltipRate={tooltipRate}
+              setOpenTooltip={setOpenTooltip}
+            />
+          </div>
         </CardContent>
 
         <CardActions>
-          <div className="flex flex-col gap-2 w-full justify-center items-center">
+          <div className="flex flex-col gap-1 w-full justify-center items-center">
             <div className="flex justify-between w-full gap-1">
               <Button data-testid="host-edit" size="small" className="flex-1 gap-1" onClick={
                 () => navigate(`/edit/${props.item.id}`)
