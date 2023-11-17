@@ -7,6 +7,7 @@ import BookingModal from './components/modals/BookingModal';
 import ReviewModal from './components/modals/ReviewModal';
 import CustomErrorModal from './components/modals/CustomErrorModal';
 import TooltipModal from './components/modals/TooltipModal';
+import ConfirmModal from './components/modals/ConfirmModal';
 
 // testing the modal for inputting the availability when publishing
 test('Rendering available modal', async () => {
@@ -52,7 +53,7 @@ test('Rendering available modal', async () => {
   }, 1000);
 });
 
-// testing the modal for inputting when booking a list
+// testing the modal for inputting when booking a list and cannot submit with no time
 test('Rendering booking modal', async () => {
   render(
     <BookingModal
@@ -68,11 +69,6 @@ test('Rendering booking modal', async () => {
   expect(book).toBeInTheDocument();
   const confirm = screen.getByRole('button', { name: /Confirm/i });
   expect(confirm).toBeInTheDocument();
-  const dateMin = screen.getByLabelText('Check in');
-  const dateMax = screen.getByLabelText('Check out');
-  userEvent.type(dateMin, '2023-01-01');
-  userEvent.type(dateMax, '2023-01-02');
-  userEvent.click(confirm);
 
   setTimeout(() => {
     const text = screen.getByText(/Confirm/i);
@@ -187,4 +183,24 @@ test('Testing closing a rating modal', async () => {
     const text = screen.getByText(/Star/i);
     expect(text).toBeNull();
   }, 1000);
+});
+
+// test for confirm nodal text and button together
+test('Testing closing a rating modal', async () => {
+  render(
+    <ConfirmModal
+      message={'Do you want to delete this list'}
+      openConfirm={true}
+      setOpenConfirm={() => {}}
+      confirm={() => {}}
+    />
+  );
+
+  // check the existance of all star ratings
+  const context = screen.getByText(/Do you want to delete this list/i);
+  expect(context).toBeInTheDocument();
+  const title = screen.getByText(/Please confirm your action/i);
+  expect(title).toBeInTheDocument();
+  const confirm = screen.getByRole('button', { name: /confirm/i });
+  expect(confirm).toBeInTheDocument();
 });

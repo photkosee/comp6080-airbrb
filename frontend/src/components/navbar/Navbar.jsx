@@ -96,7 +96,7 @@ export const Navbar = (props) => {
             {
               localStorage.getItem('token') && props.page === '/dashboard' &&
                 <>
-                  <Button color="inherit" className="flex flex-wrap gap-1 items-center"
+                  <Button color="inherit" data-testid="traveling-navbar" className="flex flex-wrap gap-1 items-center"
                     onClick={() => navigate('/')}
                   >
                     <TravelExploreIcon fontSize="small" />
