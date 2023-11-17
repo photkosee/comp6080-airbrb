@@ -101,9 +101,13 @@ const ListingCreateModal = (props) => {
 
   // upload image (thumbnail)
   const handleThumbnail = (e) => {
-    fileToDataUrl(e.target.files[0]).then((data) => {
-      setThumbnail(data);
-    });
+    if (e.target.files[0]) {
+      fileToDataUrl(e.target.files[0]).then((data) => {
+        setThumbnail(data);
+      });
+    } else {
+      setThumbnail('');
+    }
   }
 
   // check whether all required inputs are assigned
@@ -156,10 +160,10 @@ const ListingCreateModal = (props) => {
       setError(data.error);
       setOpenError(true);
     } else if (data.listingId) {
-      props.getList();
-      setOpen(false);
       setError('');
       setOpenError(true);
+      props.getList();
+      setOpen(false);
     }
   }
 

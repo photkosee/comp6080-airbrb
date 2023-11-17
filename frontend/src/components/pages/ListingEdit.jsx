@@ -57,9 +57,13 @@ const ListingEdit = (props) => {
 
   // dowloading an image
   const handleThumbnail = (e) => {
-    fileToDataUrl(e.target.files[0]).then((data) => {
-      setThumbnail(data);
-    });
+    if (e.target.files[0]) {
+      fileToDataUrl(e.target.files[0]).then((data) => {
+        setThumbnail(data);
+      });
+    } else {
+      setThumbnail('');
+    }
   }
 
   // check whether all required inputs are assigned
