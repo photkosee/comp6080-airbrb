@@ -48,3 +48,8 @@
 - Allow users to delete a booking they booked with a pending status in a list booking card
 - Allow hosts to delete their own lists
 - Displaying a review section in each list with a user name, feedback, and star rating (and could be clicked to view all other reviews just like 2.6.1), making the card scrollable (for both displaying reviews and booking history to support many elements)
+
+### Side note for 2.6.3. Listing Upload
+The testing JSON file is in the `frontend` directory with the name `create.json`
+
+## We are using Tailwind CSS, so pleaes don't delete `globals.css` file when testing the demo since the file is only for configuring the framework
